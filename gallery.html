@@ -205,6 +205,18 @@
                         <i class="bi bi-camera-reels"></i> Wedding Day
                     </button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="traditionalCeremony-tab" data-bs-toggle="pill" data-bs-target="#traditionalCeremony" 
+                            type="button" role="tab" aria-controls="traditionalCeremony" aria-selected="false">
+                        <i class="bi bi-flower1"></i> Traditional
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="christmas-tab" data-bs-toggle="pill" data-bs-target="#christmas" 
+                            type="button" role="tab" aria-controls="christmas" aria-selected="false">
+                        <i class="bi bi-snow"></i> Christmas
+                    </button>
+                </li>
             </ul>
 
             <!-- Tab Content -->
@@ -275,10 +287,41 @@
                         <p>Our magical wedding day - coming soon!</p>
                     </div>
                     <div class="photo-grid" id="weddingPhotosGrid">
-                        <div class="no-photos">
-                            <i class="bi bi-camera-reels display-1 text-muted mb-3"></i>
-                            <h4>Wedding Photos Coming Soon!</h4>
-                            <p>We can't wait to share our beautiful wedding day photos with you.</p>
+                        <div class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading wedding photos...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Traditional Ceremony Photos Tab -->
+                <div class="tab-pane fade" id="traditionalCeremony" role="tabpanel" aria-labelledby="traditionalCeremony-tab">
+                    <div class="category-description">
+                        <p>Beautiful traditional wedding ceremony moments</p>
+                    </div>
+                    <div class="photo-grid" id="traditionalCeremonyPhotosGrid">
+                        <div class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading traditional ceremony photos...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Christmas Photos Tab -->
+                <div class="tab-pane fade" id="christmas" role="tabpanel" aria-labelledby="christmas-tab">
+                    <div class="category-description">
+                        <p>Festive Christmas moments and celebrations</p>
+                    </div>
+                    <div class="photo-grid" id="christmasPhotosGrid">
+                        <div class="loading-spinner">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading Christmas photos...</p>
                         </div>
                     </div>
                 </div>
@@ -356,10 +399,15 @@
                 this.currentPhotos = [];
                 this.allPhotos = [];
                 this.photoCategories = {
+                    portrait: [],
                     engagement: [],
                     prewedding: [],
                     throwback: [],
-                    wedding: []
+                    wedding: [],
+                    traditionalCeremony: [],
+                    christmas: [],
+                    whiteWedding: [],
+                    specialMoments: []
                 };
                 this.selectedFiles = [];
                 this.init();
@@ -373,7 +421,24 @@
             }
 
             async loadPhotos() {
-                const categories = ['engagement', 'prewedding', 'throwback'];
+                // First try to load from JSON file
+                try {
+                    const response = await fetch('./json/wedding_outline.json');
+                    const data = await response.json();
+                    const galleryContent = data.sections.find(section => section.id === 'gallery')?.content;
+                    
+                    if (galleryContent) {
+                        // Load photos from JSON
+                        this.loadPhotosFromJSON(galleryContent);
+                        this.updateStatistics();
+                        return;
+                    }
+                } catch (error) {
+                    console.log('Could not load from JSON, using dummy photos');
+                }
+
+                // Fallback to dummy photos
+                const categories = ['engagement', 'prewedding', 'throwback', 'wedding', 'traditionalCeremony', 'christmas', 'whiteWedding', 'specialMoments'];
                 
                 for (const category of categories) {
                     try {
@@ -395,6 +460,46 @@
 
                 // Update all statistics
                 this.updateStatistics();
+            }
+
+            loadPhotosFromJSON(galleryContent) {
+                // Map JSON photo section names to category names
+                const sectionMapping = {
+                    'portraitPhotos': 'portrait',
+                    'engagementPhotos': 'engagement',
+                    'preweddingPhotos': 'prewedding',
+                    'throwbackPhotos': 'throwback',
+                    'weddingPhotos': 'wedding',
+                    'traditionalCeremonyPhotos': 'traditionalCeremony',
+                    'christmasPhotos': 'christmas',
+                    'whiteWeddingPhotos': 'whiteWedding',
+                    'specialMomentsPhotos': 'specialMoments'
+                };
+
+                // Initialize portrait category if not exists
+                if (!this.photoCategories.portrait) {
+                    this.photoCategories.portrait = [];
+                }
+
+                Object.entries(sectionMapping).forEach(([jsonKey, category]) => {
+                    if (galleryContent[jsonKey]) {
+                        galleryContent[jsonKey].forEach(photo => {
+                            const photoObj = {
+                                src: photo.src,
+                                category: category,
+                                title: photo.caption || `${this.formatCategoryName(category)} Photo`,
+                                description: photo.caption || `Beautiful ${category} moment captured`
+                            };
+                            
+                            if (!this.photoCategories[category]) {
+                                this.photoCategories[category] = [];
+                            }
+                            
+                            this.photoCategories[category].push(photoObj);
+                            this.allPhotos.push(photoObj);
+                        });
+                    }
+                });
             }
 
             updateStatistics() {
@@ -420,10 +525,15 @@
 
             formatCategoryName(category) {
                 switch(category) {
+                    case 'portrait': return 'Portrait';
                     case 'prewedding': return 'Pre-Wedding';
                     case 'throwback': return 'Throwback';
                     case 'engagement': return 'Engagement';
                     case 'wedding': return 'Wedding';
+                    case 'traditionalCeremony': return 'Traditional Ceremony';
+                    case 'christmas': return 'Christmas';
+                    case 'whiteWedding': return 'White Wedding';
+                    case 'specialMoments': return 'Special Moments';
                     default: return category.charAt(0).toUpperCase() + category.slice(1);
                 }
             }
