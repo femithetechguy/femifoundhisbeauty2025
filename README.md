@@ -2,7 +2,9 @@
 
 A modern, responsive, and dynamic wedding website built with vanilla JavaScript, Bootstrap 5, and JSON-driven content management.
 
-![Wedding Website Preview](https://via.placeholder.com/800x400/D8E460/586B36?text=Beauty+%26+Femi+2025+Wedding+Website)
+![Wedding Website Preview](./images/website-preview.png)
+
+**🌐 Live Website**: [femifoundhisbeauty2025.com](https://femifoundhisbeauty2025.com) | [GitHub Pages](https://femithetechguy.github.io/femifoundhisbeauty2025)
 
 ## 🌟 Features
 
@@ -15,6 +17,7 @@ A modern, responsive, and dynamic wedding website built with vanilla JavaScript,
 - **📝 RSVP System** - Complete RSVP form with meal preferences
 - **📅 Wedding Schedule** - Detailed timeline of events
 - **✈️ Travel Information** - Accommodations, transportation, and local tips
+- **📹 Virtual Attendance** - Zoom integration for remote guests
 
 ### 🎨 Design & Technical
 - **🎨 Custom Color Theme** - JSON-driven color system with Starfruit & Deep Olive palette
@@ -122,6 +125,13 @@ Replace placeholder images in the following directories:
 - `images/throwback/` - Throwback memories
 - `images/beauty-portrait.jpg` - Bride's portrait
 - `images/femi-portrait.jpg` - Groom's portrait
+- `images/website-preview.png` - Website preview image for README
+
+**📸 Creating a Website Preview Image**:
+1. Take a screenshot of your live website
+2. Resize to 1200x630 pixels (optimal for social sharing)
+3. Save as `images/website-preview.png`
+4. The README will automatically display it
 
 ## 📱 Pages Overview
 
@@ -179,6 +189,8 @@ Replace placeholder images in the following directories:
 - ✅ **Loading Animation** - Elegant loading screen
 - ✅ **Floating Actions** - Quick access buttons
 - ✅ **Back to Top** - Smooth scroll to top
+- ✅ **Virtual Attendance** - Zoom integration for remote guests
+- ✅ **Copy to Clipboard** - Easy sharing of links and information
 
 ## 📋 Content Management
 
@@ -211,13 +223,34 @@ Comprehensive color management:
 ### Custom Domain
 Update the `CNAME` file with your domain:
 ```
-beautyandfemi2025.com
+femifoundhisbeauty2025.com
 ```
+
+**Current Setup**: The site is configured to use `femifoundhisbeauty2025.com` as the custom domain.
 
 ### Other Hosting Platforms
 - **Netlify**: Drag and drop deployment
 - **Vercel**: Git-based deployment
 - **Firebase Hosting**: Google's hosting solution
+
+## 🔧 Troubleshooting
+
+### Website Preview Not Showing
+If the README preview image doesn't display:
+1. Ensure `images/website-preview.png` exists
+2. Check the image file size (should be < 1MB for GitHub)
+3. Verify the image path in README is correct
+4. GitHub may cache images - try clearing browser cache
+
+### Custom Domain Setup
+1. Add your domain to `CNAME` file
+2. Configure DNS settings with your domain provider
+3. Point A records to GitHub Pages IPs:
+   - 185.199.108.153
+   - 185.199.109.153
+   - 185.199.110.153
+   - 185.199.111.153
+4. Wait for DNS propagation (can take up to 24 hours)
 
 ## 🤝 Contributing
 
@@ -246,7 +279,8 @@ Created with ❤️ for Beauty & Femi's special day - December 31, 2025
 
 Visit the live website and RSVP for our special day. We can't wait to celebrate with all our loved ones!
 
-**Live Website**: [beautyandfemi2025.com](https://beautyandfemi2025.com)
+**🌐 Live Website**: [femifoundhisbeauty2025.com](https://femifoundhisbeauty2025.com)  
+**📱 GitHub Pages**: [femithetechguy.github.io/femifoundhisbeauty2025](https://femithetechguy.github.io/femifoundhisbeauty2025)
 
 ---
 
