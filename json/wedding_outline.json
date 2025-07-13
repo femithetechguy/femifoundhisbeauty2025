@@ -115,6 +115,14 @@
           "ceremony": "Detailed directions to ceremony venue...",
           "reception": "Detailed directions to reception venue...",
           "parking": "Complimentary valet parking available"
+        },
+        "virtualAttendance": {
+          "enabled": true,
+          "platform": "Zoom",
+          "meetingId": "123-456-789",
+          "passcode": "BeautyFemi2025",
+          "link": "https://zoom.us/j/123456789?pwd=BeautyFemi2025",
+          "description": "Join us virtually if you can't be there in person"
         }
       }
     },
@@ -532,8 +540,12 @@
         },
         "liveStream": {
           "enabled": true,
-          "platform": "YouTube",
-          "description": "For those who can't be with us in person"
+          "platform": "Zoom",
+          "meetingId": "123-456-789",
+          "passcode": "BeautyFemi2025",
+          "link": "https://zoom.us/j/123456789?pwd=BeautyFemi2025",
+          "description": "For those who can't be with us in person",
+          "backupPlatform": "YouTube"
         }
       }
     }

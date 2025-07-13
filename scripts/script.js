@@ -269,6 +269,32 @@ function createWeddingDetailsContent(content) {
                 </div>
             </div>
         </div>
+        ${content.virtualAttendance && content.virtualAttendance.enabled ? `
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card-custom">
+                    <div class="card-body text-center">
+                        <i class="bi bi-camera-video display-4 text-primary-custom mb-3"></i>
+                        <h4 class="card-title">Join Us Virtually</h4>
+                        <p>${content.virtualAttendance.description}</p>
+                        <div class="virtual-details mt-3">
+                            <p><strong>Platform:</strong> ${content.virtualAttendance.platform}</p>
+                            <p><strong>Meeting ID:</strong> ${content.virtualAttendance.meetingId}</p>
+                            <p><strong>Passcode:</strong> ${content.virtualAttendance.passcode}</p>
+                        </div>
+                        <div class="mt-3">
+                            <a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom me-2">
+                                <i class="bi bi-camera-video"></i> Join Zoom Meeting
+                            </a>
+                            <button class="btn btn-outline-custom" onclick="copyToClipboard('${content.virtualAttendance.link}')">
+                                <i class="bi bi-clipboard"></i> Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ` : ''}
     `;
 }
 
@@ -665,6 +691,34 @@ function createExtrasContent(content) {
                 </div>
             </div>
         </div>
+        
+        ${content.liveStream && content.liveStream.enabled ? `
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card-custom">
+                    <div class="card-body text-center">
+                        <i class="bi bi-broadcast display-4 text-primary-custom mb-3"></i>
+                        <h4 class="card-title">Live Stream</h4>
+                        <p>${content.liveStream.description}</p>
+                        <div class="live-stream-details mt-3">
+                            <p><strong>Platform:</strong> ${content.liveStream.platform}</p>
+                            ${content.liveStream.meetingId ? `<p><strong>Meeting ID:</strong> ${content.liveStream.meetingId}</p>` : ''}
+                            ${content.liveStream.passcode ? `<p><strong>Passcode:</strong> ${content.liveStream.passcode}</p>` : ''}
+                            ${content.liveStream.backupPlatform ? `<p><strong>Backup:</strong> ${content.liveStream.backupPlatform}</p>` : ''}
+                        </div>
+                        <div class="mt-3">
+                            <a href="${content.liveStream.link}" target="_blank" class="btn btn-primary-custom me-2">
+                                <i class="bi bi-play-circle"></i> Watch Live Stream
+                            </a>
+                            <button class="btn btn-outline-custom" onclick="copyToClipboard('${content.liveStream.link}')">
+                                <i class="bi bi-clipboard"></i> Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ` : ''}
     `;
 }
 
@@ -1082,3 +1136,31 @@ const additionalStyles = `
 `;
 
 document.head.insertAdjacentHTML('beforeend', additionalStyles);
+
+// Utility function to copy text to clipboard
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success message
+        showNotification('Link copied to clipboard!', 'success');
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+        showNotification('Failed to copy link', 'error');
+    });
+}
+
+// Function to show notifications
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
+    notification.style.top = '20px';
+    notification.style.right = '20px';
+    notification.style.zIndex = '9999';
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
