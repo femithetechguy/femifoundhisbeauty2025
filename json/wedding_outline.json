@@ -317,8 +317,20 @@
         ],
         "christmasPhotos": [
           {
-            "src": "images/traditional/traditional1.jpg",
-            "caption": "traditional wedding"
+            "src": "images/christmas/chrismas_phototo1.jpeg",
+            "caption": "joy of xmas"
+          },
+          {
+            "src": "images/christmas/chrismas_phototo2.jpeg",
+            "caption": "brother Femi"
+          },
+          {
+            "src": "images/christmas/chrismas_phototo3.jpeg",
+            "caption": "sister Beauty"
+          },
+          {
+            "src": "images/christmas/chrismas_phototo4.jpeg",
+            "caption": "lean on me"
           }
         ],
         "whiteWeddingPhotos": [
