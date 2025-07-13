@@ -30,6 +30,7 @@ async function initializeWebsite() {
         initializeScrollEffects();
         initializeFloatingActions();
         initializeAnimations();
+        initializeCopyButtons();
         
         // Hide loading screen
         hideLoadingScreen();
@@ -316,7 +317,7 @@ function createWeddingDetailsContent(content) {
                             <a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom me-2">
                                 <i class="bi bi-camera-video"></i> Join Zoom Meeting
                             </a>
-                            <button class="btn btn-outline-custom" onclick="copyToClipboard('${content.virtualAttendance.link}')">
+                            <button class="btn btn-outline-custom copy-zoom-link" data-link="${content.virtualAttendance.link}">
                                 <i class="bi bi-clipboard"></i> Copy Link
                             </button>
                         </div>
@@ -441,31 +442,20 @@ function createRegistryContent(content) {
         <div class="text-center mb-4">
             <p class="lead">${content.note}</p>
         </div>
-        <div class="row">
-            <div class="col-lg-6 mb-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
                 <div class="card-custom">
                     <div class="card-body text-center">
                         <h4 class="card-title"><i class="bi bi-gift"></i> Gift Registries</h4>
-                        ${content.registries.map(registry => `
-                            <div class="mb-3">
-                                <a href="${registry.url}" target="_blank" class="btn btn-outline-custom">
-                                    <i class="bi bi-box-seam"></i> ${registry.store} Registry
-                                </a>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card-custom">
-                    <div class="card-body text-center">
-                        <h4 class="card-title"><i class="bi bi-cash-coin"></i> Cash Gifts</h4>
-                        <p>For your convenience, you can also send cash gifts via:</p>
-                        ${content.cashGifts.options.map(option => `
-                            <div class="mb-2">
-                                <strong>${option.method}:</strong> ${option.details}
-                            </div>
-                        `).join('')}
+                        <div class="registry-buttons">
+                            ${content.registries.map(registry => `
+                                <div class="mb-3">
+                                    <a href="${registry.url}" target="_blank" class="btn btn-outline-custom btn-lg">
+                                        <i class="bi bi-box-seam"></i> ${registry.store} Registry
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -741,29 +731,6 @@ function createExtrasContent(content) {
             </div>
         </div>
         
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card-custom">
-                    <div class="card-body text-center">
-                        <h4 class="card-title"><i class="bi bi-share"></i> Share Our Joy</h4>
-                        <p>Help us spread the love! Share photos and memories using our hashtag:</p>
-                        <h3 class="text-primary-custom">${content.socialMedia.hashtag}</h3>
-                        <div class="social-share-buttons mt-3">
-                            <button class="btn btn-outline-custom me-2" onclick="shareOnSocial('twitter')">
-                                <i class="bi bi-twitter"></i> Twitter
-                            </button>
-                            <button class="btn btn-outline-custom me-2" onclick="shareOnSocial('facebook')">
-                                <i class="bi bi-facebook"></i> Facebook
-                            </button>
-                            <button class="btn btn-outline-custom" onclick="shareOnSocial('instagram')">
-                                <i class="bi bi-instagram"></i> Instagram
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         ${content.liveStream && content.liveStream.enabled ? `
         <div class="row mt-4">
             <div class="col-12">
@@ -782,7 +749,7 @@ function createExtrasContent(content) {
                             <a href="${content.liveStream.link}" target="_blank" class="btn btn-primary-custom me-2">
                                 <i class="bi bi-play-circle"></i> Watch Live Stream
                             </a>
-                            <button class="btn btn-outline-custom" onclick="copyToClipboard('${content.liveStream.link}')">
+                            <button class="btn btn-outline-custom copy-livestream-link" data-link="${content.liveStream.link}">
                                 <i class="bi bi-clipboard"></i> Copy Link
                             </button>
                         </div>
@@ -980,6 +947,21 @@ function initializeAnimations() {
     }, 500);
 }
 
+// Initialize copy buttons for zoom and livestream links
+function initializeCopyButtons() {
+    // Use event delegation to handle dynamically created buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.closest('.copy-zoom-link') || event.target.closest('.copy-livestream-link')) {
+            event.preventDefault();
+            const button = event.target.closest('button');
+            const link = button.getAttribute('data-link');
+            if (link) {
+                copyToClipboard(link);
+            }
+        }
+    });
+}
+
 // Hide loading screen
 function hideLoadingScreen() {
     setTimeout(() => {
@@ -1086,28 +1068,6 @@ function handleContactForm(event) {
 function openGuestbook() {
     // Placeholder for guestbook functionality
     alert('Guestbook feature coming soon!');
-}
-
-function shareOnSocial(platform) {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent('Check out Beauty & Femi\'s wedding website! #BeautyAndFemi2025');
-    
-    let shareUrl = '';
-    switch(platform) {
-        case 'twitter':
-            shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
-            break;
-        case 'facebook':
-            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            break;
-        case 'instagram':
-            alert('Please share on Instagram by copying this link: ' + window.location.href);
-            return;
-    }
-    
-    if (shareUrl) {
-        window.open(shareUrl, '_blank', 'width=600,height=400');
-    }
 }
 
 // Add timeline and schedule styles dynamically
@@ -1275,13 +1235,48 @@ document.head.insertAdjacentHTML('beforeend', additionalStyles);
 
 // Utility function to copy text to clipboard
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-        // Show success message
-        showNotification('Link copied to clipboard!', 'success');
-    }, function(err) {
-        console.error('Could not copy text: ', err);
-        showNotification('Failed to copy link', 'error');
-    });
+    // Modern browsers support
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function() {
+            showNotification('Link copied to clipboard!', 'success');
+        }, function(err) {
+            console.error('Could not copy text: ', err);
+            // Fallback method
+            fallbackCopyToClipboard(text);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopyToClipboard(text);
+    }
+}
+
+// Fallback copy method for older browsers
+function fallbackCopyToClipboard(text) {
+    try {
+        // Create a temporary textarea element
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        // Try to copy using the older execCommand method
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (successful) {
+            showNotification('Link copied to clipboard!', 'success');
+        } else {
+            showNotification('Copy failed. Please copy manually: ' + text, 'error');
+        }
+    } catch (err) {
+        console.error('Fallback copy failed: ', err);
+        // Show the text to user for manual copying
+        alert('Copy this link manually: ' + text);
+    }
 }
 
 // Function to show notifications

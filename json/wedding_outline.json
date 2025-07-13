@@ -123,7 +123,7 @@
           "platform": "Zoom",
           "meetingId": "123-456-789",
           "passcode": "BeautyFemi2025",
-          "link": "https://zoom.us/j/123456789?pwd=BeautyFemi2025",
+          "link": "https://us06web.zoom.us/j/7993020616?pwd=Y201NS9ZYmxUcHdyb1dlekh5UXhndz09&omn=87688587669",
           "description": "Join us virtually if you can't be there in person"
         }
       }
@@ -218,23 +218,6 @@
             "url": "https://target.com/gift-registry/beauty-femi"
           }
         ],
-        "cashGifts": {
-          "preferred": true,
-          "options": [
-            {
-              "method": "Zelle",
-              "details": "beautyandfemi2025@email.com"
-            },
-            {
-              "method": "PayPal",
-              "details": "@BeautyFemi2025"
-            },
-            {
-              "method": "Bank Transfer",
-              "details": "Available upon request"
-            }
-          ]
-        },
         "note": "Your presence is the greatest gift, but if you wish to honor us with a gift, we've registered at the following places."
       }
     },
@@ -543,17 +526,17 @@
       "content": {
         "couple": {
           "email": "beautyandfemi2025@email.com",
-          "phone": "+234-xxx-xxx-xxxx"
+          "phone": "+1 333-333-3333"
         },
         "weddingPlanner": {
           "name": "Elegant Events Lagos",
           "contact": "Sarah Johnson",
           "email": "sarah@elegantevents.ng",
-          "phone": "+234-xxx-xxx-xxxx"
+          "phone": "+1 222-222-2222"
         },
         "emergencyContact": {
           "name": "Best Man - David",
-          "phone": "+234-xxx-xxx-xxxx"
+          "phone": "+1 111-111-1111"
         },
         "form": {
           "enabled": true,
@@ -624,17 +607,12 @@
           "url": "https://beautyandfemi2025.com",
           "description": "Scan to visit our wedding website"
         },
-        "socialMedia": {
-          "hashtag": "#BeautyAndFemi2025",
-          "encourageSharing": true,
-          "platforms": ["Instagram", "Twitter", "Facebook"]
-        },
         "liveStream": {
           "enabled": true,
           "platform": "Zoom",
           "meetingId": "123-456-789",
           "passcode": "BeautyFemi2025",
-          "link": "https://zoom.us/j/123456789?pwd=BeautyFemi2025",
+          "link": "https://us06web.zoom.us/j/7993020616?pwd=Y201NS9ZYmxUcHdyb1dlekh5UXhndz09&omn=87688587669",
           "description": "For those who can't be with us in person",
           "backupPlatform": "YouTube"
         }
