@@ -1,0 +1,24 @@
+{
+  "footer": {
+    "leftColumn": {
+      "title": "Beauty & Femi 2025",
+      "subtitle": "Thank you for being part of our special day"
+    },
+    "rightColumn": {
+      "hashtag": "#BeautyAndFemi2025",
+      "message": "Share your photos with our hashtag!"
+    },
+    "copyright": {
+      "text": "&copy; 2025 Beauty & Femi Wedding.",
+      "attribution": {
+        "text": "Created with",
+        "icon": "bi bi-heart-fill text-primary",
+        "linkText": "FTTG SOLUTIONS",
+        "linkUrl": "https://fttgsolutions.com",
+        "linkTarget": "_blank",
+        "linkRel": "noopener noreferrer",
+        "linkClass": "text-primary"
+      }
+    }
+  }
+}

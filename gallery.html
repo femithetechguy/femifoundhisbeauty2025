@@ -369,22 +369,8 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h4 class="mb-3">Beauty & Femi</h4>
-                    <p class="mb-3">Two hearts, one love, endless memories</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="bi bi-heart-fill"></i>
-                        </a>
-                    </div>
-                    <hr class="my-4">
-                    <p class="text-muted">&copy; 2025 Beauty & Femi Wedding. Made with <i class="bi bi-heart-fill text-danger"></i></p>
-                </div>
-            </div>
-        </div>
+    <footer class="footer">
+        <!-- Footer content will be loaded dynamically from JSON -->
     </footer>
 
     <!-- Bootstrap JS -->
@@ -897,7 +883,51 @@
         let galleryManager;
         document.addEventListener('DOMContentLoaded', () => {
             galleryManager = new GalleryManager();
+            loadFooterContent();
         });
+        
+        // Load footer content from JSON
+        async function loadFooterContent() {
+            try {
+                const response = await fetch('./json/footer.json');
+                const footerData = await response.json();
+                const footer = footerData.footer;
+                
+                const footerElement = document.querySelector('.footer');
+                const footerHTML = `
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="footer-content">
+                                    <h5>${footer.leftColumn.title}</h5>
+                                    <p>${footer.leftColumn.subtitle}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="footer-hashtag">
+                                    <h3>${footer.rightColumn.hashtag}</h3>
+                                    <p>${footer.rightColumn.message}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="footer-divider">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <p class="footer-copyright">
+                                    ${footer.copyright.text}
+                                    <br>
+                                    <small>${footer.copyright.attribution.text} <i class="${footer.copyright.attribution.icon}"></i> by <a href="${footer.copyright.attribution.linkUrl}" target="${footer.copyright.attribution.linkTarget}" rel="${footer.copyright.attribution.linkRel}" class="${footer.copyright.attribution.linkClass}">${footer.copyright.attribution.linkText}</a></small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                footerElement.innerHTML = footerHTML;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+            }
+        }
     </script>
 </body>
 </html>
