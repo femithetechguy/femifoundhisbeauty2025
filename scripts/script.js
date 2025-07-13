@@ -13,6 +13,9 @@ async function initializeWebsite() {
         // Load JSON data
         await loadData();
         
+        // Load couple photo from JSON
+        loadCouplePhoto();
+        
         // Apply color theme
         applyColorTheme();
         
@@ -305,7 +308,13 @@ function createWeddingPartyContent(content) {
             <div class="col-lg-6 mb-4">
                 <div class="card-custom text-center">
                     <div class="card-body">
-                        <img src="${content.bride.photo}" alt="${content.bride.name}" class="rounded-circle mb-3" style="width: 200px; height: 200px; object-fit: cover;">
+                        <div class="portrait-container">
+                            <img src="${content.bride.photo}" alt="${content.bride.name}" class="portrait-image" 
+                                 id="bride-portrait">
+                            <button class="portrait-toggle" onclick="togglePortraitView('bride-portrait')" title="Toggle full/cropped view">
+                                <i class="bi bi-aspect-ratio"></i>
+                            </button>
+                        </div>
                         <h4 class="card-title">${content.bride.fullName}</h4>
                         <p class="text-primary-custom">The Bride</p>
                         <p>${content.bride.bio}</p>
@@ -319,7 +328,13 @@ function createWeddingPartyContent(content) {
             <div class="col-lg-6 mb-4">
                 <div class="card-custom text-center">
                     <div class="card-body">
-                        <img src="${content.groom.photo}" alt="${content.groom.name}" class="rounded-circle mb-3" style="width: 200px; height: 200px; object-fit: cover;">
+                        <div class="portrait-container">
+                            <img src="${content.groom.photo}" alt="${content.groom.name}" class="portrait-image"
+                                 id="groom-portrait">
+                            <button class="portrait-toggle" onclick="togglePortraitView('groom-portrait')" title="Toggle full/cropped view">
+                                <i class="bi bi-aspect-ratio"></i>
+                            </button>
+                        </div>
                         <h4 class="card-title">${content.groom.fullName}</h4>
                         <p class="text-primary-custom">The Groom</p>
                         <p>${content.groom.bio}</p>
@@ -722,6 +737,93 @@ function createExtrasContent(content) {
         </div>
         ` : ''}
     `;
+}
+
+// Load couple photo from JSON configuration
+function loadCouplePhoto() {
+    try {
+        console.log('🖼️ Loading couple photo from JSON...');
+        console.log('Wedding data:', weddingData);
+        
+        const homeSection = weddingData.sections.find(section => section.id === 'home');
+        console.log('Home section found:', homeSection);
+        
+        if (homeSection && homeSection.content.couplePhoto) {
+            const couplePhotoElement = document.querySelector('.couple-photo');
+            console.log('Couple photo element found:', couplePhotoElement);
+            
+            if (couplePhotoElement) {
+                const photoConfig = homeSection.content.couplePhoto;
+                console.log('Photo config:', photoConfig);
+                
+                // Log current src before changing
+                console.log('Current image src:', couplePhotoElement.src);
+                
+                // Update image source and alt text
+                couplePhotoElement.src = photoConfig.src;
+                couplePhotoElement.alt = photoConfig.alt;
+                
+                console.log('Updated image src to:', photoConfig.src);
+                console.log('Updated image alt to:', photoConfig.alt);
+                
+                // Add error handling for missing image
+                couplePhotoElement.onerror = function() {
+                    console.error(`❌ Could not load couple photo: ${photoConfig.src}`);
+                    console.error('Image error event fired');
+                    // Keep the placeholder if the image fails to load
+                    this.src = "https://via.placeholder.com/600x800/D8E460/586B36?text=Beauty+%26+Femi";
+                    console.log('Reverted to placeholder image');
+                };
+                
+                // Add load success handler
+                couplePhotoElement.onload = function() {
+                    console.log(`✅ Couple photo loaded successfully: ${photoConfig.src}`);
+                    console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+                };
+                
+                // Test if the image path is accessible
+                fetch(photoConfig.src, { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('✅ Image file is accessible via fetch');
+                            console.log('Content-Type:', response.headers.get('content-type'));
+                            console.log('Content-Length:', response.headers.get('content-length'));
+                        } else {
+                            console.error('❌ Image file not accessible:', response.status, response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('❌ Fetch test failed:', error);
+                    });
+                
+            } else {
+                console.error('❌ Couple photo element not found in DOM');
+                console.log('Available elements with class "couple-photo":', document.querySelectorAll('.couple-photo'));
+            }
+        } else {
+            console.error('❌ Couple photo configuration not found in wedding data');
+            console.log('Available sections:', weddingData.sections?.map(s => s.id));
+        }
+    } catch (error) {
+        console.error('❌ Error loading couple photo:', error);
+        console.error('Error stack:', error.stack);
+    }
+}
+
+// Toggle portrait view between full image and cropped
+function togglePortraitView(imageId) {
+    const img = document.getElementById(imageId);
+    if (!img) return;
+    
+    if (img.classList.contains('crop-mode')) {
+        // Switch to full image view
+        img.classList.remove('crop-mode');
+        console.log(`${imageId}: Switched to full image view`);
+    } else {
+        // Switch to cropped view
+        img.classList.add('crop-mode');
+        console.log(`${imageId}: Switched to cropped view`);
+    }
 }
 
 // Initialize countdown timer
@@ -1174,6 +1276,16 @@ function handleFormSubmission(event, formType) {
     const form = event.target;
     const formData = new FormData(form);
     
+    // Add Formspree parameters to force JSON response
+    formData.append('_format', 'json');
+    formData.append('_timestamp', new Date().toISOString());
+    
+    // Debug: Log form submission details
+    console.log('Form type:', formType);
+    console.log('Form action:', form.action);
+    console.log('Form method:', form.method);
+    console.log('Form data:', Object.fromEntries(formData));
+    
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
@@ -1188,22 +1300,28 @@ function handleFormSubmission(event, formType) {
         }
     })
     .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
         if (response.ok) {
             showNotification(`${formType.charAt(0).toUpperCase() + formType.slice(1)} form submitted successfully!`, 'success');
             form.reset();
         } else {
-            response.json().then(data => {
+            return response.json().then(data => {
+                console.log('Error response data:', data);
                 if (Object.hasOwnProperty.call(data, 'errors')) {
                     showNotification(data["errors"].map(error => error["message"]).join(", "), 'error');
                 } else {
                     showNotification('Oops! There was a problem submitting your form', 'error');
                 }
+            }).catch(() => {
+                showNotification('Oops! There was a problem submitting your form', 'error');
             });
         }
     })
     .catch(error => {
-        showNotification('Oops! There was a problem submitting your form', 'error');
         console.error('Form submission error:', error);
+        showNotification('Oops! There was a problem submitting your form', 'error');
     })
     .finally(() => {
         // Restore button state

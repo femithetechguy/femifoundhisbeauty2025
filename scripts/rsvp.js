@@ -77,14 +77,30 @@ function handleRSVPSubmission(event) {
     const form = event.target;
     const formData = new FormData(form);
     
+    // Enhanced Debug: Log everything about the form submission
+    console.log('=== RSVP FORM SUBMISSION DEBUG ===');
+    console.log('Form element:', form);
+    console.log('Form action:', form.action);
+    console.log('Form method:', form.method);
+    console.log('Form data entries:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}: "${value}"`);
+    }
+    console.log('Current URL:', window.location.href);
+    console.log('User agent:', navigator.userAgent);
+    
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
     submitButton.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting RSVP...';
     submitButton.disabled = true;
     
-    // Add form processing timestamp
+    // Add form processing timestamp and format
     formData.append('_timestamp', new Date().toISOString());
+    formData.append('_source', 'rsvp_form');
+    formData.append('_format', 'json'); // Force JSON response from Formspree
+    
+    console.log('Making fetch request...');
     
     fetch(form.action, {
         method: form.method,
@@ -94,34 +110,64 @@ function handleRSVPSubmission(event) {
         }
     })
     .then(response => {
-        if (response.ok) {
-            showSuccessMessage();
-            form.reset();
+        console.log('✅ Response received');
+        console.log('Response status:', response.status);
+        console.log('Response statusText:', response.statusText);
+        console.log('Response ok:', response.ok);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        
+        // Always try to read the response body
+        return response.text().then(text => {
+            console.log('Response body text:', text);
             
-            // Scroll to success message
-            setTimeout(() => {
-                document.getElementById('successMessage').scrollIntoView({ 
-                    behavior: 'smooth' 
-                });
-            }, 100);
-        } else {
-            response.json().then(data => {
-                if (Object.hasOwnProperty.call(data, 'errors')) {
-                    showErrorMessage(data["errors"].map(error => error["message"]).join(", "));
+            let jsonData = null;
+            try {
+                jsonData = JSON.parse(text);
+                console.log('Parsed response JSON:', jsonData);
+            } catch (e) {
+                console.log('Response is not JSON, treating as text');
+            }
+            
+            if (response.ok) {
+                console.log('🎉 RSVP submission successful!');
+                showSuccessMessage();
+                form.reset();
+                
+                // Scroll to success message
+                setTimeout(() => {
+                    const successMsg = document.getElementById('successMessage');
+                    if (successMsg) {
+                        successMsg.scrollIntoView({ 
+                            behavior: 'smooth' 
+                        });
+                    }
+                }, 100);
+            } else {
+                console.log('❌ RSVP submission failed');
+                if (jsonData && jsonData.errors) {
+                    const errorMessage = jsonData.errors.map(error => error.message).join(", ");
+                    console.log('Formspree error:', errorMessage);
+                    showErrorMessage(errorMessage);
                 } else {
+                    console.log('Unknown error format');
                     showErrorMessage('There was a problem submitting your RSVP. Please try again.');
                 }
-            });
-        }
+            }
+        });
     })
     .catch(error => {
+        console.log('🚨 Network/Fetch error occurred');
         console.error('RSVP submission error:', error);
+        console.error('Error type:', error.constructor.name);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
         showErrorMessage('There was a problem submitting your RSVP. Please check your connection and try again.');
     })
     .finally(() => {
         // Restore button state
         submitButton.innerHTML = originalText;
         submitButton.disabled = false;
+        console.log('=== END RSVP SUBMISSION DEBUG ===');
     });
 }
 
