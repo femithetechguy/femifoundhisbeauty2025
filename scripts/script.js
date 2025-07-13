@@ -1,6 +1,7 @@
 // Global variables
 let weddingData = {};
 let colorData = {};
+let footerData = {};
 
 // Initialize the website
 document.addEventListener("DOMContentLoaded", function () {
@@ -25,6 +26,9 @@ async function initializeWebsite() {
     // Build dynamic sections
     buildDynamicSections();
 
+    // Initialize footer
+    await initializeFooter();
+
     // Initialize components
     initializeCountdown();
     initializeScrollEffects();
@@ -48,13 +52,15 @@ async function initializeWebsite() {
 // Load JSON data
 async function loadData() {
   try {
-    const [weddingResponse, colorResponse] = await Promise.all([
+    const [weddingResponse, colorResponse, footerResponse] = await Promise.all([
       fetch("./json/wedding_outline.json"),
       fetch("./json/colors.json"),
+      fetch("./json/footer.json"),
     ]);
 
     weddingData = await weddingResponse.json();
     colorData = await colorResponse.json();
+    footerData = await footerResponse.json();
   } catch (error) {
     console.error("Error loading data:", error);
     throw error;
@@ -83,6 +89,55 @@ function applyColorTheme() {
   Object.entries(cssVariables).forEach(([property, value]) => {
     root.style.setProperty(property, value);
   });
+}
+
+// Initialize footer content from JSON
+async function initializeFooter() {
+  try {
+    const footers = document.querySelectorAll('.footer');
+    
+    footers.forEach(footer => {
+      renderFooterContent(footer);
+    });
+  } catch (error) {
+    console.error("Error initializing footer:", error);
+  }
+}
+
+// Render footer content from JSON data
+function renderFooterContent(footerElement) {
+  const footer = footerData.footer;
+  
+  const footerHTML = `
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="footer-content">
+            <h5>${footer.leftColumn.title}</h5>
+            <p>${footer.leftColumn.subtitle}</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="footer-hashtag">
+            <h3>${footer.rightColumn.hashtag}</h3>
+            <p>${footer.rightColumn.message}</p>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="footer-copyright">
+            ${footer.copyright.text}
+            <br>
+            <small>${footer.copyright.attribution.text} <i class="${footer.copyright.attribution.icon}"></i> by <a href="${footer.copyright.attribution.linkUrl}" target="${footer.copyright.attribution.linkTarget}" rel="${footer.copyright.attribution.linkRel}" class="${footer.copyright.attribution.linkClass}">${footer.copyright.attribution.linkText}</a></small>
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  footerElement.innerHTML = footerHTML;
 }
 
 // Build navigation from JSON data
@@ -1905,3 +1960,52 @@ function initializeGalleryHandlers() {
 document.addEventListener("DOMContentLoaded", function () {
   initializeGalleryHandlers();
 });
+
+// Initialize footer content
+async function initializeFooter() {
+  try {
+    const footers = document.querySelectorAll('.footer');
+    
+    footers.forEach(footer => {
+      renderFooterContent(footer);
+    });
+  } catch (error) {
+    console.error("Error initializing footer:", error);
+  }
+}
+
+// Render footer content from JSON data
+function renderFooterContent(footerElement) {
+  const footer = footerData.footer;
+  
+  const footerHTML = `
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="footer-content">
+            <h5>${footer.leftColumn.title}</h5>
+            <p>${footer.leftColumn.subtitle}</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="footer-hashtag">
+            <h3>${footer.rightColumn.hashtag}</h3>
+            <p>${footer.rightColumn.message}</p>
+          </div>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="footer-copyright">
+            ${footer.copyright.text}
+            <br>
+            <small>${footer.copyright.attribution.text} <i class="${footer.copyright.attribution.icon}"></i> by <a href="${footer.copyright.attribution.linkUrl}" target="${footer.copyright.attribution.linkTarget}" rel="${footer.copyright.attribution.linkRel}" class="${footer.copyright.attribution.linkClass}">${footer.copyright.attribution.linkText}</a></small>
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  footerElement.innerHTML = footerHTML;
+}

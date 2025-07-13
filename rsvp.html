@@ -257,29 +257,8 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h5>Beauty & Femi 2025</h5>
-                    <p>December 31, 2025 • Lagos, Nigeria</p>
-                    <div class="social-links justify-content-center">
-                        <a href="#" class="social-link">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="bi bi-twitter"></i>
-                        </a>
-                    </div>
-                    <p class="footer-copyright mt-3">
-                        &copy; 2025 Beauty & Femi Wedding. Made with <i class="bi bi-heart-fill text-primary"></i>
-                    </p>
-                </div>
-            </div>
-        </div>
+    <footer class="footer">
+        <!-- Footer content will be loaded dynamically from JSON -->
     </footer>
 
     <!-- Bootstrap JS -->
@@ -414,7 +393,53 @@
                     });
                 })
                 .catch(error => console.error('Error loading colors:', error));
+            
+            // Load and render footer content
+            loadFooterContent();
         });
+        
+        // Load footer content from JSON
+        async function loadFooterContent() {
+            try {
+                const response = await fetch('./json/footer.json');
+                const footerData = await response.json();
+                const footer = footerData.footer;
+                
+                const footerElement = document.querySelector('.footer');
+                const footerHTML = `
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="footer-content">
+                                    <h5>${footer.leftColumn.title}</h5>
+                                    <p>${footer.leftColumn.subtitle}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="footer-hashtag">
+                                    <h3>${footer.rightColumn.hashtag}</h3>
+                                    <p>${footer.rightColumn.message}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="footer-divider">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <p class="footer-copyright">
+                                    ${footer.copyright.text}
+                                    <br>
+                                    <small>${footer.copyright.attribution.text} <i class="${footer.copyright.attribution.icon}"></i> by <a href="${footer.copyright.attribution.linkUrl}" target="${footer.copyright.attribution.linkTarget}" rel="${footer.copyright.attribution.linkRel}" class="${footer.copyright.attribution.linkClass}">${footer.copyright.attribution.linkText}</a></small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                footerElement.innerHTML = footerHTML;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+            }
+        }
     </script>
 
     <style>
