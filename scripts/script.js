@@ -607,7 +607,9 @@ function createContactContent(content) {
                 <div class="card-custom h-100">
                     <div class="card-body">
                         <h4 class="card-title"><i class="bi bi-chat-dots"></i> Send us a Message</h4>
-                        <form class="form-custom" onsubmit="handleContactForm(event)">
+                        <form class="form-custom" action="${content.form.action}" method="${content.form.method}" onsubmit="handleFormSubmission(event, 'contact')">
+                            <input type="hidden" name="_subject" value="Wedding Website Contact Form">
+                            <input type="hidden" name="_next" value="${window.location.origin}/index.html#contact">
                             ${content.form.fields.map(field => {
                                 if (field.type === 'textarea') {
                                     return `
@@ -1163,4 +1165,49 @@ function showNotification(message, type = 'info') {
     setTimeout(() => {
         notification.remove();
     }, 3000);
+}
+
+// Universal form submission handler for Formspree
+function handleFormSubmission(event, formType) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    submitButton.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
+    submitButton.disabled = true;
+    
+    fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            showNotification(`${formType.charAt(0).toUpperCase() + formType.slice(1)} form submitted successfully!`, 'success');
+            form.reset();
+        } else {
+            response.json().then(data => {
+                if (Object.hasOwnProperty.call(data, 'errors')) {
+                    showNotification(data["errors"].map(error => error["message"]).join(", "), 'error');
+                } else {
+                    showNotification('Oops! There was a problem submitting your form', 'error');
+                }
+            });
+        }
+    })
+    .catch(error => {
+        showNotification('Oops! There was a problem submitting your form', 'error');
+        console.error('Form submission error:', error);
+    })
+    .finally(() => {
+        // Restore button state
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    });
 }
