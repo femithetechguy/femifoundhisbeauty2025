@@ -258,6 +258,42 @@
             "caption": "beautiful lady"
           }
         ],
+        "engagementPhotos": [
+          {
+            "src": "images/engagement/femi_beauty1.jpg",
+            "caption": "the proposal moment"
+          },
+          {
+            "src": "images/engagement/femi_beauty2.jpg",
+            "caption": "she said yes"
+          },
+          {
+            "src": "images/engagement/femi_beauty3.jpg",
+            "caption": "celebration time"
+          },
+          {
+            "src": "images/engagement/femi_beauty4.jpg",
+            "caption": "showing off the ring"
+          }
+        ],
+        "preweddingPhotos": [
+          {
+            "src": "images/prewedding/femi_beauty1.jpg",
+            "caption": "romantic shoot"
+          },
+          {
+            "src": "images/prewedding/femi_beauty2.jpg",
+            "caption": "love in the air"
+          },
+          {
+            "src": "images/prewedding/femi_beauty3.jpg",
+            "caption": "almost there"
+          },
+          {
+            "src": "images/prewedding/femi_beauty4.jpg",
+            "caption": "countdown begins"
+          }
+        ],
         "throwbackPhotos": [
           {
             "src": "images/throwback/femi_beauty1.jpg",
@@ -270,6 +306,48 @@
           {
             "src": "images/throwback/femi_beauty3.jpg",
             "caption": "look unto the heavens and smile"
+          }
+        ],
+        "weddingPhotos": [
+          {
+            "src": "images/wedding/ceremony1.jpg",
+            "caption": "walking down the aisle"
+          },
+          {
+            "src": "images/wedding/ceremony2.jpg",
+            "caption": "exchanging vows"
+          },
+          {
+            "src": "images/wedding/reception1.jpg",
+            "caption": "first dance"
+          },
+          {
+            "src": "images/wedding/reception2.jpg",
+            "caption": "party time"
+          }
+        ],
+        "traditionalCeremonyPhotos": [
+          {
+            "src": "images/traditional/traditional1.jpg",
+            "caption": "traditional wedding"
+          }
+        ],
+        "christmasPhotos": [
+          {
+            "src": "images/traditional/traditional1.jpg",
+            "caption": "traditional wedding"
+          }
+        ],
+        "whiteWeddingPhotos": [
+          {
+            "src": "images/whitewedding/white1.jpg",
+            "caption": "white wedding ceremony"
+          }
+        ],
+        "specialMomentsPhotos": [
+          {
+            "src": "images/specialmoments/moment1.jpg",
+            "caption": "special moment 1"
           }
         ],
         "uploadEnabled": true,
