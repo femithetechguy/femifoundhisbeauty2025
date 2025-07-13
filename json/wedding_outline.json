@@ -38,12 +38,14 @@
         "howWeMet": {
           "title": "How We Met",
           "story": "Our love story began...",
+          "detail-story": "We met at a mutual friend's party and instantly connected over our shared love for music.",
           "date": "2020-01-15",
           "location": "Lagos, Nigeria"
         },
         "proposal": {
           "title": "The Proposal",
           "story": "The moment that changed everything...",
+          "detail-story": "Femi proposed during a romantic dinner at our favorite restaurant, and Beauty said yes!",
           "date": "2024-06-20",
           "location": "Sunset Beach"
         },
@@ -137,22 +139,14 @@
           "fullName": "Beauty Adebayo",
           "bio": "Beauty is a wonderful person who brings joy to everyone around her...",
           "photo": "images/beauty-portrait.jpg",
-          "funFacts": [
-            "Loves to dance",
-            "Amazing cook",
-            "Travel enthusiast"
-          ]
+          "funFacts": ["Loves to dance", "Amazing cook", "Travel enthusiast"]
         },
         "groom": {
           "name": "Femi",
           "fullName": "Adefemi Adebayo",
           "bio": "Femi is a kind-hearted tech professional who loves life and adventure...",
           "photo": "images/femi-portrait.jpg",
-          "funFacts": [
-            "Tech enthusiast",
-            "Basketball player",
-            "Coffee lover"
-          ]
+          "funFacts": ["Tech enthusiast", "Basketball player", "Coffee lover"]
         },
         "bridesmaids": [
           {
@@ -250,24 +244,32 @@
       "icon": "📸",
       "order": 7,
       "content": {
-        "engagementPhotos": [
+        "portraitPhotos": [
           {
-            "src": "images/engagement/photo1.jpg",
-            "caption": "Engagement shoot at sunset"
+            "src": "images/femi-portrait.jpg",
+            "caption": "gentleman"
           },
           {
-            "src": "images/engagement/photo2.jpg",
-            "caption": "Celebrating our engagement"
+            "src": "images/couple-main2.jpg",
+            "caption": "one sunday afternoon"
+          },
+          {
+            "src": "images/beauty-portrait.jpg",
+            "caption": "beautiful lady"
           }
         ],
         "throwbackPhotos": [
           {
-            "src": "images/throwback/photo1.jpg",
-            "caption": "Our first date"
+            "src": "images/throwback/femi_beauty1.jpg",
+            "caption": "hold somebody"
           },
           {
-            "src": "images/throwback/photo2.jpg",
-            "caption": "Family gathering"
+            "src": "images/throwback/femi_beauty2.jpg",
+            "caption": "look into my eyes"
+          },
+          {
+            "src": "images/throwback/femi_beauty3.jpg",
+            "caption": "look unto the heavens and smile"
           }
         ],
         "uploadEnabled": true,

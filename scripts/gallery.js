@@ -141,11 +141,6 @@ function handlePhotoUpload(event) {
     const form = event.target;
     const formData = new FormData(form);
     
-    // Debug: Log upload form details
-    console.log('Upload form action:', form.action);
-    console.log('Upload form method:', form.method);
-    console.log('Upload form data:', Object.fromEntries(formData));
-    
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
@@ -164,9 +159,6 @@ function handlePhotoUpload(event) {
         }
     })
     .then(response => {
-        console.log('Upload response status:', response.status);
-        console.log('Upload response ok:', response.ok);
-        
         if (response.ok) {
             showUploadSuccess();
             form.reset();
@@ -178,7 +170,6 @@ function handlePhotoUpload(event) {
             }, 2000);
         } else {
             return response.json().then(data => {
-                console.log('Upload error response data:', data);
                 if (Object.hasOwnProperty.call(data, 'errors')) {
                     showUploadError(data["errors"].map(error => error["message"]).join(", "));
                 } else {

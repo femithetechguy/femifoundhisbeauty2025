@@ -53,7 +53,7 @@ Certainly, Adefemi! Here’s a full list of 1 to 12 for your wedding website for
 ⸻
 
 7. 📸 Gallery
-	•	Engagement photos
+	•	Portrait photos
 	•	Throwback photos
 	•	Optional: Post-wedding uploads
 
