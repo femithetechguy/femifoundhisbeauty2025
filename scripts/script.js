@@ -57,6 +57,20 @@ async function loadData() {
     }
 }
 
+// Helper function to convert Spotify URL to embed URL
+function getSpotifyEmbedUrl(spotifyUrl) {
+    // Extract the playlist ID from the Spotify URL
+    // URL format: https://open.spotify.com/playlist/5R2cCAyWGRyR3sOkuLCNdp?si=...
+    const playlistMatch = spotifyUrl.match(/playlist\/([a-zA-Z0-9]+)/);
+    if (playlistMatch) {
+        const playlistId = playlistMatch[1];
+        return `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator`;
+    }
+    
+    // Fallback to original URL if pattern doesn't match
+    return spotifyUrl;
+}
+
 // Apply color theme from colors.json
 function applyColorTheme() {
     const root = document.documentElement;
@@ -706,9 +720,22 @@ function createExtrasContent(content) {
                         <i class="bi bi-music-note-beamed display-4 text-primary-custom mb-3"></i>
                         <h4 class="card-title">${content.playlist.title}</h4>
                         <p>Listen to the soundtrack of our love story</p>
-                        <a href="${content.playlist.spotify.url}" target="_blank" class="btn btn-outline-custom">
-                            <i class="bi bi-spotify"></i> Open Playlist
-                        </a>
+                        ${content.playlist.spotify.embedded ? 
+                            `<div class="spotify-embed-container">
+                                <iframe style="border-radius:12px" 
+                                        src="${getSpotifyEmbedUrl(content.playlist.spotify.url)}" 
+                                        width="100%" 
+                                        height="352" 
+                                        frameBorder="0" 
+                                        allowfullscreen="" 
+                                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                                        loading="lazy">
+                                </iframe>
+                            </div>` :
+                            `<a href="${content.playlist.spotify.url}" target="_blank" class="btn btn-outline-custom">
+                                <i class="bi bi-spotify"></i> Open Playlist
+                            </a>`
+                        }
                     </div>
                 </div>
             </div>
