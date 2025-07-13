@@ -710,6 +710,47 @@ body {
   transform: translateY(-2px);
 }
 
+/* Virtual Attendance Styles */
+.virtual-details p,
+.live-stream-details p {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.virtual-details strong,
+.live-stream-details strong {
+  color: var(--color-accent-1);
+  font-weight: 600;
+}
+
+.virtual-details,
+.live-stream-details {
+  background: var(--color-neutral);
+  padding: 20px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border-light);
+  margin: 20px 0;
+}
+
+/* Notification Styles */
+.alert {
+  padding: 15px;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-medium);
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Animations */
 @keyframes slideInUp {
   from {
@@ -755,14 +796,28 @@ body {
 }
 
 /* Responsive Design */
+
+/* Large Mobile/Small Tablet - 768px and below */
 @media (max-width: 768px) {
   :root {
     --section-padding: 60px 0;
   }
   
+  .custom-navbar {
+    padding: 12px 0;
+  }
+  
+  .custom-navbar.scrolled {
+    padding: 8px 0;
+  }
+  
   .hero-content {
     text-align: center;
-    padding: 40px 0 20px 0;
+    padding: 50px 0 20px 0;
+    margin-top: 25px;
+  }
+  
+  .hero-title {
     margin-top: 20px;
   }
   
@@ -804,18 +859,28 @@ body {
   }
 }
 
+/* Standard Mobile - 576px and below */
 @media (max-width: 576px) {
+  .custom-navbar {
+    padding: 10px 0;
+  }
+  
+  .custom-navbar.scrolled {
+    padding: 6px 0;
+  }
+  
   .navbar-brand {
     font-size: 1.5rem;
   }
   
   .hero-content {
-    margin-top: 30px;
-    padding: 50px 0 20px 0;
+    margin-top: 35px;
+    padding: 60px 0 20px 0;
   }
   
   .hero-title {
     font-size: 2.5rem;
+    margin-top: 25px;
   }
   
   .countdown-timer {
@@ -833,6 +898,100 @@ body {
   
   .countdown-label {
     font-size: 0.8rem;
+  }
+}
+
+/* Small Mobile - 480px and below */
+@media (max-width: 480px) {
+  .custom-navbar {
+    padding: 8px 0;
+  }
+  
+  .custom-navbar.scrolled {
+    padding: 5px 0;
+  }
+  
+  .navbar-brand {
+    font-size: 1.4rem;
+  }
+  
+  .hero-content {
+    margin-top: 40px;
+    padding: 70px 0 20px 0;
+  }
+  
+  .hero-title {
+    font-size: 2.2rem;
+    margin-top: 30px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .countdown-item {
+    min-width: 55px;
+    padding: 8px 6px;
+  }
+  
+  .countdown-number {
+    font-size: 1.1rem;
+  }
+  
+  .hero-btn {
+    padding: 12px 25px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Small Mobile - 320px and below */
+@media (max-width: 320px) {
+  .custom-navbar {
+    padding: 6px 0;
+  }
+  
+  .custom-navbar.scrolled {
+    padding: 4px 0;
+  }
+  
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+  
+  .hero-content {
+    margin-top: 45px;
+    padding: 80px 0 20px 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+    margin-top: 35px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .wedding-date {
+    font-size: 1rem;
+  }
+  
+  .countdown-item {
+    min-width: 50px;
+    padding: 6px 4px;
+  }
+  
+  .countdown-number {
+    font-size: 1rem;
+  }
+  
+  .countdown-label {
+    font-size: 0.7rem;
+  }
+  
+  .hero-btn {
+    padding: 10px 20px;
+    font-size: 0.85rem;
   }
 }
 
