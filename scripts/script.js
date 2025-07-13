@@ -188,6 +188,9 @@ function createOurStoryContent(content) {
                         <h4 class="card-title"><i class="bi bi-heart"></i> ${content.howWeMet.title}</h4>
                         <p class="text-muted"><i class="bi bi-geo-alt"></i> ${content.howWeMet.location} • ${new Date(content.howWeMet.date).toLocaleDateString()}</p>
                         <p>${content.howWeMet.story}</p>
+                        <button class="btn btn-primary-custom btn-sm mt-2" onclick="openStoryPopup('howWeMet')">
+                            <i class="bi bi-book"></i> Read More
+                        </button>
                     </div>
                 </div>
             </div>
@@ -197,7 +200,13 @@ function createOurStoryContent(content) {
                         <h4 class="card-title"><i class="bi bi-gem"></i> ${content.proposal.title}</h4>
                         <p class="text-muted"><i class="bi bi-geo-alt"></i> ${content.proposal.location} • ${new Date(content.proposal.date).toLocaleDateString()}</p>
                         <p>${content.proposal.story}</p>
+                        <button class="btn btn-primary-custom btn-sm mt-2" onclick="openStoryPopup('proposal')">
+                            <i class="bi bi-gem"></i> Read More
+                        </button>
                     </div>
+                </div>
+            </div>
+        </div>
                 </div>
             </div>
         </div>
@@ -1329,3 +1338,81 @@ function handleFormSubmission(event, formType) {
         submitButton.disabled = false;
     });
 }
+
+// Story Popup Functions
+function openStoryPopup(storyType) {
+    // Get story data from global weddingData
+    const ourStorySection = weddingData.sections.find(section => section.id === 'our-story');
+    if (!ourStorySection) return;
+    
+    const storyData = storyType === 'howWeMet' ? ourStorySection.content.howWeMet : ourStorySection.content.proposal;
+    const title = storyData.title;
+    const detailStory = storyData['detail-story'];
+    const location = storyData.location;
+    const date = new Date(storyData.date).toLocaleDateString();
+    
+    // Create popup HTML
+    const popupHTML = `
+        <div class="story-popup-overlay" id="storyPopupOverlay">
+            <div class="story-popup">
+                <div class="story-popup-header">
+                    <h3 class="story-popup-title">
+                        <i class="bi bi-${storyType === 'howWeMet' ? 'heart' : 'gem'}"></i>
+                        ${title}
+                    </h3>
+                    <button class="story-popup-close" onclick="closeStoryPopup()">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="story-popup-body">
+                    <div class="story-popup-meta">
+                        <i class="bi bi-geo-alt"></i> ${location} • ${date}
+                    </div>
+                    <div class="story-popup-content">
+                        ${detailStory}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add popup to DOM
+    document.body.insertAdjacentHTML('beforeend', popupHTML);
+    
+    // Trigger animations
+    requestAnimationFrame(() => {
+        const overlay = document.getElementById('storyPopupOverlay');
+        overlay.classList.add('active');
+    });
+    
+    // Add escape key listener
+    document.addEventListener('keydown', handlePopupKeydown);
+}
+
+function closeStoryPopup() {
+    const overlay = document.getElementById('storyPopupOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        
+        // Remove from DOM after animation
+        setTimeout(() => {
+            overlay.remove();
+        }, 300);
+    }
+    
+    // Remove escape key listener
+    document.removeEventListener('keydown', handlePopupKeydown);
+}
+
+function handlePopupKeydown(event) {
+    if (event.key === 'Escape') {
+        closeStoryPopup();
+    }
+}
+
+// Close popup when clicking overlay
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('story-popup-overlay')) {
+        closeStoryPopup();
+    }
+});

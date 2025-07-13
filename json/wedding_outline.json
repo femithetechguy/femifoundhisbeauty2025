@@ -38,12 +38,14 @@
         "howWeMet": {
           "title": "How We Met",
           "story": "Our love story began...",
+          "detail-story":"We met at a mutual friend's party and instantly connected over our shared love for music.",
           "date": "2020-01-15",
           "location": "Lagos, Nigeria"
         },
         "proposal": {
           "title": "The Proposal",
           "story": "The moment that changed everything...",
+          "detail-story": "Femi proposed during a romantic dinner at our favorite restaurant, and Beauty said yes!",
           "date": "2024-06-20",
           "location": "Sunset Beach"
         },
