@@ -604,6 +604,7 @@
         },
         "qrCode": {
           "enabled": true,
+          "image": "images/qr_code/qr_code.png",
           "url": "https://beautyandfemi2025.com",
           "description": "Scan to visit our wedding website"
         },
