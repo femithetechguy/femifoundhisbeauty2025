@@ -271,7 +271,12 @@
           }
         ],
         "uploadEnabled": true,
-        "uploadInstructions": "Share your photos from our special day!"
+        "uploadInstructions": "Share your photos from our special day!",
+        "uploadForm": {
+          "formspreeId": "mnnzanqe",
+          "action": "https://formspree.io/f/mnnzanqe",
+          "method": "POST"
+        }
       }
     },
     {
@@ -282,6 +287,9 @@
       "content": {
         "deadline": "2025-11-30",
         "form": {
+          "formspreeId": "mgvzwven",
+          "action": "https://formspree.io/f/mgvzwven",
+          "method": "POST",
           "fields": [
             {
               "name": "fullName",
@@ -469,6 +477,9 @@
         },
         "form": {
           "enabled": true,
+          "formspreeId": "xjkobkkb",
+          "action": "https://formspree.io/f/xjkobkkb",
+          "method": "POST",
           "fields": [
             {
               "name": "name",
