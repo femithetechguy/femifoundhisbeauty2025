@@ -121,7 +121,7 @@ Edit `json/colors.json` to change the color scheme:
 #### 🖼️ Add Photos
 Replace placeholder images in the following directories:
 - `images/couple-main.jpg` - Main couple photo
-- `images/engagement/` - Engagement photos
+- `images/portraits/` - Portrait photos
 - `images/throwback/` - Throwback memories
 - `images/beauty-portrait.jpg` - Bride's portrait
 - `images/femi-portrait.jpg` - Groom's portrait

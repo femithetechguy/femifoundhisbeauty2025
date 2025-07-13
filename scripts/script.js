@@ -51,7 +51,6 @@ async function loadData() {
         weddingData = await weddingResponse.json();
         colorData = await colorResponse.json();
         
-        console.log('Data loaded successfully');
     } catch (error) {
         console.error('Error loading data:', error);
         throw error;
@@ -106,6 +105,11 @@ function buildDynamicSections() {
         const sectionElement = createSection(section, index);
         container.appendChild(sectionElement);
     });
+    
+    // Initialize gallery handlers after sections are built
+    setTimeout(() => {
+        initializeGalleryHandlers();
+    }, 100);
 }
 
 // Create individual sections
@@ -460,12 +464,27 @@ function createGalleryContent(content) {
     return `
         <div class="row">
             <div class="col-12 mb-4">
-                <h3 class="text-center">Engagement Photos</h3>
+                <h3 class="text-center">Portraits</h3>
                 <div class="row">
-                    ${content.engagementPhotos.map(photo => `
+                    ${content.portraitPhotos.map((photo, index) => `
                         <div class="col-md-6 col-lg-4 mb-3">
-                            <div class="gallery-item">
-                                <img src="${photo.src}" alt="${photo.caption}" class="img-fluid rounded-custom" onclick="openLightbox('${photo.src}', '${photo.caption}')">
+                            <div class="gallery-item" data-index="${index}">
+                                <img src="${photo.src}" alt="${photo.caption}" class="img-fluid rounded-custom" data-lightbox-src="${photo.src}" data-lightbox-caption="${photo.caption}">
+                                <p class="text-center mt-2 small">${photo.caption}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h3 class="text-center">A beautiful garden</h3>
+                <div class="row">
+                    ${content.throwbackPhotos.map((photo, index) => `
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="gallery-item" data-index="${index + content.portraitPhotos.length}">
+                                <img src="${photo.src}" alt="${photo.caption}" class="img-fluid rounded-custom" data-lightbox-src="${photo.src}" data-lightbox-caption="${photo.caption}">
                                 <p class="text-center mt-2 small">${photo.caption}</p>
                             </div>
                         </div>
@@ -751,71 +770,27 @@ function createExtrasContent(content) {
 // Load couple photo from JSON configuration
 function loadCouplePhoto() {
     try {
-        console.log('🖼️ Loading couple photo from JSON...');
-        console.log('Wedding data:', weddingData);
-        
         const homeSection = weddingData.sections.find(section => section.id === 'home');
-        console.log('Home section found:', homeSection);
         
         if (homeSection && homeSection.content.couplePhoto) {
             const couplePhotoElement = document.querySelector('.couple-photo');
-            console.log('Couple photo element found:', couplePhotoElement);
             
             if (couplePhotoElement) {
                 const photoConfig = homeSection.content.couplePhoto;
-                console.log('Photo config:', photoConfig);
-                
-                // Log current src before changing
-                console.log('Current image src:', couplePhotoElement.src);
                 
                 // Update image source and alt text
                 couplePhotoElement.src = photoConfig.src;
                 couplePhotoElement.alt = photoConfig.alt;
                 
-                console.log('Updated image src to:', photoConfig.src);
-                console.log('Updated image alt to:', photoConfig.alt);
-                
                 // Add error handling for missing image
                 couplePhotoElement.onerror = function() {
-                    console.error(`❌ Could not load couple photo: ${photoConfig.src}`);
-                    console.error('Image error event fired');
                     // Keep the placeholder if the image fails to load
                     this.src = "https://via.placeholder.com/600x800/D8E460/586B36?text=Beauty+%26+Femi";
-                    console.log('Reverted to placeholder image');
                 };
-                
-                // Add load success handler
-                couplePhotoElement.onload = function() {
-                    console.log(`✅ Couple photo loaded successfully: ${photoConfig.src}`);
-                    console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
-                };
-                
-                // Test if the image path is accessible
-                fetch(photoConfig.src, { method: 'HEAD' })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('✅ Image file is accessible via fetch');
-                            console.log('Content-Type:', response.headers.get('content-type'));
-                            console.log('Content-Length:', response.headers.get('content-length'));
-                        } else {
-                            console.error('❌ Image file not accessible:', response.status, response.statusText);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('❌ Fetch test failed:', error);
-                    });
-                
-            } else {
-                console.error('❌ Couple photo element not found in DOM');
-                console.log('Available elements with class "couple-photo":', document.querySelectorAll('.couple-photo'));
             }
-        } else {
-            console.error('❌ Couple photo configuration not found in wedding data');
-            console.log('Available sections:', weddingData.sections?.map(s => s.id));
         }
     } catch (error) {
-        console.error('❌ Error loading couple photo:', error);
-        console.error('Error stack:', error.stack);
+        console.error('Error loading couple photo:', error);
     }
 }
 
@@ -827,11 +802,9 @@ function togglePortraitView(imageId) {
     if (img.classList.contains('crop-mode')) {
         // Switch to full image view
         img.classList.remove('crop-mode');
-        console.log(`${imageId}: Switched to full image view`);
     } else {
         // Switch to cropped view
         img.classList.add('crop-mode');
-        console.log(`${imageId}: Switched to cropped view`);
     }
 }
 
@@ -998,60 +971,83 @@ function openMap(lat, lng) {
 }
 
 function openLightbox(src, caption) {
-    // Simple lightbox implementation
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-        <div class="lightbox-content">
-            <span class="lightbox-close">&times;</span>
-            <img src="${src}" alt="${caption}">
-            <p>${caption}</p>
+    // Remove any existing lightbox first
+    const existingLightbox = document.getElementById('lightboxOverlay');
+    if (existingLightbox) {
+        existingLightbox.remove();
+    }
+    
+    // Create lightbox with improved styling
+    const lightboxHTML = `
+        <div class="lightbox-overlay" id="lightboxOverlay">
+            <div class="lightbox-content">
+                <button class="lightbox-close" onclick="closeLightbox()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+                <img src="${src}" alt="${caption}" class="lightbox-image">
+                <div class="lightbox-caption">${caption}</div>
+            </div>
         </div>
     `;
     
-    lightbox.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    `;
+    // Add lightbox to DOM
+    document.body.insertAdjacentHTML('beforeend', lightboxHTML);
     
-    lightbox.querySelector('.lightbox-content').style.cssText = `
-        max-width: 90%;
-        max-height: 90%;
-        text-align: center;
-        color: white;
-    `;
+    // Disable body scroll
+    document.body.style.overflow = 'hidden';
     
-    lightbox.querySelector('img').style.cssText = `
-        max-width: 100%;
-        max-height: 80vh;
-        object-fit: contain;
-    `;
-    
-    lightbox.querySelector('.lightbox-close').style.cssText = `
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        font-size: 40px;
-        color: white;
-        cursor: pointer;
-    `;
-    
-    document.body.appendChild(lightbox);
-    
-    lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox || e.target.className === 'lightbox-close') {
-            document.body.removeChild(lightbox);
+    // Trigger animation
+    requestAnimationFrame(() => {
+        const overlay = document.getElementById('lightboxOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
         }
     });
+    
+    // Add escape key listener
+    document.addEventListener('keydown', handleLightboxKeydown);
 }
+
+function closeLightbox() {
+    const overlay = document.getElementById('lightboxOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        
+        // Re-enable body scroll
+        document.body.style.overflow = '';
+        
+        // Remove from DOM after animation
+        setTimeout(() => {
+            if (overlay.parentNode) {
+                overlay.remove();
+            }
+        }, 300);
+    }
+    
+    // Remove escape key listener
+    document.removeEventListener('keydown', handleLightboxKeydown);
+}
+
+function handleLightboxKeydown(event) {
+    if (event.key === 'Escape') {
+        closeLightbox();
+    }
+}
+
+// Improved lightbox overlay click handler
+function handleLightboxOverlayClick(event) {
+    // Only close if clicking the overlay itself, not the content
+    if (event.target.classList.contains('lightbox-overlay')) {
+        closeLightbox();
+    }
+}
+
+// Close lightbox when clicking overlay - use event delegation
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('lightbox-overlay')) {
+        handleLightboxOverlayClick(event);
+    }
+});
 
 function handleContactForm(event) {
     event.preventDefault();
@@ -1415,4 +1411,47 @@ document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('story-popup-overlay')) {
         closeStoryPopup();
     }
+});
+
+// Initialize gallery click handlers when sections are built
+function initializeGalleryHandlers() {
+    // Add click event listeners to all gallery images
+    const galleryImages = document.querySelectorAll('.gallery-item img');
+    
+    galleryImages.forEach((img, index) => {
+        // Remove any existing onclick handlers
+        img.removeAttribute('onclick');
+        
+        img.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const src = this.getAttribute('data-lightbox-src') || this.src;
+            const caption = this.getAttribute('data-lightbox-caption') || this.alt;
+            openLightbox(src, caption);
+        });
+        
+        // Also add to parent gallery-item for better accessibility
+        const galleryItem = img.closest('.gallery-item');
+        if (galleryItem && !galleryItem.hasAttribute('data-click-initialized')) {
+            galleryItem.setAttribute('data-click-initialized', 'true');
+            galleryItem.addEventListener('click', function(event) {
+                // Only trigger if the click wasn't on the image itself
+                if (event.target === this || event.target.tagName === 'P') {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const img = this.querySelector('img');
+                    if (img) {
+                        const src = img.getAttribute('data-lightbox-src') || img.src;
+                        const caption = img.getAttribute('data-lightbox-caption') || img.alt;
+                        openLightbox(src, caption);
+                    }
+                }
+            });
+        }
+    });
+}
+
+// Call initializeGalleryHandlers after dynamic sections are built
+document.addEventListener('DOMContentLoaded', function() {
+    initializeGalleryHandlers();
 });

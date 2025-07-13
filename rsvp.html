@@ -364,13 +364,6 @@
             formData.append('_timestamp', new Date().toISOString());
             formData.append('_source', 'rsvp_inline_form');
             
-            console.log('=== RSVP FORM SUBMISSION ===');
-            console.log('Form action:', form.action);
-            console.log('Form data:');
-            for (let [key, value] of formData.entries()) {
-                console.log(`  ${key}: ${value}`);
-            }
-            
             // Show loading state
             const submitButton = form.querySelector('button[type="submit"]');
             const originalText = submitButton.innerHTML;
@@ -386,18 +379,12 @@
                 }
             })
             .then(response => {
-                console.log('Response status:', response.status);
-                console.log('Response ok:', response.ok);
-                
                 return response.text().then(text => {
-                    console.log('Response text:', text);
-                    
                     if (response.ok) {
                         // Show confirmation message
                         document.getElementById('rsvpForm').style.display = 'none';
                         document.getElementById('confirmationMessage').style.display = 'block';
                     } else {
-                        console.log('RSVP submission failed');
                         alert('There was an error submitting your RSVP. Please try again.');
                     }
                 });

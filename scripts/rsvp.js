@@ -77,18 +77,6 @@ function handleRSVPSubmission(event) {
     const form = event.target;
     const formData = new FormData(form);
     
-    // Enhanced Debug: Log everything about the form submission
-    console.log('=== RSVP FORM SUBMISSION DEBUG ===');
-    console.log('Form element:', form);
-    console.log('Form action:', form.action);
-    console.log('Form method:', form.method);
-    console.log('Form data entries:');
-    for (let [key, value] of formData.entries()) {
-        console.log(`  ${key}: "${value}"`);
-    }
-    console.log('Current URL:', window.location.href);
-    console.log('User agent:', navigator.userAgent);
-    
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
