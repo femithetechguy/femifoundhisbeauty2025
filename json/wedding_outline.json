@@ -136,17 +136,17 @@
       "content": {
         "bride": {
           "name": "Beauty",
-          "fullName": "Beauty Adebayo",
+          "fullName": "Beauty Joshua",
           "bio": "Beauty is a wonderful person who brings joy to everyone around her...",
           "photo": "images/beauty-portrait.jpg",
-          "funFacts": ["Loves to dance", "Amazing cook", "Travel enthusiast"]
+          "funFacts": ["Fashionista"]
         },
         "groom": {
           "name": "Femi",
-          "fullName": "Adefemi Adebayo",
+          "fullName": "Adefemi Kolawole",
           "bio": "Femi is a kind-hearted tech professional who loves life and adventure...",
           "photo": "images/femi-portrait.jpg",
-          "funFacts": ["Tech enthusiast", "Basketball player", "Coffee lover"]
+          "funFacts": ["Music Lover"]
         },
         "bridesmaids": [
           {
