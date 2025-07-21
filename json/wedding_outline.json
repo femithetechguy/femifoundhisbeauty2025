@@ -1,7 +1,7 @@
 {
   "wedding": {
     "title": "Beauty & Femi 2025",
-    "hashtag": "#BeautyAndFemi2025",
+    "hashtag": "#EwaFemi2025",
     "date": "2025-12-31",
     "time": "16:00",
     "theme": {
@@ -37,9 +37,25 @@
       "content": {
         "howWeMet": {
           "title": "How We Met",
-          "story": "Our love story began...",
-          "detail-story": "We met at a mutual friend's party and instantly connected over our shared love for music.",
-          "date": "2020-01-15",
+          "story": "Two years ago, in the midst of a demanding work schedule that left little time for anything else, I decided to break free and support some friends at their hangout show....",
+          "detail-story": [
+            "## A Crisp White Shirt and a Sweet, Firm Voice",
+            "",
+            "Two years ago, in the midst of a demanding work schedule that left little time for anything else, I decided to break free and support some friends at their hangout show. My only goal was to have some much-needed fun – and boy, did I.",
+            "",
+            "It was there, across the room, that my eyes landed on him. He was handsome, quiet, and incredibly composed. But what truly caught my attention was his shirt – it was a pristine, *crisp white* that seemed to glow, as immaculate as a white dove. As someone who appreciates clean white clothes, I was instantly intrigued. Then he spoke, and his voice, though firm and undeniably *masculine and sexy*, was also surprisingly soft and sweet.",
+            "",
+            "I caught him looking at me from across the room, and I won't lie, his gaze felt different. Even from that distance, I had a powerful feeling that he was *the one*. Yet, when the night ended, I left without saying a single word to him.",
+            "",
+            "---",
+            "",
+            "## The Melody That Brought Us Together",
+            "",
+            "The following month, my friends invited me out again, and this time, fate intervened. I finally got to speak to Adefemi, the man from across the room, one-on-one. We quickly discovered a shared passion for *music*, realizing the potential for us to collaborate as music ministers. Time was against us that night, as it was getting late, but we exchanged numbers, a silent promise of future conversations.",
+            "",
+            "And the rest, as they say, is history. Or perhaps it's more accurate to say, that's what brought us here, to this very day."
+          ],
+          "date": "2020",
           "location": "Lagos, Nigeria"
         },
         "proposal": {
@@ -51,13 +67,23 @@
         },
         "timeline": [
           {
-            "date": "2020-01-15",
-            "event": "First Met",
-            "description": "Our paths crossed for the first time"
+            "date": "Jan 2023",
+            "event": "First Met - Kunle Kuti Music Gig",
+            "description": "Our paths crossed for the first time. Femi went to play guitar with Mr Kunle Kuti,  she came as Mr Kunle's guest. We never said a word, just stared at each other. (😂)"
           },
           {
-            "date": "2020-03-14",
-            "event": "First Date",
+            "date": "Mar 2023",
+            "event": "Second Contact - Kunle Kuti Music Gig",
+            "description": "Another Kunle Kuti evening gig, this time though, we had some music breaks. Everyone got a chance to conversate. That was our first official time talking but it was indirect since it was a group conversation."
+          },
+          {
+            "date": "April 2023",
+            "event": "Third Contact - Mr Confess Album lunch",
+            "description": "First official one on one conversation and contact xchange (phone & IG)."
+          },
+          {
+            "date": "April 2023",
+            "event": "First official one on one conversation and contact xchange (phone & IG)",
             "description": "A perfect evening that started it all"
           },
           {
@@ -615,11 +641,10 @@
         "liveStream": {
           "enabled": true,
           "platform": "Zoom",
-          "meetingId": "123-456-789",
-          "passcode": "BeautyFemi2025",
+          "meetingId": "799 302 0616",
+          "passcode": "TBD",
           "link": "https://us06web.zoom.us/j/7993020616?pwd=Y201NS9ZYmxUcHdyb1dlekh5UXhndz09&omn=87688587669",
-          "description": "For those who can't be with us in person",
-          "backupPlatform": "YouTube"
+          "description": "For those who can't be with us in person"
         }
       }
     }
@@ -642,7 +667,7 @@
   },
   "meta": {
     "siteName": "Beauty & Femi 2025 Wedding",
-    "description": "Join us as we celebrate the union of Beauty and Femi on December 31st, 2025",
+    "description": "Join us as we celebrate the union of Beauty and Femi on September 26th, 2025",
     "keywords": ["wedding", "Beauty", "Femi", "2025", "Lagos", "Nigeria"],
     "author": "Beauty & Femi",
     "lastUpdated": "2025-07-12"

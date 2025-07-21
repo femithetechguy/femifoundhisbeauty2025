@@ -266,12 +266,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👰🏾🤵🏾 About
 
-Created with ❤️ for Beauty & Femi's special day - December 31, 2025
+Created with ❤️ for Beauty & Femi's special day - September 26, 2025
 
 **Built by**: [@femithetechguy](https://github.com/femithetechguy)  
-**Wedding Date**: December 31, 2025  
+**Wedding Date**: September 26, 2025  
 **Location**: Lagos, Nigeria  
-**Hashtag**: #BeautyAndFemi2025
+**Hashtag**: #EwaFemi2025
 
 ---
 

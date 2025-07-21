@@ -271,9 +271,7 @@ function createOurStoryContent(content) {
                         }</h4>
                         <p class="text-muted"><i class="bi bi-geo-alt"></i> ${
                           content.howWeMet.location
-                        } • ${new Date(
-    content.howWeMet.date
-  ).toLocaleDateString()}</p>
+                        } • ${content.howWeMet.date}</p>
                         <p>${content.howWeMet.story}</p>
                         <button class="btn btn-primary-custom btn-sm mt-2" onclick="openStoryPopup('howWeMet')">
                             <i class="bi bi-book"></i> Read More
@@ -289,9 +287,7 @@ function createOurStoryContent(content) {
                         }</h4>
                         <p class="text-muted"><i class="bi bi-geo-alt"></i> ${
                           content.proposal.location
-                        } • ${new Date(
-    content.proposal.date
-  ).toLocaleDateString()}</p>
+                        } • ${content.proposal.date}</p>
                         <p>${content.proposal.story}</p>
                         <button class="btn btn-primary-custom btn-sm mt-2" onclick="openStoryPopup('proposal')">
                             <i class="bi bi-gem"></i> Read More
@@ -311,9 +307,7 @@ function createOurStoryContent(content) {
                       .map(
                         (item) => `
                         <div class="timeline-item">
-                            <div class="timeline-date">${new Date(
-                              item.date
-                            ).toLocaleDateString()}</div>
+                            <div class="timeline-date">${item.date}</div>
                             <div class="timeline-content">
                                 <h5>${item.event}</h5>
                                 <p>${item.description}</p>
@@ -341,9 +335,7 @@ function createWeddingDetailsContent(content) {
                         <p class="text-muted">${
                           content.ceremony.venue.address
                         }</p>
-                        <p><strong>Date:</strong> ${new Date(
-                          content.ceremony.date
-                        ).toLocaleDateString()}</p>
+                        <p><strong>Date:</strong> ${content.ceremony.date}</p>
                         <p><strong>Time:</strong> ${content.ceremony.time}</p>
                         <button class="btn btn-outline-custom" onclick="openMap(${
                           content.ceremony.venue.coordinates.lat
@@ -362,9 +354,7 @@ function createWeddingDetailsContent(content) {
                         <p class="text-muted">${
                           content.reception.venue.address
                         }</p>
-                        <p><strong>Date:</strong> ${new Date(
-                          content.reception.date
-                        ).toLocaleDateString()}</p>
+                        <p><strong>Date:</strong> ${content.reception.date}</p>
                         <p><strong>Time:</strong> ${content.reception.time}</p>
                         <button class="btn btn-outline-custom" onclick="openMap(${
                           content.reception.venue.coordinates.lat
@@ -672,9 +662,7 @@ function createRSVPContent(content) {
             <div class="col-lg-8">
                 <div class="card-custom">
                     <div class="card-body text-center">
-                        <h4 class="card-title mb-4">Please respond by ${new Date(
-                          content.deadline
-                        ).toLocaleDateString()}</h4>
+                        <h4 class="card-title mb-4">Please respond by ${content.deadline}</h4>
                         <p class="mb-4">We're so excited to celebrate with you! Please let us know if you'll be joining us.</p>
                         <a href="rsvp.html" class="btn btn-primary-custom btn-lg">
                             <i class="bi bi-heart-fill"></i> Complete RSVP Form
@@ -728,9 +716,7 @@ function createScheduleContent(content) {
                             <div class="card-custom">
                                 <div class="card-body">
                                     <h5>${event.event}</h5>
-                                    <p class="text-muted">${new Date(
-                                      event.date
-                                    ).toLocaleDateString()} at ${event.time}</p>
+                                    <p class="text-muted">${event.date} at ${event.time}</p>
                                     <p class="text-muted">${event.location}</p>
                                     <p>${event.description}</p>
                                 </div>
@@ -1832,6 +1818,28 @@ function handleFormSubmission(event, formType) {
     });
 }
 
+// Render detail-story array as HTML with paragraphs, headers, hr, and italics
+function renderDetailStory(detailStoryArr) {
+  if (!Array.isArray(detailStoryArr)) {
+    // If it's a string (e.g., for proposal), just wrap in <p>
+    return `<p>${detailStoryArr}</p>`;
+  }
+  return detailStoryArr.map(line => {
+    if (line.trim() === "") {
+      return "<br>";
+    }
+    if (line.trim() === "---") {
+      return "<hr>";
+    }
+    if (line.startsWith("## ")) {
+      return `<h3>${line.replace(/^## /, "")}</h3>`;
+    }
+    // Simple markdown italics
+    let html = line.replace(/\*([^\*]+)\*/g, "<em>$1</em>");
+    return `<p>${html}</p>`;
+  }).join("\n");
+}
+
 // Story Popup Functions
 function openStoryPopup(storyType) {
   // Get story data from global weddingData
@@ -1847,7 +1855,7 @@ function openStoryPopup(storyType) {
   const title = storyData.title;
   const detailStory = storyData["detail-story"];
   const location = storyData.location;
-  const date = new Date(storyData.date).toLocaleDateString();
+  const date = storyData.date; // Use the date string exactly as in JSON
 
   // Create popup HTML
   const popupHTML = `
@@ -1869,7 +1877,7 @@ function openStoryPopup(storyType) {
                         <i class="bi bi-geo-alt"></i> ${location} • ${date}
                     </div>
                     <div class="story-popup-content">
-                        ${detailStory}
+                        ${renderDetailStory(detailStory)}
                     </div>
                 </div>
             </div>

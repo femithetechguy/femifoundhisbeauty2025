@@ -8,7 +8,7 @@ Certainly, Adefemi! Here’s a full list of 1 to 12 for your wedding website for
 
 1. 🏠 Home / Welcome
 	•	Photo of the couple
-	•	Wedding tagline or hashtag (e.g., #BeautyAndFemi2025)
+	•	Wedding tagline or hashtag (e.g., #EwaFemi2025)
 	•	Countdown timer
 	•	Short welcome message
 
