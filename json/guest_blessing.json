@@ -3,8 +3,18 @@
   "description": "Share your wishes and blessings for our marriage.",
   "form": {
     "fields": [
-      { "name": "name", "label": "Your Name", "type": "text", "required": true },
-      { "name": "blessing", "label": "Your Blessing / Message", "type": "textarea", "required": true }
+      {
+        "name": "name",
+        "label": "Your Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "blessing",
+        "label": "Your Blessing / Message",
+        "type": "textarea",
+        "required": true
+      }
     ],
     "submitText": "Send Blessing"
   },

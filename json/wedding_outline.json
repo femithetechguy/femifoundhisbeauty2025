@@ -19,7 +19,7 @@
       "content": {
         "welcomeMessage": "Welcome to our special day!",
         "couplePhoto": {
-          "src": "images/couple-main.jpg",
+          "src": "/images/couple-main.jpg",
           "alt": "Beauty and Femi"
         },
         "countdown": {
@@ -136,8 +136,8 @@
         },
         "dressCode": {
           "formal": true,
-          "colors": ["Navy Blue", "Gold", "Burgundy"],
-          "description": "Semi-formal attire requested. Please avoid white."
+          "colors": ["Olive green"],
+          "description": "----"
         },
         "directions": {
           "ceremony": "Detailed directions to ceremony venue...",
@@ -620,16 +620,7 @@
             "embedded": true
           },
           "songs": [
-            {
-              "title": "Perfect",
-              "artist": "Ed Sheeran",
-              "significance": "Our first dance song"
-            },
-            {
-              "title": "All of Me",
-              "artist": "John Legend",
-              "significance": "The song that reminds us of each other"
-            }
+           
           ]
         },
         "qrCode": {

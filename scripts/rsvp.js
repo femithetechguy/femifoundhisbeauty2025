@@ -1,5 +1,5 @@
 // RSVP Form Handler with Formspree Integration
-let weddingData = {};
+
 
 // Load wedding data and configure RSVP form
 document.addEventListener('DOMContentLoaded', async function() {
