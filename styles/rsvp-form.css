@@ -1,0 +1,79 @@
+/* RSVP Form Styles extracted from rsvp.html */
+.form-section {
+    border-bottom: 1px solid var(--color-border-light);
+    padding-bottom: 30px;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-section-title {
+    color: var(--color-accent-1);
+    font-family: var(--font-primary);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.form-section-title i {
+    color: var(--color-primary);
+    margin-right: 10px;
+}
+
+.form-check-custom {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.form-check-custom:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-neutral-light);
+}
+
+.form-check-custom .form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-check-custom .form-check-input:checked ~ .form-check-label {
+    font-weight: 600;
+}
+
+.form-check-label {
+    cursor: pointer;
+    width: 100%;
+    margin-left: 10px;
+}
+
+.attendance-options .form-check-custom {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.attendance-options .form-check-label {
+    font-size: 1.1rem;
+}
+
+.guest-names-container {
+    background: var(--color-neutral-light);
+    padding: 20px;
+    border-radius: var(--border-radius-sm);
+    margin-top: 15px;
+}
+
+.events-checkboxes .form-check-custom {
+    padding: 12px 15px;
+}
+
+@media (max-width: 768px) {
+    .form-section-title {
+        font-size: 1.1rem;
+    }
+    .attendance-options .form-check-label {
+        font-size: 1rem;
+    }
+}

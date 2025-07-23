@@ -991,7 +991,7 @@ function createExtrasContent(content) {
                 <div class="card-custom">
                     <div class="card-body text-center">
                         <i class="bi bi-broadcast display-4 text-primary-custom mb-3"></i>
-                        <h4 class="card-title">Live Stream</h4>
+                        <h4 class="card-title">Virtual Guest?</h4>
                         <p>${content.liveStream.description}</p>
                         <div class="live-stream-details mt-3">
                             <p><strong>Platform:</strong> ${
@@ -1017,7 +1017,7 @@ function createExtrasContent(content) {
                             <a href="${
                               content.liveStream.link
                             }" target="_blank" class="btn btn-primary-custom me-2">
-                                <i class="bi bi-play-circle"></i> Watch Live Stream
+                                <i class="bi bi-play-circle"></i> Join via Zoom
                             </a>
                             <button class="btn btn-outline-custom copy-livestream-link" data-link="${
                               content.liveStream.link
@@ -2011,3 +2011,6 @@ function renderFooterContent(footerElement) {
   
   footerElement.innerHTML = footerHTML;
 }
+
+
+// ...existing code...
