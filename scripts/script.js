@@ -145,28 +145,22 @@ function buildNavigation() {
   const navbarMenu = document.getElementById("navbarMenu");
   const navigation = weddingData.navigation;
 
+  // Add Extras to navigation if not present
+  const extrasExists = navigation.items.some(item => item.id === "extras");
+  if (!extrasExists) {
+    navigation.items.push({ id: "extras", label: "Extras", icon: "🎉" });
+  }
+
   navigation.items.forEach((item) => {
     const navItem = document.createElement("li");
     navItem.className = "nav-item";
-
-    const navLink = document.createElement("a");
-    navLink.className = "nav-link";
-    navLink.href = `#${item.id}`;
-    navLink.innerHTML = `${item.icon} ${item.label}`;
-
-    navItem.appendChild(navLink);
+    navItem.innerHTML = `
+      <a class="nav-link" href="#${item.id}">
+        <span class="nav-icon">${item.icon || ""}</span> ${item.label}
+      </a>
+    `;
     navbarMenu.appendChild(navItem);
   });
-
-  // Add RSVP link to separate page
-  const rsvpItem = document.createElement("li");
-  rsvpItem.className = "nav-item";
-  const rsvpLink = document.createElement("a");
-  rsvpLink.className = "nav-link btn btn-primary-custom ms-2";
-  rsvpLink.href = "rsvp.html";
-  rsvpLink.innerHTML = '<i class="bi bi-heart-fill"></i> RSVP';
-  rsvpItem.appendChild(rsvpLink);
-  navbarMenu.appendChild(rsvpItem);
 }
 
 // Build dynamic sections
