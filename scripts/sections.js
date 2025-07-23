@@ -6,8 +6,8 @@ function buildDynamicSections() {
     (section) => section.id !== "home"
   );
 
+
   sections.forEach((section, index) => {
-    // You may have a createSection function, or just use the content renderers directly
     let html = '';
     switch (section.id) {
       case 'our-story':
@@ -40,6 +40,9 @@ function buildDynamicSections() {
       case 'contact':
         html = createContactContent(section.content);
         break;
+      case 'qr-code':
+        html = createQRCodeContent(section.content);
+        break;
       default:
         html = '';
     }
@@ -49,6 +52,79 @@ function buildDynamicSections() {
     sectionDiv.innerHTML = html;
     container.appendChild(sectionDiv);
   });
+// QR Code Section Renderer
+function createQRCodeContent(content) {
+  if (!content || !content.enabled) return '';
+  // Find virtual guest/live stream info from extras if available
+  let virtualGuestCard = '';
+  if (window.weddingData && Array.isArray(window.weddingData.sections)) {
+    const extrasSection = window.weddingData.sections.find(s => s.id === 'extras');
+    if (extrasSection && extrasSection.content && extrasSection.content.liveStream && extrasSection.content.liveStream.enabled) {
+      const ls = extrasSection.content.liveStream;
+      virtualGuestCard = `
+        <div class="col-lg-6 col-md-8 mb-4 d-flex align-items-stretch">
+          <div class="card-custom text-center w-100 d-flex flex-column h-100">
+            <div class="card-body d-flex flex-column justify-content-center h-100">
+              <i class="bi bi-broadcast display-4 text-primary-custom mb-3"></i>
+              <h4 class="card-title">Virtual Guest?</h4>
+              <p>${ls.description || ''}</p>
+              ${ls.backupPlatform ? `<p><strong>Backup:</strong> ${ls.backupPlatform}</p>` : ''}
+              <div class="mt-3">
+                <a href="${ls.link}" target="_blank" class="btn btn-primary-custom me-2"><i class="bi bi-play-circle"></i> Join via Zoom</a>
+                <button class="btn btn-outline-custom copy-livestream-link" data-link="${ls.link}"><i class="bi bi-clipboard"></i> Copy Link</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }
+  // Only render the Virtual Guest? card beside the QR code card, never above
+  return `
+    <div class="row justify-content-center d-flex align-items-stretch">
+      <div class="col-lg-6 col-md-8 mb-4 d-flex align-items-stretch">
+        <div class="card-custom text-center w-100 d-flex flex-column h-100">
+          <div class="card-body d-flex flex-column justify-content-center h-100">
+            <h4 class="card-title mb-3"><i class="bi bi-qr-code"></i> Scan to Visit Our Website</h4>
+            <img src="${content.image}" alt="QR Code" class="img-fluid mb-3" style="max-width: 220px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+            <p class="mb-2">${content.description || ''}</p>
+            <div class="mb-3">
+              <a href="${content.url}" target="_blank" class="btn btn-primary-custom"><i class="bi bi-link-45deg"></i> Visit Website</a>
+              <button class="btn btn-outline-custom ms-2 copy-qr-link" data-link="${content.url}"><i class="bi bi-clipboard"></i> Copy Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      ${virtualGuestCard}
+    </div>
+    <script>
+      document.querySelectorAll('.copy-qr-link').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (window.copyToClipboard) {
+            window.copyToClipboard(this.getAttribute('data-link'));
+          } else {
+            navigator.clipboard.writeText(this.getAttribute('data-link'));
+          }
+          if (window.showNotification) {
+            window.showNotification('Link copied to clipboard!');
+          }
+        });
+      });
+      document.querySelectorAll('.copy-livestream-link').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (window.copyToClipboard) {
+            window.copyToClipboard(this.getAttribute('data-link'));
+          } else {
+            navigator.clipboard.writeText(this.getAttribute('data-link'));
+          }
+          if (window.showNotification) {
+            window.showNotification('Link copied to clipboard!');
+          }
+        });
+      });
+    </script>
+  `;
+}
 
   // Initialize gallery handlers after sections are built
   setTimeout(() => {
