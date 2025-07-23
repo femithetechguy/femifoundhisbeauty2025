@@ -59,14 +59,78 @@ function closeLightbox() {
 }
 
 function copyToClipboard(text) {
-  // ...existing code from script.js...
+  if (navigator.clipboard && window.isSecureContext) {
+    // Modern asynchronous API
+    return navigator.clipboard.writeText(text)
+      .then(function() {
+        showNotification('Copied to clipboard!', 'success');
+      })
+      .catch(function(err) {
+        fallbackCopyToClipboard(text);
+        // fallback will also show notification
+      });
+  } else {
+    // Fallback for older browsers
+    fallbackCopyToClipboard(text);
+    // fallback will also show notification
+  }
 }
 
 function fallbackCopyToClipboard(text) {
-  // ...existing code from script.js...
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  // Avoid scrolling to bottom
+  textArea.style.position = "fixed";
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+  textArea.style.width = "2em";
+  textArea.style.height = "2em";
+  textArea.style.padding = 0;
+  textArea.style.border = "none";
+  textArea.style.outline = "none";
+  textArea.style.boxShadow = "none";
+  textArea.style.background = "transparent";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+  } catch (err) {
+    // Could not copy
+  }
+  document.body.removeChild(textArea);
+  showNotification('Copied to clipboard!', 'success');
 }
 
 function showNotification(message, type = "info") {
-  // ...existing code from script.js...
+  let notification = document.getElementById('globalNotification');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'globalNotification';
+    notification.style.position = 'fixed';
+    notification.style.top = '30px';
+    notification.style.left = '50%';
+    notification.style.transform = 'translateX(-50%)';
+    notification.style.zIndex = '9999';
+    notification.style.minWidth = '220px';
+    notification.style.maxWidth = '90vw';
+    notification.style.padding = '14px 28px';
+    notification.style.borderRadius = '8px';
+    notification.style.fontSize = '1.1rem';
+    notification.style.boxShadow = '0 2px 12px rgba(0,0,0,0.12)';
+    notification.style.textAlign = 'center';
+    notification.style.opacity = '0';
+    notification.style.pointerEvents = 'none';
+    notification.style.transition = 'opacity 0.3s';
+    document.body.appendChild(notification);
+  }
+  notification.textContent = message;
+  notification.style.background = type === 'success' ? '#d1e7dd' : (type === 'error' ? '#f8d7da' : '#e2e3e5');
+  notification.style.color = type === 'success' ? '#0f5132' : (type === 'error' ? '#842029' : '#41464b');
+  notification.style.border = type === 'success' ? '1.5px solid #badbcc' : (type === 'error' ? '1.5px solid #f5c2c7' : '1.5px solid #cfcfcf');
+  notification.style.opacity = '1';
+  setTimeout(() => {
+    notification.style.opacity = '0';
+  }, 2200);
 }
 // ...other utility functions...

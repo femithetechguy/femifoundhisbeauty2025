@@ -647,26 +647,176 @@ function createWeddingDetailsContent(content) {
       </div>
     </div>
     <div class="row mt-4">
-      <div class="col-12">
-        <div class="card-custom">
+      <div class="col-lg-6 mb-4">
+        <div class="card-custom h-100">
           <div class="card-body">
             <h4 class="card-title text-center"><i class="bi bi-palette"></i> Dress Code</h4>
             <div class="text-center">
               <p class="mb-3">${content.dressCode.description}</p>
               <div class="color-palette">
                 ${content.dressCode.colors
-                  .map((color) => `<span class="color-chip">${color}</span>`)
+                  .map((color) => {
+                    // Support both string and object for color
+                    let colorName, colorHex;
+                    if (typeof color === 'object' && color !== null) {
+                      colorName = color.name || '';
+                      colorHex = color.hex || '';
+                    } else if (typeof color === 'string') {
+                      colorName = color;
+                      // Try to guess hex for common color names (fallback: no swatch)
+                      const colorMap = {
+                        'Olive Green': '#808000',
+                        'Green': '#008000',
+                        'Gold': '#d4af37',
+                        'Navy Blue': '#1e3a8a',
+                        'Ivory': '#f8f8ff',
+                        'White': '#ffffff',
+                        'Black': '#000000',
+                        'Red': '#ff0000',
+                        'Blue': '#0000ff',
+                        'Yellow': '#ffff00',
+                        'Purple': '#800080',
+                        'Pink': '#ffc0cb',
+                        'Orange': '#ffa500',
+                        'Brown': '#8b4513',
+                        'Beige': '#f5f5dc',
+                        'Teal': '#008080',
+                        'Coral': '#ff7f50',
+                        'Burgundy': '#800020',
+                        'Lavender': '#e6e6fa',
+                        'Mint': '#98ff98',
+                        'Peach': '#ffe5b4',
+                        'Champagne': '#f7e7ce',
+                        'Silver': '#c0c0c0',
+                        'Rose Gold': '#b76e79',
+                        'Turquoise': '#40e0d0',
+                        'Maroon': '#800000',
+                        'Sky Blue': '#87ceeb',
+                        'Emerald': '#50c878',
+                        'Sage': '#b2ac88',
+                        'Blush': '#f9c2c2',
+                        'Mustard': '#ffdb58',
+                        'Lilac': '#c8a2c8',
+                        'Magenta': '#ff00ff',
+                        'Cyan': '#00ffff',
+                        'Aqua': '#00ffff',
+                        'Tan': '#d2b48c',
+                        'Cream': '#fffdd0',
+                        'Charcoal': '#36454f',
+                        'Plum': '#8e4585',
+                        'Denim': '#1560bd',
+                        'Copper': '#b87333',
+                        'Mint Green': '#98ff98',
+                        'Forest Green': '#228b22',
+                        'Royal Blue': '#4169e1',
+                        'Lime': '#00ff00',
+                        'Fuchsia': '#ff00ff',
+                        'Periwinkle': '#ccccff',
+                        'Sand': '#c2b280',
+                        'Taupe': '#483c32',
+                        'Rust': '#b7410e',
+                        'Slate': '#708090',
+                        'Seafoam': '#93e9be',
+                        'Mocha': '#967969',
+                        'Berry': '#990f4b',
+                        'Sunflower': '#ffda03',
+                        'Mint Blue': '#429e9d',
+                        'Dusty Rose': '#c08081',
+                        'Terracotta': '#e2725b',
+                        'Peacock': '#1b5e20',
+                        'Eggplant': '#614051',
+                        'Canary': '#ffff99',
+                        'Coral Pink': '#f88379',
+                        'Powder Blue': '#b0e0e6',
+                        'Steel Blue': '#4682b4',
+                        'Jade': '#00a86b',
+                        'Mint Cream': '#f5fffa',
+                        'Azure': '#007fff',
+                        'Lemon': '#fff700',
+                        'Apricot': '#fbceb1',
+                        'Mauve': '#e0b0ff',
+                        'Indigo': '#4b0082',
+                        'Amber': '#ffbf00',
+                        'Emerald Green': '#50c878',
+                        'Rose': '#ff007f',
+                        'Wine': '#722f37',
+                        'Minty Green': '#98ff98',
+                        'Pearl': '#eae0c8',
+                        'Ivory White': '#fffff0',
+                        'Off White': '#faf9f6',
+                        'Light Blue': '#add8e6',
+                        'Light Green': '#90ee90',
+                        'Light Pink': '#ffb6c1',
+                        'Light Yellow': '#ffffe0',
+                        'Light Purple': '#b19cd9',
+                        'Light Brown': '#a52a2a',
+                        'Light Gray': '#d3d3d3',
+                        'Dark Green': '#006400',
+                        'Dark Blue': '#00008b',
+                        'Dark Red': '#8b0000',
+                        'Dark Purple': '#301934',
+                        'Dark Brown': '#654321',
+                        'Dark Gray': '#a9a9a9',
+                        'Dark Orange': '#ff8c00',
+                        'Dark Yellow': '#b5a42e',
+                        'Dark Pink': '#e75480',
+                        'Dark Gold': '#b8860b',
+                        'Dark Navy': '#000080',
+                        'Dark Olive': '#556b2f',
+                        'Dark Teal': '#014d4e',
+                        'Dark Coral': '#cd5b45',
+                        'Dark Burgundy': '#4a0c25',
+                        'Dark Maroon': '#3c1414',
+                        'Dark Plum': '#580f41',
+                        'Dark Rose': '#c08081',
+                        'Dark Mint': '#367c2b',
+                        'Dark Sage': '#59806a',
+                        'Dark Champagne': '#c2b280',
+                        'Dark Silver': '#a9a9a9',
+                        'Dark Copper': '#7c482b',
+                        'Dark Jade': '#006b3c',
+                        'Dark Pearl': '#bfc1c2',
+                        'Dark Ivory': '#eae0c8',
+                        'Dark Off White': '#e5e4e2',
+                        'Dark Lemon': '#bfcf00',
+                        'Dark Apricot': '#cfa18d',
+                        'Dark Mauve': '#915f6d',
+                        'Dark Amber': '#bfa200',
+                        'Dark Emerald': '#006400',
+                        'Dark Wine': '#3c1414',
+                        'Dark Minty Green': '#367c2b',
+                        'Dark Pearl': '#bfc1c2',
+                        'Dark Ivory White': '#eae0c8',
+                        'Dark Off White': '#e5e4e2',
+                        'Dark Light Blue': '#5f9ea0',
+                        'Dark Light Green': '#228b22',
+                        'Dark Light Pink': '#c08081',
+                        'Dark Light Yellow': '#b5a42e',
+                        'Dark Light Purple': '#301934',
+                        'Dark Light Brown': '#654321',
+                        'Dark Light Gray': '#a9a9a9'
+                      };
+                      colorHex = colorMap[colorName.trim()] || '';
+                    } else {
+                      colorName = '';
+                      colorHex = '';
+                    }
+                    return `<span class="color-chip" style="display:inline-flex;align-items:center;margin-right:8px;">
+                      <span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${colorHex ? colorHex : 'transparent'};border:1px solid #ccc;margin-right:6px;"></span>
+                      <span>${colorName}</span>
+                    </span>`;
+                  })
                   .join("")}
               </div>
             </div>
           </div>
         </div>
       </div>
+      ${
+        content.virtualAttendance && content.virtualAttendance.enabled
+          ? `<div class="col-lg-6 mb-4"><div class="card-custom h-100"><div class="card-body text-center"><i class="bi bi-laptop display-4 text-primary-custom mb-3"></i><h4 class="card-title">Virtual Attendance</h4><p>${content.virtualAttendance.description}</p><a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom"><i class="bi bi-camera-video"></i> Join Virtually</a></div></div></div>`
+          : ''
+      }
     </div>
-    ${
-      content.virtualAttendance && content.virtualAttendance.enabled
-        ? `<div class="row mt-4"><div class="col-12"><div class="card-custom"><div class="card-body text-center"><i class="bi bi-laptop display-4 text-primary-custom mb-3"></i><h4 class="card-title">Virtual Attendance</h4><p>${content.virtualAttendance.description}</p><a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom"><i class="bi bi-camera-video"></i> Join Virtually</a></div></div></div></div>`
-        : ""
-    }
   `;
 }

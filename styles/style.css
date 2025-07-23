@@ -585,10 +585,17 @@ body {
   opacity: 1;
 }
 
+
 /* Section Styles */
 .section {
   padding: var(--section-padding);
   position: relative;
+}
+
+main, .main-content, #dynamic-sections {
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
 }
 
 .section-alternate {

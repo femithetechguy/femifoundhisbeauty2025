@@ -136,8 +136,10 @@
         },
         "dressCode": {
           "formal": true,
-          "colors": ["Olive green"],
-          "description": "----"
+          "colors": [
+            { "name": "Olive Green", "hex": "#808000" }
+          ],
+          "description": "Dress for the occasion!"
         },
         "directions": {
           "ceremony": "Detailed directions to ceremony venue...",
