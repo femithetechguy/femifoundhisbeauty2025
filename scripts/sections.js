@@ -25,14 +25,14 @@ function buildDynamicSections() {
       case 'schedule':
         html = createScheduleContent(section.content);
         break;
-      case 'registry':
-        html = createRegistryContent(section.content);
-        break;
       case 'gallery':
         html = createGalleryContent(section.content);
         break;
       case 'extras':
         html = createExtrasContent(section.content);
+        break;
+      case 'rsvp':
+        html = createRSVPContent(section.content);
         break;
       case 'scripture-theme':
         html = createScriptureThemeContent(section.content);
@@ -197,30 +197,6 @@ function createTravelContent(content) {
     `;
 }
 
-function createRegistryContent(content) {
-  return `
-        <div class="text-center mb-4">
-            <p class="lead">${content.note}</p>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card-custom">
-                    <div class="card-body text-center">
-                        <h4 class="card-title"><i class="bi bi-gift"></i> Gift Registries</h4>
-                        <div class="registry-buttons">
-                            ${content.registries
-                              .map(
-                                (registry) =>
-                                  `<div class="mb-3"><a href="${registry.url}" target="_blank" class="btn btn-outline-custom btn-lg"><i class="bi bi-box-seam"></i> ${registry.store} Registry</a></div>`
-                              )
-                              .join("")}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
 
 function createGalleryContent(content) {
   return `
@@ -267,20 +243,99 @@ function createGalleryContent(content) {
 }
 
 function createRSVPContent(content) {
-  return `
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card-custom">
-                    <div class="card-body text-center">
-                        <h4 class="card-title mb-4">Please respond by ${content.deadline}</h4>
-                        <p class="mb-4">We're so excited to celebrate with you! Please let us know if you'll be joining us.</p>
-                        <a href="rsvp.html" class="btn btn-primary-custom btn-lg"><i class="bi bi-heart-fill"></i> Complete RSVP Form</a>
-                        <p class="mt-3 text-muted"><small>The RSVP form includes meal preferences and special requests</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  // Build form fields dynamically from JSON config
+  const formFields = content.form.fields.map(field => {
+    let input = '';
+    const required = field.required ? 'required' : '';
+    switch (field.type) {
+      case 'text':
+      case 'email':
+      case 'tel':
+      case 'number':
+        input = `<input type="${field.type}" class="form-control" id="${field.name}" name="${field.name}" ${required}
+          ${field.min !== undefined ? `min=\"${field.min}\"` : ''}
+          ${field.max !== undefined ? `max=\"${field.max}\"` : ''}
+        >`;
+        break;
+      case 'radio':
+        input = field.options.map((opt, i) => `
+          <div class="form-check form-check-custom">
+            <input class="form-check-input" type="radio" name="${field.name}" id="${field.name}_${i}" value="${opt}" ${required}>
+            <label class="form-check-label" for="${field.name}_${i}">${opt}</label>
+          </div>
+        `).join('');
+        break;
+      case 'select':
+        input = `<select class="form-control" id="${field.name}" name="${field.name}" ${required}>
+          <option value="">Select...</option>
+          ${field.options.map(opt => `<option value=\"${opt}\">${opt}</option>`).join('')}
+        </select>`;
+        break;
+      case 'textarea':
+        input = `<textarea class="form-control" id="${field.name}" name="${field.name}" rows="3" ${required}></textarea>`;
+        break;
+      default:
+        input = '';
+    }
+    return `
+      <div class="mb-3">
+        <label for="${field.name}" class="form-label">${field.label}${field.required ? ' *' : ''}</label>
+        ${input}
+      </div>
     `;
+  }).join('');
+
+  return `
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card-custom">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Please respond by ${content.deadline}</h4>
+            <form id="rsvpForm" class="form-custom" action="${content.form.action}" method="${content.form.method}">
+              ${formFields}
+              <button type="submit" class="btn btn-primary-custom btn-lg mt-3"><i class="bi bi-heart-fill"></i> Submit RSVP</button>
+            </form>
+            <div id="rsvpConfirmation" class="alert alert-success mt-4" style="display:none;">${content.confirmationMessage || 'Thank you for your RSVP!'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function() {
+        var form = document.getElementById('rsvpForm');
+        if (form) {
+          form.onsubmit = function(e) {
+            e.preventDefault();
+            var formData = new FormData(form);
+            var submitBtn = form.querySelector('button[type="submit"]');
+            var originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+            submitBtn.disabled = true;
+            fetch(form.action, {
+              method: form.method,
+              body: formData,
+              headers: { 'Accept': 'application/json' }
+            })
+            .then(function(response) {
+              if (response.ok) {
+                form.style.display = 'none';
+                document.getElementById('rsvpConfirmation').style.display = 'block';
+              } else {
+                alert('There was an error submitting your RSVP. Please try again.');
+              }
+            })
+            .catch(function() {
+              alert('There was an error submitting your RSVP. Please check your connection and try again.');
+            })
+            .finally(function() {
+              submitBtn.innerHTML = originalText;
+              submitBtn.disabled = false;
+            });
+          };
+        }
+      })();
+    </script>
+  `;
 }
 
 function createScheduleContent(content) {
@@ -331,11 +386,7 @@ function createScriptureThemeContent(content) {
             <div class="col-lg-6 mb-4">
                 <div class="card-custom h-100">
                     <div class="card-body">
-                        <h4 class="card-title text-center"><i class="bi bi-palette2"></i> ${
-                          content.theme.name
-                        }</h4>
-                        <p class="text-center">${content.theme.description}</p>
-                        <h6 class="mt-4">Color Palette:</h6>
+                        <h4 class="card-title text-center"><i class="bi bi-palette2"></i> Color Palette</h4>
                         <div class="color-palette-display">
                             ${content.colorPalette
                               .map(

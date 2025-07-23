@@ -22,8 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
 // Markdown rendering utility for story popups
 function renderDetailStory(detailStory) {
   if (!detailStory) return '';
+  // If detailStory is an array, join it into a string
+  let storyText = Array.isArray(detailStory) ? detailStory.join('\n') : detailStory;
   // Split by newlines and render headings/italics
-  return detailStory.split('\n').map(line => {
+  return storyText.split('\n').map(line => {
     if (line.startsWith('## ')) {
       return `<h3>${line.replace(/^## /, "")}</h3>`;
     }

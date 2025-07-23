@@ -229,25 +229,6 @@
       }
     },
     {
-      "id": "registry",
-      "title": "Gift Registry",
-      "icon": "🎁",
-      "order": 6,
-      "content": {
-        "registries": [
-          {
-            "store": "Amazon",
-            "url": "https://amazon.com/wedding/beauty-femi-2025"
-          },
-          {
-            "store": "Target",
-            "url": "https://target.com/gift-registry/beauty-femi"
-          }
-        ],
-        "note": "Your presence is the greatest gift, but if you wish to honor us with a gift, we've registered at the following places."
-      }
-    },
-    {
       "id": "gallery",
       "title": "Gallery",
       "icon": "📸",
@@ -519,10 +500,6 @@
           "verse": "Therefore what God has joined together, let no one separate.",
           "reference": "Mark 10:9",
           "significance": "This verse represents the sacred bond we're creating before God and our loved ones."
-        },
-        "theme": {
-          "name": "Golden Elegance",
-          "description": "A celebration of love with gold and navy accents, representing the richness of our bond and the depth of our commitment."
         },
         "colorPalette": [
           {
