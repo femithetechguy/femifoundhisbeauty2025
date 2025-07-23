@@ -89,7 +89,7 @@ function createQRCodeContent(content) {
             <img src="${content.image}" alt="QR Code" class="img-fluid mb-3" style="max-width: 220px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
             <p class="mb-2">${content.description || ''}</p>
             <div class="mb-3">
-              <a href="${content.url}" target="_blank" class="btn btn-primary-custom"><i class="bi bi-link-45deg"></i> Visit Website</a>
+              <button class="btn btn-primary-custom btn-share-qr" data-link="${content.url}"><i class="bi bi-share"></i> Share</button>
               <button class="btn btn-outline-custom ms-2 copy-qr-link" data-link="${content.url}"><i class="bi bi-clipboard"></i> Copy Link</button>
             </div>
           </div>
@@ -98,6 +98,25 @@ function createQRCodeContent(content) {
       ${virtualGuestCard}
     </div>
     <script>
+      document.querySelectorAll('.btn-share-qr').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const url = this.getAttribute('data-link');
+          const shareData = {
+            title: document.title || 'Beauty & Femi 2025 Wedding',
+            text: 'Join us for Beauty & Femi\'s wedding!',
+            url: url
+          };
+          if (navigator.share) {
+            navigator.share(shareData).catch(() => {});
+          } else if (window.copyToClipboard) {
+            window.copyToClipboard(url);
+            if (window.showNotification) window.showNotification('Link copied to clipboard!');
+          } else {
+            navigator.clipboard.writeText(url);
+            if (window.showNotification) window.showNotification('Link copied to clipboard!');
+          }
+        });
+      });
       document.querySelectorAll('.copy-qr-link').forEach(btn => {
         btn.addEventListener('click', function() {
           if (window.copyToClipboard) {
@@ -563,38 +582,58 @@ function createContactContent(content) {
 
 function createExtrasContent(content) {
   let html = "";
-  // Spotify Playlist Section
-  if (
-    content.playlist &&
-    content.playlist.spotify &&
-    content.playlist.spotify.url
-  ) {
-    html += '<div class="row mt-4">';
-    html += '<div class="col-12">';
-    html += '<div class="card-custom">';
-    html += '<div class="card-body text-center">';
-    html += `<h4 class="card-title">${
-      content.playlist.title || "Our Love Story in Songs"
-    }</h4>`;
-    let embedUrl = content.playlist.spotify.url;
-    if (embedUrl.includes("open.spotify.com/playlist/")) {
-      embedUrl = embedUrl.replace(
-        "open.spotify.com/playlist/",
-        "open.spotify.com/embed/playlist/"
-      );
+  // Spotify Playlist + QR Code Side by Side (Desktop)
+  // Always render both columns as siblings for flex layout
+  const hasPlaylist = content.playlist && content.playlist.spotify && content.playlist.spotify.url;
+  const hasQR = content.qrCode && content.qrCode.enabled;
+  if (hasPlaylist || hasQR) {
+    html += '<div class="playlist-qr-flex mt-4">';
+    // Playlist column
+    html += '<div class="playlist-col">';
+    if (hasPlaylist) {
+      html += '<div class="card-custom h-100">';
+      html += '<div class="card-body text-center">';
+      html += `<h4 class="card-title">${
+        content.playlist.title || "Our Love Story in Songs"
+      }</h4>`;
+      let embedUrl = content.playlist.spotify.url;
+      if (embedUrl.includes("open.spotify.com/playlist/")) {
+        embedUrl = embedUrl.replace(
+          "open.spotify.com/playlist/",
+          "open.spotify.com/embed/playlist/"
+        );
+      }
+      html += `<div class="spotify-embed mb-3"><iframe src="${embedUrl}" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>`;
+      if (content.playlist.songs && Array.isArray(content.playlist.songs)) {
+        html += '<ul class="playlist-songs">';
+        content.playlist.songs.forEach((song) => {
+          html += `<li><strong>${song.title}</strong> by ${song.artist}`;
+          if (song.significance)
+            html += ` <span class="song-significance">(${song.significance})</span>`;
+          html += "</li>";
+        });
+        html += "</ul>";
+      }
+      html += "</div></div>";
     }
-    html += `<div class="spotify-embed mb-3"><iframe src="${embedUrl}" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>`;
-    if (content.playlist.songs && Array.isArray(content.playlist.songs)) {
-      html += '<ul class="playlist-songs">';
-      content.playlist.songs.forEach((song) => {
-        html += `<li><strong>${song.title}</strong> by ${song.artist}`;
-        if (song.significance)
-          html += ` <span class="song-significance">(${song.significance})</span>`;
-        html += "</li>";
-      });
-      html += "</ul>";
+    html += '</div>';
+    // QR code column
+    html += '<div class="qr-col">';
+    if (hasQR) {
+      const qr = content.qrCode;
+      html += '<div class="card-custom h-100 d-flex flex-column align-items-center justify-content-center">';
+      html += '<div class="card-body text-center">';
+      html += `<h4 class="card-title mb-3"><i class="bi bi-qr-code"></i> Scan to Visit</h4>`;
+      html += `<img src="${qr.image}" alt="QR Code" class="img-fluid mb-3" style="max-width: 220px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">`;
+      html += `<p class="mb-2">${qr.description || ''}</p>`;
+      html += `<div class="mb-3">`;
+      html += `<button class="btn btn-primary-custom btn-share-qr" data-link="${qr.url}"><i class="bi bi-share"></i> Share</button>`;
+      html += `<button class="btn btn-outline-custom ms-2 copy-qr-link" data-link="${qr.url}"><i class="bi bi-clipboard"></i> Copy Link</button>`;
+      html += `</div>`;
+      html += '</div></div>';
     }
-    html += "</div></div></div></div>";
+    html += '</div>';
+    html += '</div>';
   }
   // Live Stream Section
   if (content.liveStream && content.liveStream.enabled) {

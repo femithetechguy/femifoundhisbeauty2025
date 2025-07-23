@@ -1,3 +1,35 @@
+/* Playlist + QR Code Flex Layout */
+.playlist-qr-flex {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+}
+.playlist-col, .qr-col {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+.playlist-col {
+  margin-right: 0;
+}
+.qr-col {
+  margin-left: 0;
+}
+@media (max-width: 991.98px) {
+  .playlist-qr-flex {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .playlist-col, .qr-col {
+    max-width: 100%;
+  }
+}
+
 /* CSS Variables from colors.json */
 :root {
   --color-primary: #D8E460;

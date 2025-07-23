@@ -136,9 +136,7 @@
         },
         "dressCode": {
           "formal": true,
-          "colors": [
-            { "name": "Olive Green", "hex": "#808000" }
-          ],
+          "colors": [{ "name": "Olive Green", "hex": "#808000" }],
           "description": "Dress for the occasion!"
         },
         "directions": {
@@ -608,6 +606,7 @@
           "url": "https://beautyandfemi2025.com",
           "description": "Scan to visit our wedding website"
         },
+      
         "liveStream": {
           "enabled": false,
           "platform": "Zoom",
@@ -616,18 +615,6 @@
           "link": "https://us06web.zoom.us/j/7993020616?pwd=Y201NS9ZYmxUcHdyb1dlekh5UXhndz09&omn=87688587669",
           "description": "For those who can't be with us in person"
         }
-      }
-    },
-    {
-      "id": "qr-code",
-      "title": "Scan to Visit",
-      "icon": "🔗",
-      "order": 13,
-      "content": {
-        "enabled": true,
-        "image": "images/qr_code/qr_code.png",
-        "url": "https://beautyandfemi2025.com",
-        "description": "Scan to visit our wedding website"
       }
     }
   ],
