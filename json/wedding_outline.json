@@ -5,9 +5,9 @@
     "date": "2025-12-31",
     "time": "16:00",
     "theme": {
-      "primaryColor": "#d4af37",
-      "secondaryColor": "#f8f8ff",
-      "accentColor": "#8b4513"
+      "primaryColor": "#D8E460",
+      "secondaryColor": "#FFFFFF",
+      "accentColor": "#586B36"
     }
   },
   "sections": [
@@ -155,7 +155,7 @@
       }
     },
     {
-      "id": "wedding-party",
+      "id": "wedding_party",
       "title": "Meet the Couple",
       "icon": "👰🏾🤵🏾",
       "order": 4,
@@ -163,29 +163,79 @@
         "bride": {
           "name": "Beauty",
           "fullName": "Beauty Joshua",
-          "bio": "Beauty is a wonderful person who brings joy to everyone around her...",
+          "bio": "Music lover, fashion enthusiast...",
           "photo": "images/beauty-portrait.jpg",
-          "funFacts": ["Fashionista"]
+          "funFacts": [""]
         },
         "groom": {
           "name": "Femi",
           "fullName": "Adefemi Kolawole",
-          "bio": "Femi is a kind-hearted tech professional who loves life and adventure...",
+          "bio": "Music lover, bond servant of Jesus Christ...",
           "photo": "images/femi-portrait.jpg",
-          "funFacts": ["Music Lover"]
+          "funFacts": [""]
         },
         "bridesmaids": [
           {
-            "name": "Sarah",
+            "name": "Bridesmaid 1",
             "relationship": "Sister",
             "photo": "images/bridesmaid-1.jpg"
+          },
+          {
+            "name": "Bridesmaid 2",
+            "relationship": "Best Friend",
+            "photo": "images/bridesmaid-2.jpg"
+          }, 
+          {
+            "name": "Bridesmaid 3",
+            "relationship": "Cousin",
+            "photo": "images/bridesmaid-3.jpg"
+          },
+          {
+            "name": "Bridesmaid 4",
+            "relationship": "College Friend",
+            "photo": "images/bridesmaid-4.jpg"
+          },
+          {
+            "name": "Bridesmaid 5",
+            "relationship": "Sister-in-law",
+            "photo": "images/bridesmaid-5.jpg"
+          },
+          {
+            "name": "Bridesmaid 6",
+            "relationship": "Childhood Friend",
+            "photo": "images/bridesmaid-6.jpg"
           }
         ],
         "groomsmen": [
           {
-            "name": "David",
+            "name": "Groomsman 1",
             "relationship": "Best Friend",
             "photo": "images/groomsman-1.jpg"
+          },
+          {
+            "name": "Groomsman 2",
+            "relationship": "Brother",
+            "photo": "images/groomsman-2.jpg"
+          },
+          {
+            "name": "Groomsman 3",
+            "relationship": "College Friend",
+            "photo": "images/groomsman-3.jpg"
+          },
+          {
+            "name": "Groomsman 4",
+            "relationship": "Cousin",
+            "photo": "images/groomsman-4.jpg"
+          },
+          {
+            "name": "Groomsman 5",
+            "relationship": "Childhood Friend",
+            "photo": "images/groomsman-5.jpg"
+          },
+          {
+            "name": "Groomsman 6",
+            "relationship": "Work Colleague",
+            "photo": "images/groomsman-6.jpg"
           }
         ]
       }
@@ -454,7 +504,7 @@
     },
     {
       "id": "scripture-theme",
-      "title": "Our Theme",
+      "title": "Our Watchword",
       "icon": "📜",
       "order": 10,
       "content": {
@@ -578,9 +628,7 @@
       { "id": "home", "label": "Home", "icon": "🏠" },
       { "id": "our-story", "label": "Our Story", "icon": "💑" },
       { "id": "wedding-details", "label": "Details", "icon": "💍" },
-      { "id": "wedding-party", "label": "Wedding Party", "icon": "👰🏾🤵🏾" },
-      { "id": "travel", "label": "Travel", "icon": "✈️" },
-      { "id": "registry", "label": "Registry", "icon": "🎁" },
+      { "id": "wedding_party", "label": "Wedding", "icon": "👰🏾🤵🏾" },
       { "id": "gallery", "label": "Gallery", "icon": "📸" },
       { "id": "rsvp", "label": "RSVP", "icon": "📝" },
       { "id": "schedule", "label": "Schedule", "icon": "📖" },

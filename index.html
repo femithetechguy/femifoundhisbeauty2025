@@ -6,7 +6,7 @@
     <title>EwaFemi2025 Wedding</title>
     <meta
       name="description"
-      content="Join us as we celebrate the union of Beauty and Femi on September 26st, 2025"
+      content="Join us as we celebrate the union of Beauty and Femi on September 26th, 2025"
     />
     <meta
       name="keywords"
@@ -30,6 +30,35 @@
     />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/responsive-fixes.css" />
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "Beauty & Femi's Wedding",
+      "startDate": "2025-09-26T16:00:00",
+      "endDate": "2025-09-26T23:00:00",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "location": {
+        "@type": "Place",
+        "name": "Grace Cathedral",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lagos",
+          "addressCountry": "Nigeria"
+        }
+      },
+      "image": "/images/couple-main.jpg",
+      "description": "Join us as we celebrate the union of Beauty and Femi",
+      "organizer": {
+        "@type": "Person",
+        "name": "Beauty & Femi"
+      }
+    }
+    </script>
   </head>
   <body>
     <!-- Loading Screen -->
@@ -172,11 +201,11 @@
 
     <!-- Floating Action Button -->
     <div class="floating-actions">
-      <button class="fab-main" id="fabMain">
-        <i class="bi bi-plus"></i>
+      <button class="fab-main" id="fabMain" aria-label="Open menu" aria-expanded="false" aria-controls="fabMenu">
+        <i class="bi bi-plus" aria-hidden="true"></i>
       </button>
-      <div class="fab-menu" id="fabMenu">
-        <a href="rsvp.html" class="fab-item" title="RSVP">
+      <div class="fab-menu" id="fabMenu" aria-hidden="true">
+        <a href="#rsvp" class="fab-item" title="RSVP">
           <i class="bi bi-heart"></i>
         </a>
         <a href="#contact" class="fab-item" title="Contact">
@@ -194,21 +223,25 @@
     </button>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Modularized JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <!-- Critical Modularized JavaScript (load first) -->
     <script src="scripts/data.js"></script>
     <script src="scripts/utils.js"></script>
-    <script src="scripts/colors.js"></script>
-    <script src="scripts/navigation.js"></script>
-    <script src="scripts/sections.js"></script>
-    <script src="scripts/couple-photo.js"></script>
-    <script src="scripts/footer.js"></script>
-    <script src="scripts/countdown.js"></script>
-    <script src="scripts/gallery.js"></script>
-    <script src="scripts/forms.js"></script>
-    <script src="scripts/init.js"></script>
-    <script src="scripts/script.js"></script>
-    <script src="scripts/fab.js"></script>
+    
+    <!-- Feature JavaScript (can be deferred) -->
+    <script src="scripts/colors.js" defer></script>
+    <script src="scripts/navigation.js" defer></script>
+    <script src="scripts/sections.js" defer></script>
+    <script src="scripts/couple-photo.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+    <script src="scripts/countdown.js" defer></script>
+    <script src="scripts/gallery.js" defer></script>
+    <script src="scripts/forms.js" defer></script>
+    
+    <!-- Main init scripts (load last) -->
+    <script src="scripts/init.js" defer></script>
+    <script src="scripts/script.js" defer></script>
+    <script src="scripts/fab.js" defer></script>
     <script type="module" src="scripts/guest-blessing.js"></script>
   </body>
 </html>

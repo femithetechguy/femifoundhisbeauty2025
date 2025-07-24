@@ -35,15 +35,30 @@
 .col-lg-12.mb-4, .col-lg-6.mb-4, .col-lg-8.mb-4, .col-12.mb-4, .col-md-6.mb-3, .col-12.mb-4, .col-md-6.mb-3 {
   margin-bottom: 0 !important;
 }
-/* --- Ensure QR code, Zoom, and Spotify always show on mobile --- */
-@media (max-width: 991.98px), (max-width: 768px), (max-width: 576px), (max-width: 480px), (max-width: 320px) {
+/* --- Ensure QR code, Zoom, and Spotify layout --- */
+/* On desktop: side by side */
+.playlist-qr-flex {
+  display: flex !important;
+  gap: 2rem !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+}
+.playlist-col, .qr-col {
+  flex: 1 1 0 !important;
+  max-width: 50% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* On mobile: stacked */
+@media (max-width: 991.98px) {
   .playlist-qr-flex {
-    display: block !important;
+    display: flex !important;
     flex-direction: column !important;
     gap: 1.5rem !important;
   }
   .playlist-col, .qr-col {
-    display: block !important;
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
@@ -51,7 +66,6 @@
     visibility: visible !important;
   }
   .playlist-col > *, .qr-col > * {
-    display: block !important;
     width: 100% !important;
     max-width: 100% !important;
   }
@@ -105,40 +119,11 @@
     overflow: visible !important;
   }
 }
-/* Playlist + QR Code Flex Layout */
-.playlist-qr-flex {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  align-items: stretch;
-}
-.playlist-col, .qr-col {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100%;
-}
-.playlist-col {
-  margin-right: 0;
-}
-.qr-col {
-  margin-left: 0;
-}
-@media (max-width: 991.98px) {
-  .playlist-qr-flex {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  .playlist-col, .qr-col {
-    max-width: 100%;
-  }
-}
+/* Playlist + QR Code Flex Layout - these styles are now handled by the rules above */
 
-/* CSS Variables from colors.json */
+/* CSS Variables - These will be set dynamically from colors.json */
 :root {
+  /* These are fallback values if the JavaScript doesn't load */
   --color-primary: #D8E460;
   --color-primary-light: #E8F070;
   --color-primary-dark: #C8D450;

@@ -10,9 +10,79 @@ function buildDynamicSections() {
     'scripture-theme': createScriptureThemeContent,
     'contact': createContactContent,
     'extras': createExtrasContent,
-    'our-story': createOurStoryContent
+    'our-story': createOurStoryContent,
+    'wedding_party': createWeddingPartyContent
     // Add more mappings as needed
   };
+// Meet the Couple / Wedding Party section renderer
+function createWeddingPartyContent(content) {
+  // Previous/original implementation for Meet the Couple
+  return `
+    <h2 class="section-title text-center mb-4">Meet the Couple</h2>
+    <div class="row">
+      <div class="col-lg-6 mb-4">
+        <div class="card-custom h-100 text-center">
+          <div class="card-body">
+            <img src="${content.bride.photo}" alt="${content.bride.fullName}" class="img-fluid rounded-circle mb-3" style="max-width: 180px;">
+            <h4 class="card-title">${content.bride.fullName}</h4>
+            <p class="text-muted">Bride</p>
+            <p>${content.bride.bio}</p>
+            <ul class="list-unstyled">
+              ${content.bride.funFacts.map(fact => `<li>💡 ${fact}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 mb-4">
+        <div class="card-custom h-100 text-center">
+          <div class="card-body">
+            <img src="${content.groom.photo}" alt="${content.groom.fullName}" class="img-fluid rounded-circle mb-3" style="max-width: 180px;">
+            <h4 class="card-title">${content.groom.fullName}</h4>
+            <p class="text-muted">Groom</p>
+            <p>${content.groom.bio}</p>
+            <ul class="list-unstyled">
+              ${content.groom.funFacts.map(fact => `<li>💡 ${fact}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card-custom">
+          <div class="card-body">
+            <h4 class="card-title text-center mb-4">Bridal Party</h4>
+            <div class="row">
+              ${content.bridesmaids.map(bm => `
+                <div class="col-md-4 mb-3">
+                  <div class="card-custom h-100 text-center">
+                    <div class="card-body">
+                      <img src="${bm.photo}" alt="${bm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
+                      <h6>${bm.name}</h6>
+                      <p class="text-muted small">${bm.relationship}</p>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+               <h4 class="card-title text-center mb-4">Groomsmen</h4>
+              ${content.groomsmen.map(gm => `
+                <div class="col-md-4 mb-3">
+                  <div class="card-custom h-100 text-center">
+                    <div class="card-body">
+                      <img src="${gm.photo}" alt="${gm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
+                      <h6>${gm.name}</h6>
+                      <p class="text-muted small">${gm.relationship}</p>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
   // Build HTML for each section in order
   return window.weddingData.sections
     .filter(section => section.id !== 'home')
@@ -32,6 +102,7 @@ function buildDynamicSections() {
 
 function createGalleryContent(content) {
   return `
+        <h2 class="section-title text-center mb-4">Gallery</h2>
         <div class="row">
             <div class="col-12 mb-4">
                 <h3 class="text-center">Portraits</h3>
@@ -118,6 +189,7 @@ function createRSVPContent(content) {
   }).join('');
 
   return `
+    <h2 class="section-title text-center mb-4">RSVP</h2>
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <div class="card-custom">
@@ -172,6 +244,7 @@ function createRSVPContent(content) {
 
 function createScheduleContent(content) {
   return `
+    <h2 class="section-title text-center mb-4">Schedule</h2>
     <div class="row">
       <div class="col-lg-8 mx-auto">
         <div class="card-custom">
@@ -206,6 +279,7 @@ function createScriptureThemeContent(content) {
   // Handle scripture as an array
   const scriptures = Array.isArray(content.scripture) ? content.scripture : [content.scripture];
   return `
+    <h2 class="section-title text-center mb-4">Our Watchword</h2>
     <div class="row">
       <div class="col-lg-8 mx-auto">
         <div class="card-custom h-100 text-center">
@@ -228,6 +302,7 @@ function createScriptureThemeContent(content) {
 
 function createContactContent(content) {
   return `
+    <h2 class="section-title text-center mb-4">Contact Us</h2>
     <div class="row">
       <div class="col-lg-8 mx-auto">
         <div class="card-custom h-100">
@@ -245,7 +320,7 @@ function createContactContent(content) {
 }
 
 function createExtrasContent(content) {
-  let html = "";
+  let html = "<h2 class=\"section-title text-center mb-4\">Extras</h2>";
   // Spotify Playlist + QR Code Side by Side (Desktop)
   // Always render both columns as siblings for flex layout
   const hasPlaylist = content.playlist && content.playlist.spotify && content.playlist.spotify.url;
@@ -286,7 +361,7 @@ function createExtrasContent(content) {
     if (hasQR) {
       const qr = content.qrCode;
       html += '<div class="card-custom h-100 d-flex flex-column align-items-center justify-content-center">';
-      html += '<div class="card-body text-center">';
+      html += '<div class="card-body text-center d-flex flex-column align-items-center justify-content-center">';
       html += `<h4 class="card-title mb-3"><i class="bi bi-qr-code"></i> Scan to Visit</h4>`;
       html += `<img src="${qr.image}" alt="QR Code" class="img-fluid mb-3" style="max-width: 220px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">`;
       html += `<p class="mb-2">${qr.description || ''}</p>`;
@@ -330,6 +405,7 @@ function createExtrasContent(content) {
 // Section content renderers (from script.js)
 function createOurStoryContent(content) {
   return `
+    <h2 class="section-title text-center mb-4">Our Story</h2>
     <div class="row">
       <div class="col-lg-12 mb-4">
         <div class="card-custom h-100">
@@ -373,6 +449,7 @@ function createOurStoryContent(content) {
 
 function createWeddingDetailsContent(content) {
   return `
+    <h2 class="section-title text-center mb-4">Wedding Details</h2>
     <div class="row">
       <div class="col-lg-6 mb-4">
         <div class="card-custom h-100">
