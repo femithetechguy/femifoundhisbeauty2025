@@ -52,7 +52,7 @@ function createWeddingPartyContent(content) {
               
               <div class="couple-love">
                 <div class="heart-container">
-                  <div class="heart-icon">❤️</div>
+                  <div class="heart-icon">💗</div>
                   <div class="heart-pulse"></div>
                 </div>
               </div>

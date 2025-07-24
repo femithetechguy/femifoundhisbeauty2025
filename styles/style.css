@@ -1587,7 +1587,7 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
 }
 
 .heart-container::before {
-  content: "❤️";
+  content: "💗";
   position: absolute;
   font-size: 2.5rem;
   opacity: 0.3;
@@ -1597,7 +1597,7 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
 }
 
 .heart-container::after {
-  content: "💘";
+  content: "💖"; /* Changed to sparkling heart for better visual effect */
   position: absolute;
   font-size: 2rem;
   top: -10px;
