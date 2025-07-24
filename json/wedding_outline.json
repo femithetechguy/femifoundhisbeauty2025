@@ -117,7 +117,7 @@
             "name": "CHOSEN EVENTS CENTRE",
             "address": "5825 Mulberry St, Austell, GA 30168",
             "coordinates": {
-              "lat": 33.7490,
+              "lat": 33.749,
               "lng": -84.3879
             }
           }
@@ -129,7 +129,7 @@
             "name": "CHOSEN EVENTS CENTRE",
             "address": "5825 Mulberry St, Austell, GA 30168",
             "coordinates": {
-              "lat": 33.7490,
+              "lat": 33.749,
               "lng": -84.3879
             }
           }
@@ -137,21 +137,21 @@
         "dressCode": {
           "formal": true,
           "colors": [
-            { 
-              "name": "Olive Green", 
+            {
+              "name": "Olive Green",
               "hex": "#586B36",
               "variations": [
-                {"name": "Light Olive", "hex": "#7D8F5C"},
-                {"name": "Deep Olive", "hex": "#485B26"}
+                { "name": "Light Olive", "hex": "#7D8F5C" },
+                { "name": "Deep Olive", "hex": "#485B26" }
               ],
               "examples": ["suits", "dresses", "accessories"]
             },
-            { 
-              "name": "Sage Green", 
+            {
+              "name": "Sage Green",
               "hex": "#d4af37",
               "variations": [
-                {"name": "Light Sage", "hex": "#e0c27a"},
-                {"name": "Deep Sage", "hex": "#b38f2c"}
+                { "name": "Light Sage", "hex": "#e0c27a" },
+                { "name": "Deep Sage", "hex": "#b38f2c" }
               ],
               "examples": ["jewelry", "shoes", "accents"]
             }
@@ -203,7 +203,7 @@
             "name": "Bridesmaid 2",
             "relationship": "Best Friend",
             "photo": "images/bridalparty/couple-main2.jpg"
-          }, 
+          },
           {
             "name": "Bridesmaid 3",
             "relationship": "Cousin",

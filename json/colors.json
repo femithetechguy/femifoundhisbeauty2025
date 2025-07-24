@@ -10,7 +10,12 @@
       "hsl": "hsl(67, 70%, 64%)",
       "name": "Starfruit",
       "description": "Fresh yellow-green",
-      "usage": ["main accents", "call-to-action buttons", "highlights", "hero sections"]
+      "usage": [
+        "main accents",
+        "call-to-action buttons",
+        "highlights",
+        "hero sections"
+      ]
     },
     "secondary": {
       "hex": "#FFFFFF",
@@ -26,7 +31,13 @@
       "hsl": "hsl(82, 33%, 32%)",
       "name": "Deep Olive",
       "description": "Deep olive for text, buttons, and decorative elements",
-      "usage": ["primary text", "navigation", "buttons", "decorative elements", "borders"]
+      "usage": [
+        "primary text",
+        "navigation",
+        "buttons",
+        "decorative elements",
+        "borders"
+      ]
     },
     "accent2": {
       "hex": "#A2C579",
@@ -34,7 +45,12 @@
       "hsl": "hsl(88, 40%, 62%)",
       "name": "Soft Green",
       "description": "Soft green for hover states and borders",
-      "usage": ["hover states", "secondary buttons", "borders", "subtle highlights"]
+      "usage": [
+        "hover states",
+        "secondary buttons",
+        "borders",
+        "subtle highlights"
+      ]
     },
     "neutral": {
       "hex": "#F9F9F9",
@@ -42,7 +58,12 @@
       "hsl": "hsl(0, 0%, 98%)",
       "name": "Light Gray",
       "description": "Light gray for backgrounds and subtle elements",
-      "usage": ["section backgrounds", "card backgrounds", "subtle borders", "form inputs"]
+      "usage": [
+        "section backgrounds",
+        "card backgrounds",
+        "subtle borders",
+        "form inputs"
+      ]
     }
   },
   "variations": {
