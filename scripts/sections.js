@@ -14,6 +14,23 @@ function buildDynamicSections() {
     'wedding_party': createWeddingPartyContent
     // Add more mappings as needed
   };
+
+  // Build HTML for each section in order
+  return window.weddingData.sections
+    .filter(section => section.id !== 'home')
+    .map(section => {
+      // Try both id and type for renderer mapping
+      const renderer = sectionRenderers[section.id] || sectionRenderers[section.type];
+      if (typeof renderer === 'function') {
+        return `<section id="${section.id}">${renderer(section.content)}</section>`;
+      } else {
+        // Fallback: render as a simple card with title and description
+        return `<section id="${section.id}"><div class="card-custom mb-4"><div class="card-body"><h4 class="card-title">${section.title || section.id}</h4><p>${section.content && section.content.description ? section.content.description : ''}</p></div></div></section>`;
+      }
+    })
+    .join('');
+}
+
 // Meet the Couple / Wedding Party section renderer
 function createWeddingPartyContent(content) {
   return `
@@ -101,21 +118,6 @@ function createWeddingPartyContent(content) {
       </div>
     </div>
   `;
-}
-  // Build HTML for each section in order
-  return window.weddingData.sections
-    .filter(section => section.id !== 'home')
-    .map(section => {
-      // Try both id and type for renderer mapping
-      const renderer = sectionRenderers[section.id] || sectionRenderers[section.type];
-      if (typeof renderer === 'function') {
-        return `<section id="${section.id}">${renderer(section.content)}</section>`;
-      } else {
-        // Fallback: render as a simple card with title and description
-        return `<section id="${section.id}"><div class="card-custom mb-4"><div class="card-body"><h4 class="card-title">${section.title || section.id}</h4><p>${section.content && section.content.description ? section.content.description : ''}</p></div></div></section>`;
-      }
-    })
-    .join('');
 }
 
 
@@ -353,41 +355,144 @@ function createContactContent(content) {
 
 function createExtrasContent(content) {
   let html = "<h2 class=\"section-title text-center mb-4\">Extras</h2>";
-  // Spotify Playlist + QR Code Side by Side (Desktop)
+  // Guest Message + QR Code Side by Side (Desktop)
   // Always render both columns as siblings for flex layout
-  const hasPlaylist = content.playlist && content.playlist.spotify && content.playlist.spotify.url;
+  const hasGuestMessage = content.guestMessage && content.guestMessage.enabled;
   const hasQR = content.qrCode && content.qrCode.enabled;
-  if (hasPlaylist || hasQR) {
-    html += '<div class="playlist-qr-flex mt-4">';
-    // Playlist column
-    html += '<div class="playlist-col">';
-    if (hasPlaylist) {
+  
+  if (hasGuestMessage || hasQR) {
+    html += '<div class="message-qr-flex mt-4">';
+    
+    // Guest Message column
+    html += '<div class="message-col">';
+    if (hasGuestMessage) {
       html += '<div class="card-custom h-100">';
       html += '<div class="card-body text-center">';
       html += `<h4 class="card-title">${
-        content.playlist.title || "Our Love Story in Songs"
+        content.guestMessage.title || "Leave a Message for the Couple"
       }</h4>`;
-      let embedUrl = content.playlist.spotify.url;
-      if (embedUrl.includes("open.spotify.com/playlist/")) {
-        embedUrl = embedUrl.replace(
-          "open.spotify.com/playlist/",
-          "open.spotify.com/embed/playlist/"
-        );
-      }
-      html += `<div class="spotify-embed mb-3"><iframe src="${embedUrl}" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" style="min-width: 320px;"></iframe></div>`;
-      if (content.playlist.songs && Array.isArray(content.playlist.songs)) {
-        html += '<ul class="playlist-songs">';
-        content.playlist.songs.forEach((song) => {
-          html += `<li><strong>${song.title}</strong> by ${song.artist}`;
-          if (song.significance)
-            html += ` <span class="song-significance">(${song.significance})</span>`;
-          html += "</li>";
-        });
-        html += "</ul>";
-      }
+      html += `<p class="mb-3">${content.guestMessage.description || "Share your thoughts and well wishes for our journey together."}</p>`;
+      // Generate unique IDs for the form and messages to prevent conflicts
+      const guestFormId = `guestMessageForm_${Math.floor(Math.random() * 10000)}`;
+      const guestSuccessId = `guestMessageSuccess_${Math.floor(Math.random() * 10000)}`;
+      const guestErrorId = `guestMessageError_${Math.floor(Math.random() * 10000)}`;
+      
+      // Generate a hidden iframe ID for form submission
+      const iframeId = `hidden_iframe_${Math.floor(Math.random() * 10000)}`;
+      
+      html += `<div class="guest-message mb-3" id="guestMessageContainer_${Math.floor(Math.random() * 10000)}">
+        <form id="${guestFormId}" action="https://formspree.io/f/${content.guestMessage.formspreeId}" method="POST" onsubmit="setTimeout(function() { window.showGuestMessageSuccess('${guestFormId}', '${guestSuccessId}'); }, 1500); return true;" target="${iframeId}" class="guest-message-form">
+          ${createFormFields(content.guestMessage.form.fields)}
+          <input type="hidden" name="_next" value="javascript:void(0)" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_format" value="plain" />
+          <button type="submit" class="btn btn-primary-custom mt-3">${content.guestMessage.form.submitText || 'Send Message'}</button>
+        </form>
+        <iframe name="${iframeId}" id="${iframeId}" style="display:none;"></iframe>
+        <div id="${guestSuccessId}" class="thank-you-message" style="display:none;">
+          <div class="thank-you-content">
+            <i class="bi bi-heart-fill text-primary-custom mb-3" style="font-size: 2.5rem;"></i>
+            <h4>${content.guestMessage.successMessage || 'Thank you for your blessing!'}</h4>
+            <p>Your message means the world to us.</p>
+            <div class="celebration-icon mt-3">
+              <i class="bi bi-emoji-smile-fill" style="color: #D8E460; font-size: 1.5rem;"></i>
+            </div>
+          </div>
+        </div>
+        <div id="${guestErrorId}" class="error-message" style="display:none;">
+          <div class="error-content">
+            <i class="bi bi-exclamation-circle text-danger mb-3" style="font-size: 2rem;"></i>
+            <h4>${content.guestMessage.errorMessage || 'There was an error submitting your message.'}</h4>
+            <p>Please try again or contact us directly.</p>
+            <button class="btn btn-outline-primary-custom mt-3" onclick="document.getElementById('${guestFormId}').style.display='block'; document.getElementById('${guestErrorId}').style.display='none';">Try Again</button>
+          </div>
+        </div>
+      </div>`;
+      
+      // The iframe is now added in the form HTML
+      
+      // Add the script with correct IDs after HTML is added to the DOM
+      html += `<script>
+        // Define a function to initialize the form on page load
+        function initGuestMessageForm_${Math.floor(Math.random() * 10000)}() {
+          console.log('%c⚡ Initializing guest message form', 'background: #D8E460; color: black; padding: 4px; font-weight: bold;');
+          
+          // Find all the elements by their IDs
+          const form = document.getElementById('${guestFormId}');
+          const successMessage = document.getElementById('${guestSuccessId}');
+          const errorMessage = document.getElementById('${guestErrorId}');
+          const iframe = document.getElementById('${iframeId}');
+          
+          // Debug what we found
+          console.log('Form:', form);
+          console.log('Success message:', successMessage);
+          console.log('Error message:', errorMessage);
+          
+          if (form && successMessage) {
+            console.log('%c✅ Form and success message found', 'color: green; font-weight: bold;');
+            
+            // Double check the form target is set to the iframe
+            form.setAttribute('target', '${iframeId}');
+            
+            // Handle form submission - use a named function to avoid scope issues
+            function handleSubmit(e) {
+              console.log('🔄 Form submission started');
+              
+              // Get the submit button
+              const submitBtn = form.querySelector('button[type="submit"]');
+              const originalText = submitBtn.innerHTML;
+              submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
+              submitBtn.disabled = true;
+              
+              // Set a timer to show the success message
+              window.setTimeout(function() {
+                console.log('Showing success message now');
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Force styles to ensure visibility
+                successMessage.setAttribute('style', 'display: block !important; opacity: 1 !important;');
+                
+                // Add the animation class
+                successMessage.classList.add('animate-in');
+                
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Reset the form for future use
+                form.reset();
+              }, 2000);
+            }
+            
+            // Add the event handler
+            form.addEventListener('submit', handleSubmit);
+            
+            // Add error handling button functionality
+            const tryAgainBtn = errorMessage?.querySelector('button');
+            if (tryAgainBtn) {
+              tryAgainBtn.addEventListener('click', function() {
+                form.style.display = 'block';
+                errorMessage.style.display = 'none';
+                form.reset();
+              });
+            }
+          } else {
+            console.error('❌ Could not find form or success message elements!');
+          }
+        }
+        
+        // Run the initialization function when the page is loaded
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+          setTimeout(initGuestMessageForm_${Math.floor(Math.random() * 10000)}, 100);
+        } else {
+          document.addEventListener('DOMContentLoaded', initGuestMessageForm_${Math.floor(Math.random() * 10000)});
+        }
+      </script>`;
       html += "</div></div>";
     }
     html += '</div>';
+    
     // QR code column
     html += '<div class="qr-col">';
     if (hasQR) {
@@ -407,19 +512,21 @@ function createExtrasContent(content) {
     html += '</div>';
     html += '</div>';
   }
+  
   // Live Stream Section
   if (content.liveStream && content.liveStream.enabled) {
     html += '<div class="row mt-4">';
     html += '<div class="col-12">';
     html += '<div class="card-custom">';
     html += '<div class="card-body text-center">';
-    html +=
-      '<i class="bi bi-broadcast display-4 text-primary-custom mb-3"></i>';
+    html += '<i class="bi bi-broadcast display-4 text-primary-custom mb-3"></i>';
     html += '<h4 class="card-title">Virtual Guest?</h4>';
     html += `<p>${content.liveStream.description}</p>`;
+    
     if (content.liveStream.backupPlatform) {
       html += `<p><strong>Backup:</strong> ${content.liveStream.backupPlatform}</p>`;
     }
+    
     html += '<div class="mt-3">';
     html += `<a href="${content.liveStream.link}" target="_blank" class="btn btn-primary-custom me-2">`;
     html += '<i class="bi bi-play-circle"></i> Join via Zoom';
@@ -434,6 +541,7 @@ function createExtrasContent(content) {
     html += "</div>";
     html += "</div>";
   }
+  
   return html;
 }
 // Section content renderers (from script.js)
@@ -750,4 +858,44 @@ function createWeddingDetailsContent(content) {
         : ''}
     </div>
   `;
+}
+
+// Helper function to generate form fields based on configuration
+function createFormFields(fields) {
+  if (!fields || !Array.isArray(fields)) return '';
+  
+  let html = '';
+  fields.forEach(field => {
+    const required = field.required ? 'required' : '';
+    const fieldId = `field_${field.name}`;
+    
+    html += `<div class="mb-3">`;
+    html += `<label for="${fieldId}" class="form-label">${field.label}</label>`;
+    
+    if (field.type === 'text' || field.type === 'email' || field.type === 'tel') {
+      html += `<input type="${field.type}" class="form-control" id="${fieldId}" name="${field.name}" ${required}>`;
+    } 
+    else if (field.type === 'textarea') {
+      html += `<textarea class="form-control" id="${fieldId}" name="${field.name}" rows="4" ${required}></textarea>`;
+    }
+    else if (field.type === 'select') {
+      html += `<select class="form-select" id="${fieldId}" name="${field.name}" ${required}>`;
+      html += `<option value="">Please select...</option>`;
+      field.options.forEach(option => {
+        html += `<option value="${option}">${option}</option>`;
+      });
+      html += `</select>`;
+    }
+    else if (field.type === 'radio') {
+      field.options.forEach((option, index) => {
+        html += `<div class="form-check">`;
+        html += `<input class="form-check-input" type="radio" name="${field.name}" id="${fieldId}_${index}" value="${option}" ${index === 0 && required ? 'required' : ''}>`;
+        html += `<label class="form-check-label" for="${fieldId}_${index}">${option}</label>`;
+        html += `</div>`;
+      });
+    }
+    html += `</div>`;
+  });
+  
+  return html;
 }

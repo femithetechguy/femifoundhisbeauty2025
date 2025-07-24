@@ -58,15 +58,15 @@
 .col-lg-12.mb-4, .col-lg-6.mb-4, .col-lg-8.mb-4, .col-12.mb-4, .col-md-6.mb-3, .col-12.mb-4, .col-md-6.mb-3 {
   margin-bottom: 0 !important;
 }
-/* --- Ensure QR code, Zoom, and Spotify layout --- */
+/* --- Ensure QR code, Zoom, and Guest Message layout --- */
 /* On desktop: side by side */
-.playlist-qr-flex {
+.message-qr-flex {
   display: flex !important;
   gap: 2rem !important;
   justify-content: center !important;
   align-items: stretch !important;
 }
-.playlist-col, .qr-col {
+.message-col, .qr-col {
   flex: 1 1 0 !important;
   max-width: 50% !important;
   min-width: 0 !important;
@@ -74,33 +74,33 @@
   flex-direction: column !important;
 }
 
-/* Ensure Spotify embed is wide enough to see titles */
-.spotify-embed {
+/* Ensure Guest Message form is wide enough */
+.guest-message {
   width: 100% !important;
   min-width: 300px !important;
 }
 
 /* On mobile: stacked */
 @media (max-width: 991.98px) {
-  .playlist-qr-flex {
+  .message-qr-flex {
     display: flex !important;
     flex-direction: column !important;
     gap: 1.5rem !important;
   }
-  .playlist-col, .qr-col {
+  .message-col, .qr-col {
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
     opacity: 1 !important;
     visibility: visible !important;
   }
-  .playlist-col > *, .qr-col > * {
+  .message-col > *, .qr-col > * {
     width: 100% !important;
     max-width: 100% !important;
   }
   
-  /* Ensure Spotify embed has proper width on mobile */
-  .spotify-embed {
+  /* Ensure Guest Message form has proper width on mobile */
+  .guest-message {
     width: 100% !important;
     overflow: hidden !important;
   }
@@ -154,7 +154,7 @@
     overflow: visible !important;
   }
 }
-/* Playlist + QR Code Flex Layout - these styles are now handled by the rules above */
+/* Guest Message + QR Code Flex Layout - these styles are now handled by the rules above */
 
 /* CSS Variables - These will be set dynamically from colors.json */
 :root {

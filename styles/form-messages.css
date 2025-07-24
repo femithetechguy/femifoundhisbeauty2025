@@ -1,0 +1,110 @@
+/* Guest Message Form Feedback Styles */
+.thank-you-message,
+.error-message {
+  text-align: center;
+  padding: 30px;
+  border-radius: 12px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+  /* Ensure visibility */
+  z-index: 100;
+  position: relative;
+}
+
+.thank-you-message.animate-in,
+.error-message.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  display: block !important;
+}
+
+/* Force visibility even without class */
+.thank-you-message[style*="display: block"],
+.error-message[style*="display: block"] {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.thank-you-content,
+.error-content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.thank-you-message {
+  background: linear-gradient(135deg, rgba(216, 228, 96, 0.1), rgba(200, 215, 70, 0.2));
+}
+
+.thank-you-message h4 {
+  color: #4A4A4A;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.thank-you-message p {
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+.thank-you-message .celebration-icon {
+  animation: bounce 1s ease infinite;
+}
+
+.error-message {
+  background: linear-gradient(135deg, rgba(255, 80, 80, 0.05), rgba(255, 80, 80, 0.1));
+}
+
+.error-message h4 {
+  color: #dc3545;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.error-message p {
+  color: #6c757d;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Enhance form styling */
+/* Style for any guest message form */
+.guest-message .form-control {
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 12px 15px;
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.guest-message .form-control:focus {
+  border-color: rgba(216, 228, 96, 0.7);
+  box-shadow: 0 0 0 0.2rem rgba(216, 228, 96, 0.25);
+}
+
+.guest-message textarea.form-control {
+  min-height: 120px;
+}
+
+.guest-message .btn-primary-custom {
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.guest-message .btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(216, 228, 96, 0.3);
+}
