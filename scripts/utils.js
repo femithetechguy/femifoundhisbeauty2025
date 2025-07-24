@@ -47,7 +47,28 @@ function initializeLoveEffects() {
 }
 // Utility functions
 function openMap(lat, lng) {
-  // ...existing code from script.js...
+  // If it's an iOS device
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+    window.open(`maps://maps.apple.com/?q=${lat},${lng}&ll=${lat},${lng}`);
+  }
+  // Otherwise use Google Maps
+  else {
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`);
+  }
+}
+
+// New function for driving directions to a specific address using native maps
+function driveToLocation(address) {
+  const encodedAddress = encodeURIComponent(address);
+  
+  // If it's an iOS device
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+    window.open(`maps://maps.apple.com/?daddr=${encodedAddress}&dirflg=d`);
+  }
+  // For Android or other devices
+  else {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}&travelmode=driving`);
+  }
 }
 
 function openLightbox(src, caption) {

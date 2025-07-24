@@ -219,5 +219,6 @@ window.openStoryPopup = openStoryPopup;
 window.closeStoryPopup = closeStoryPopup;
 window.handlePopupKeydown = handlePopupKeydown;
 if (typeof togglePortraitView === 'function') window.togglePortraitView = togglePortraitView;
+if (typeof driveToLocation === 'function') window.driveToLocation = driveToLocation;
 
 }); // <-- Close the DOMContentLoaded event listener

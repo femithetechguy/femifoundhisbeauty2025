@@ -1180,11 +1180,40 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   transition: all var(--transition-medium);
   opacity: 0;
   transform: translateY(10px);
+  position: absolute;
+  margin-left: 5px;
 }
 
 .copy-confirmation.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Venue actions styling */
+.venue-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.venue-actions .btn-group {
+  position: relative;
+}
+
+/* Make venue actions column on mobile */
+@media (max-width: 576px) {
+  .venue-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .venue-actions > div {
+    width: 100%;
+  }
 }
 
 /* Button hover effects - reduced for better clickability */

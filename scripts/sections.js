@@ -482,11 +482,21 @@ function createWeddingDetailsContent(content) {
             <p class="text-muted">${content.ceremony.venue.address}</p>
             <p><strong>Date:</strong> ${content.ceremony.date}</p>
             <p><strong>Time:</strong> ${content.ceremony.time}</p>
-            <button class="btn btn-outline-custom" onclick="openMap(${
-              content.ceremony.venue.coordinates.lat
-            }, ${content.ceremony.venue.coordinates.lng})">
-              <i class="bi bi-map"></i> Get Directions
-            </button>
+            <div class="venue-actions">
+              <div class="position-relative">
+                <button class="btn btn-outline-custom copy-address-btn" data-address="${content.ceremony.venue.address}">
+                  <i class="bi bi-clipboard"></i> Copy Address
+                </button>
+                <span class="copy-confirmation text-success position-absolute" style="display:none; font-size:0.85em; top: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; margin-top: 4px;">
+                  <i class="bi bi-check-circle"></i> Copied!
+                </span>
+              </div>
+              <div>
+                <button class="btn btn-primary-custom" onclick="driveToLocation('${content.ceremony.venue.address}')">
+                  <i class="bi bi-car-front-fill"></i> Drive Here
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -499,11 +509,21 @@ function createWeddingDetailsContent(content) {
             <p class="text-muted">${content.reception.venue.address}</p>
             <p><strong>Date:</strong> ${content.reception.date}</p>
             <p><strong>Time:</strong> ${content.reception.time}</p>
-            <button class="btn btn-outline-custom" onclick="openMap(${
-              content.reception.venue.coordinates.lat
-            }, ${content.reception.venue.coordinates.lng})">
-              <i class="bi bi-map"></i> Get Directions
-            </button>
+            <div class="venue-actions">
+              <div class="position-relative">
+                <button class="btn btn-outline-custom copy-address-btn" data-address="${content.reception.venue.address}">
+                  <i class="bi bi-clipboard"></i> Copy Address
+                </button>
+                <span class="copy-confirmation text-success position-absolute" style="display:none; font-size:0.85em; top: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; margin-top: 4px;">
+                  <i class="bi bi-check-circle"></i> Copied!
+                </span>
+              </div>
+              <div>
+                <button class="btn btn-primary-custom" onclick="driveToLocation('${content.reception.venue.address}')">
+                  <i class="bi bi-car-front-fill"></i> Drive Here
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -515,7 +535,7 @@ function createWeddingDetailsContent(content) {
             <h4 class="card-title text-center"><i class="bi bi-palette"></i> Dress Code + Color</h4>
             <div class="text-center">
               <p class="mb-3">${content.dressCode.description}</p>
-              <div class="color-palette">
+              <div class="color-palette row">
                 ${content.dressCode.colors
                   .map((color) => {
                     let colorName, colorHex, variations = [], examples = [];
@@ -665,7 +685,7 @@ function createWeddingDetailsContent(content) {
                     }
                     // Create enhanced color display with larger swatch and variations
                     let html = `
-                      <div class="color-display mb-4">
+                      <div class="color-display mb-4 col-md-6">
                         <div class="main-color-swatch" style="display:inline-block;width:80px;height:80px;border-radius:8px;background:${colorHex ? colorHex : 'transparent'};border:2px solid #ccc;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
                         </div>
                         <h5 class="mt-2 mb-1">${colorName}</h5>

@@ -52,6 +52,17 @@ function initializeCopyButtons() {
     });
   });
   
+  // Handle all address copy buttons
+  document.querySelectorAll('.copy-address-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const address = this.getAttribute('data-address');
+      if (address) {
+        copyToClipboard(address);
+        showCopyConfirmation(this);
+      }
+    });
+  });
+  
   // Removed pulse effect on buttons as it was causing clickability issues
   // The hover effects are now handled solely through CSS
 }
