@@ -41,7 +41,12 @@ function createWeddingPartyContent(content) {
           <div class="card-body">
             <div class="couple-container">
               <div class="couple-bride">
-                <img src="${content.bride.photo}" alt="${content.bride.fullName}" class="img-fluid rounded mb-3" style="width: 230px; height: auto; max-height: 300px;">
+                <div class="portrait-container bride-photo-container">
+                  <img src="${content.bride.photo}" alt="${content.bride.fullName}" class="img-fluid rounded mb-3 portrait-photo" style="width: 230px; height: auto; max-height: 300px;">
+                  <div class="magnifier-icon" data-portrait="bride">
+                    <i class="bi bi-zoom-in"></i>
+                  </div>
+                </div>
                 <h4 class="card-title">${content.bride.fullName}</h4>
                 <p class="text-muted">Bride</p>
                 <p>${content.bride.bio}</p>
@@ -52,13 +57,18 @@ function createWeddingPartyContent(content) {
               
               <div class="couple-love">
                 <div class="heart-container">
-                  <div class="heart-icon">❤️</div>
+                  <div class="heart-icon">💗</div>
                   <div class="heart-pulse"></div>
                 </div>
               </div>
               
               <div class="couple-groom">
-                <img src="${content.groom.photo}" alt="${content.groom.fullName}" class="img-fluid rounded mb-3" style="width: 230px; height: auto; max-height: 300px;">
+                <div class="portrait-container groom-photo-container">
+                  <img src="${content.groom.photo}" alt="${content.groom.fullName}" class="img-fluid rounded mb-3 portrait-photo" style="width: 230px; height: auto; max-height: 300px;">
+                  <div class="magnifier-icon" data-portrait="groom">
+                    <i class="bi bi-zoom-in"></i>
+                  </div>
+                </div>
                 <h4 class="card-title">${content.groom.fullName}</h4>
                 <p class="text-muted">Groom</p>
                 <p>${content.groom.bio}</p>
@@ -81,12 +91,16 @@ function createWeddingPartyContent(content) {
             <div class="wedding-party-container bridal-party-border mb-5">
               <div class="row">
                 ${content.bridesmaids.map(bm => `
-                  <div class="col-md-4 mb-3">
-                    <div class="card-custom h-100 text-center">
+                  <div class="col-md-4 mb-5"> <!-- Increased margin-bottom for popup space -->
+                    <div class="card-custom h-100 text-center wedding-party-card">
                       <div class="card-body">
-                        <img src="${bm.photo}" alt="${bm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
-                        <h6>${bm.name}</h6>
-                        <p class="text-muted small">${bm.relationship}</p>
+                        <div class="wedding-party-image-wrapper">
+                          <img src="${bm.photo}" alt="${bm.name}" class="img-fluid rounded" style="width: 150px; height: auto; max-height: 200px;">
+                        </div>
+                        <div class="wedding-party-info mt-3">
+                          <h6>${bm.name}</h6>
+                          <p class="text-muted small">${bm.relationship}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -100,12 +114,16 @@ function createWeddingPartyContent(content) {
             <div class="wedding-party-container groomsmen-border">
               <div class="row">
                 ${content.groomsmen.map(gm => `
-                  <div class="col-md-4 mb-3">
-                    <div class="card-custom h-100 text-center">
+                  <div class="col-md-4 mb-5"> <!-- Increased margin-bottom for popup space -->
+                    <div class="card-custom h-100 text-center wedding-party-card">
                       <div class="card-body">
-                        <img src="${gm.photo}" alt="${gm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
-                        <h6>${gm.name}</h6>
-                        <p class="text-muted small">${gm.relationship}</p>
+                        <div class="wedding-party-image-wrapper">
+                          <img src="${gm.photo}" alt="${gm.name}" class="img-fluid rounded" style="width: 150px; height: auto; max-height: 200px;">
+                        </div>
+                        <div class="wedding-party-info mt-3">
+                          <h6>${gm.name}</h6>
+                          <p class="text-muted small">${gm.relationship}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
