@@ -214,10 +214,67 @@ function renderFooterContent(footerElement) {
 }
 
 
+// Function to show attendance details section
+function showAttendanceDetails() {
+  console.log('showAttendanceDetails called');
+  const attendanceDetailsSection = document.getElementById('attendanceDetailsSection');
+  
+  if (!attendanceDetailsSection) {
+    console.error('Attendance details section not found in the DOM');
+    return;
+  }
+  
+  // Show section
+  attendanceDetailsSection.style.display = 'block';
+  
+  // Make fields required
+  const guestCount = document.getElementById('guestCount');
+  if (guestCount) guestCount.required = true;
+  
+  // Make dietary restrictions required if it was originally required
+  const dietaryRestrictions = document.getElementById('dietaryRestrictions');
+  if (dietaryRestrictions && dietaryRestrictions.getAttribute('data-required') === 'true') {
+    dietaryRestrictions.required = true;
+  }
+}
+
+// Function to hide attendance details section
+function hideAttendanceDetails() {
+  console.log('hideAttendanceDetails called');
+  const attendanceDetailsSection = document.getElementById('attendanceDetailsSection');
+  
+  if (!attendanceDetailsSection) {
+    console.error('Attendance details section not found in the DOM');
+    return;
+  }
+  
+  // Hide section
+  attendanceDetailsSection.style.display = 'none';
+  
+  // Make fields not required
+  const guestCount = document.getElementById('guestCount');
+  if (guestCount) guestCount.required = false;
+  
+  const dietaryRestrictions = document.getElementById('dietaryRestrictions');
+  if (dietaryRestrictions) dietaryRestrictions.required = false;
+}
+
+// Function to toggle attendance details based on attendance selection
+function toggleGuestDetails(attending) {
+  if (attending) {
+    showAttendanceDetails();
+  } else {
+    hideAttendanceDetails();
+  }
+}
+
 // Expose popup and utility functions globally for inline HTML onclick (must be after all function declarations)
 window.openStoryPopup = openStoryPopup;
 window.closeStoryPopup = closeStoryPopup;
 window.handlePopupKeydown = handlePopupKeydown;
+window.toggleGuestDetails = toggleGuestDetails;
+window.showAttendanceDetails = showAttendanceDetails;
+window.hideAttendanceDetails = hideAttendanceDetails;
 if (typeof togglePortraitView === 'function') window.togglePortraitView = togglePortraitView;
 if (typeof driveToLocation === 'function') window.driveToLocation = driveToLocation;
 

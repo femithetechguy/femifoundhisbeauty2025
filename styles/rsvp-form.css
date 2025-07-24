@@ -49,6 +49,16 @@
     margin-left: 10px;
 }
 
+/* Attendance Details Section */
+#attendanceDetailsSection {
+    transition: all 0.3s ease;
+    padding: 10px 0;
+}
+    max-height: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
 .attendance-options .form-check-custom {
     padding: 20px;
     margin-bottom: 20px;

@@ -1,0 +1,66 @@
+/* RSVP Form specific styles */
+
+/* Attendance options */
+.attendance-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Attendance details section */
+#attendanceDetailsSection {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--color-accent-2);
+}
+
+/* Form check custom */
+.form-check-custom {
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-light);
+  transition: all 0.3s ease;
+}
+
+.form-check-custom:hover {
+  background-color: var(--color-neutral-light);
+  border-color: var(--color-accent-2-light);
+}
+
+.form-check-input:checked + .form-check-label {
+  font-weight: bold;
+  color: var(--color-accent-1);
+}
+
+/* Form section styling */
+.form-section {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--color-background-alt);
+  box-shadow: var(--shadow-light);
+}
+
+.form-section-title {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-accent-1);
+}
+
+/* Success message */
+.success-message {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--color-neutral-light);
+  border-radius: 12px;
+  border: 1px solid var(--color-success);
+  color: var(--color-accent-1);
+}
+
+.success-message i {
+  font-size: 2rem;
+  color: var(--color-success);
+  display: block;
+  margin-bottom: 10px;
+}

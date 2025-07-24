@@ -368,6 +368,115 @@
         </button>
     </div>
 
+    <!-- RSVP Section -->
+    <section id="rsvp" class="section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-header text-center">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-heart-fill"></i> RSVP
+                        </h2>
+                        <p class="section-subtitle">
+                            We're so excited to celebrate with you! Please respond by <strong>August 31, 2025</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="upload-card">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-calendar-heart upload-icon"></i>
+                            <h4 class="mb-2">We'd Love to See You There</h4>
+                            <p class="text-muted">Let us know if you can make it to our special day</p>
+                        </div>
+                        
+                        <form id="galleryRsvpForm" class="form-custom" action="https://formspree.io/f/mgvzwven" method="POST">
+                            <!-- Personal Information -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-person"></i> Personal Information
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fullName" class="form-label">Full Name *</label>
+                                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone">
+                                </div>
+                            </div>
+
+                            <!-- Attendance -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-calendar-check"></i> Attendance
+                                </h5>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Will you be attending? *</label>
+                                    <div class="attendance-options">
+                                        <div class="form-check form-check-custom">
+                                            <input class="form-check-input" type="radio" name="attendance" id="attending_yes" value="Yes, I'll be there" required onchange="toggleGuestDetails(true)">
+                                            <label class="form-check-label" for="attending_yes">
+                                                Yes, I'll be there!
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-custom">
+                                            <input class="form-check-input" type="radio" name="attendance" id="attending_no" value="Sorry, can't make it" onchange="toggleGuestDetails(false)">
+                                            <label class="form-check-label" for="attending_no">
+                                                Sorry, I can't make it
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="guestDetailsSection">
+                                    <div class="mb-3">
+                                        <label for="guestCount" class="form-label">Number of Guests (including yourself) *</label>
+                                        <input type="number" class="form-control" id="guestCount" name="guestCount" min="1" max="4" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="dietaryRestrictions" class="form-label">Dietary Restrictions</label>
+                                        <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Message -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-chat-heart"></i> Message
+                                </h5>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Special Message for the Couple (Optional)</label>
+                                    <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary-custom btn-lg upload-btn">
+                                    <i class="bi bi-heart-fill"></i> Submit RSVP
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div id="galleryRsvpConfirmation" class="success-message mt-4" style="display:none;">
+                            <i class="bi bi-check-circle"></i> Thank you for your RSVP! We can't wait to celebrate with you.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <!-- Footer content will be loaded dynamically from JSON -->
@@ -883,8 +992,94 @@
         let galleryManager;
         document.addEventListener('DOMContentLoaded', () => {
             galleryManager = new GalleryManager();
+            initializeRSVPForm();
             loadFooterContent();
         });
+        
+        // Initialize RSVP form
+        function initializeRSVPForm() {
+            const rsvpForm = document.getElementById('rsvpForm');
+            if (rsvpForm) {
+                rsvpForm.onsubmit = function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(rsvpForm);
+                    const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    // Show submitting state
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate form submission (replace with actual endpoint in production)
+                    setTimeout(() => {
+                        rsvpForm.style.display = 'none';
+                        document.getElementById('rsvpConfirmation').style.display = 'block';
+                        
+                        // Reset button state
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }, 1500);
+                };
+            }
+        }
+        
+        // Toggle guest details based on attendance
+        function toggleGuestDetails(attending) {
+            const guestDetailsSection = document.getElementById('guestDetailsSection');
+            if (guestDetailsSection) {
+                guestDetailsSection.style.display = attending ? 'block' : 'none';
+                
+                // Update required attribute for inputs in this section
+                const requiredInputs = guestDetailsSection.querySelectorAll('[required]');
+                requiredInputs.forEach(input => {
+                    input.required = attending;
+                });
+            }
+        }
+        
+        // Initialize RSVP form in gallery
+        function initializeRSVPForm() {
+            const form = document.getElementById('galleryRsvpForm');
+            if (form) {
+                // Set initial state of guest details
+                const attendingYes = document.getElementById('attending_yes');
+                const attendingNo = document.getElementById('attending_no');
+                
+                if (attendingYes && attendingNo) {
+                    toggleGuestDetails(attendingYes.checked);
+                }
+                
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    fetch(form.action, {
+                        method: form.method,
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            form.style.display = 'none';
+                            document.getElementById('galleryRsvpConfirmation').style.display = 'block';
+                        } else {
+                            alert('There was an error submitting your RSVP. Please try again.');
+                        }
+                    })
+                    .catch(() => {
+                        alert('There was an error submitting your RSVP. Please check your connection and try again.');
+                    })
+                    .finally(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+        }
         
         // Load footer content from JSON
         async function loadFooterContent() {

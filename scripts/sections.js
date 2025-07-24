@@ -183,83 +183,170 @@ function createGalleryContent(content) {
 }
 
 function createRSVPContent(content) {
-  // Build form fields dynamically from JSON config
-  const formFields = content.form.fields.map(field => {
-    let input = '';
-    const required = field.required ? 'required' : '';
-    switch (field.type) {
-      case 'text':
-      case 'email':
-      case 'tel':
-      case 'number':
-        input = `<input type="${field.type}" class="form-control" id="${field.name}" name="${field.name}" ${required}
-          ${field.min !== undefined ? `min=\"${field.min}\"` : ''}
-          ${field.max !== undefined ? `max=\"${field.max}\"` : ''}
-        >`;
-        break;
-      case 'radio':
-        input = field.options.map((opt, i) => `
-          <div class="form-check form-check-custom">
-            <input class="form-check-input" type="radio" name="${field.name}" id="${field.name}_${i}" value="${opt}" ${required}>
-            <label class="form-check-label" for="${field.name}_${i}">${opt}</label>
-          </div>
-        `).join('');
-        break;
-      case 'select':
-        input = `<select class="form-control" id="${field.name}" name="${field.name}" ${required}>
-          <option value="">Select...</option>
-          ${field.options.map(opt => `<option value=\"${opt}\">${opt}</option>`).join('')}
-        </select>`;
-        break;
-      case 'textarea':
-        input = `<textarea class="form-control" id="${field.name}" name="${field.name}" rows="3" ${required}></textarea>`;
-        break;
-      default:
-        input = '';
-    }
-    return `
+  // Find the fields by name for custom layout
+  let fullNameField = content.form.fields.find(field => field.name === "fullName");
+  let emailField = content.form.fields.find(field => field.name === "email");
+  let phoneField = content.form.fields.find(field => field.name === "phone");
+  let attendanceField = content.form.fields.find(field => field.name === "attendance");
+  let guestCountField = content.form.fields.find(field => field.name === "guestCount");
+  let dietaryField = content.form.fields.find(field => field.name === "dietaryRestrictions");
+  
+  // Create the custom layout with personal information in one section
+  let formHTML = `
+    <div class="form-section mb-4">
+      <h5 class="form-section-title">
+        <i class="bi bi-person"></i> Personal Information
+      </h5>
+      
+      <!-- Full Name field -->
       <div class="mb-3">
-        <label for="${field.name}" class="form-label">${field.label}${field.required ? ' *' : ''}</label>
-        ${input}
+        <label for="fullName" class="form-label">${fullNameField.label}${fullNameField.required ? ' *' : ''}</label>
+        <input type="text" class="form-control" id="fullName" name="fullName" ${fullNameField.required ? 'required' : ''}>
       </div>
-    `;
-  }).join('');
+      
+      <!-- Email and Phone on same row -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="email" class="form-label">${emailField.label}${emailField.required ? ' *' : ''}</label>
+          <input type="email" class="form-control" id="email" name="email" ${emailField.required ? 'required' : ''}>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="phone" class="form-label">${phoneField.label}${phoneField.required ? ' *' : ''}</label>
+          <input type="tel" class="form-control" id="phone" name="phone" ${phoneField.required ? 'required' : ''}>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-section mb-4">
+      <h5 class="form-section-title">
+        <i class="bi bi-calendar-check"></i> Attendance
+      </h5>
+      
+      <!-- Attendance radio buttons -->
+      <div class="mb-3">
+        <label class="form-label">${attendanceField.label}${attendanceField.required ? ' *' : ''}</label>
+        <div class="attendance-options">
+          <div class="form-check form-check-custom">
+            <input class="form-check-input" type="radio" name="attendance" id="attendance_0" value="${attendanceField.options[0]}" ${attendanceField.required ? 'required' : ''} onclick="showAttendanceDetails()">
+            <label class="form-check-label" for="attendance_0">${attendanceField.options[0]}</label>
+          </div>
+          <div class="form-check form-check-custom">
+            <input class="form-check-input" type="radio" name="attendance" id="attendance_1" value="${attendanceField.options[1]}" ${attendanceField.required ? 'required' : ''} onclick="hideAttendanceDetails()">
+            <label class="form-check-label" for="attendance_1">${attendanceField.options[1]}</label>
+          </div>
+        </div>
+      </div>
+      
+      <div id="attendanceDetailsSection" style="display: none;">
+        <!-- Guest Count field -->
+        <div class="mb-3">
+          <label for="guestCount" class="form-label">${guestCountField.label}${guestCountField.required ? ' *' : ''}</label>
+          <input type="number" class="form-control" id="guestCount" name="guestCount" value="1"
+            min="${guestCountField.min || 1}" max="${guestCountField.max || 10}">
+        </div>
+        
+        <!-- Dietary Restrictions -->
+        <div class="mb-3">
+          <label for="dietaryRestrictions" class="form-label">${dietaryField.label}${dietaryField.required ? ' *' : ''}</label>
+          <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="2" data-required="${dietaryField.required ? 'true' : 'false'}"></textarea>
+        </div>
+      </div>
+    </div>
+  `;
 
   return `
     <h2 class="section-title text-center mb-4">RSVP</h2>
     <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="card-custom">
-          <div class="card-body">
-            <h4 class="card-title mb-4">Please respond by ${content.deadline}</h4>
-            <form id="rsvpForm" class="form-custom" action="${content.form.action}" method="${content.form.method}">
-              ${formFields}
-              <button type="submit" class="btn btn-primary-custom btn-lg mt-3"><i class="bi bi-heart-fill"></i> Submit RSVP</button>
-            </form>
-            <div id="rsvpConfirmation" class="alert alert-success mt-4" style="display:none;">${content.confirmationMessage || 'Thank you for your RSVP!'}</div>
+      <div class="col-lg-8 mx-auto">
+        <div class="upload-card">
+          <div class="text-center mb-3">
+            <i class="bi bi-heart-fill upload-icon"></i>
+            <h4 class="mb-2">We'd Love to See You There</h4>
+            <p class="text-muted">Please respond by ${content.deadline}</p>
+          </div>
+          
+          <form id="rsvpForm" class="form-custom" action="${content.form.action}" method="${content.form.method}">
+            ${formHTML}
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary-custom btn-lg upload-btn">
+                <i class="bi bi-heart-fill"></i> Submit RSVP
+              </button>
+            </div>
+          </form>
+          <div id="rsvpConfirmation" class="success-message mt-4" style="display:none;">
+            <i class="bi bi-check-circle"></i> ${content.confirmationMessage || 'Thank you for your RSVP! We look forward to celebrating with you.'}
           </div>
         </div>
       </div>
     </div>
     <script>
-      (function() {
-        var form = document.getElementById('rsvpForm');
-        if (form) {
-          form.onsubmit = function(e) {
+      // Simplified direct implementation of toggle functions
+      function showAttendanceDetails() {
+        console.log('showAttendanceDetails called');
+        document.getElementById('attendanceDetailsSection').style.display = 'block';
+        document.getElementById('guestCount').required = true;
+        
+        // Make dietary restrictions required if it was originally required
+        const dietaryRestrictions = document.getElementById('dietaryRestrictions');
+        if (dietaryRestrictions && dietaryRestrictions.getAttribute('data-required') === 'true') {
+          dietaryRestrictions.required = true;
+        }
+      }
+      
+      function hideAttendanceDetails() {
+        console.log('hideAttendanceDetails called');
+        document.getElementById('attendanceDetailsSection').style.display = 'none';
+        document.getElementById('guestCount').required = false;
+        document.getElementById('dietaryRestrictions').required = false;
+      }
+      
+      function toggleAttendanceDetails(attending) {
+        console.log('toggleAttendanceDetails called with:', attending);
+        if (attending) {
+          showAttendanceDetails();
+        } else {
+          hideAttendanceDetails();
+        }
+      }
+      
+      // Initialize the RSVP form
+      document.addEventListener('DOMContentLoaded', function() {
+        const rsvpForm = document.getElementById('rsvpForm');
+        
+        // Set the initial state (hide by default)
+        hideAttendanceDetails();
+        
+        // Check if first radio button (Yes) is selected
+        const yesRadio = document.getElementById('attendance_0');
+        if (yesRadio && yesRadio.checked) {
+          showAttendanceDetails();
+        }
+        
+        // Make functions available globally
+        window.showAttendanceDetails = showAttendanceDetails;
+        window.hideAttendanceDetails = hideAttendanceDetails;
+        window.toggleAttendanceDetails = toggleAttendanceDetails;
+        
+        // Handle form submission
+        if (rsvpForm) {
+          rsvpForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            var formData = new FormData(form);
-            var submitBtn = form.querySelector('button[type="submit"]');
+            
+            var formData = new FormData(rsvpForm);
+            var submitBtn = rsvpForm.querySelector('button[type="submit"]');
             var originalText = submitBtn.innerHTML;
+            
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
             submitBtn.disabled = true;
-            fetch(form.action, {
-              method: form.method,
+            
+            fetch(rsvpForm.action, {
+              method: rsvpForm.method,
               body: formData,
               headers: { 'Accept': 'application/json' }
             })
             .then(function(response) {
               if (response.ok) {
-                form.style.display = 'none';
+                rsvpForm.style.display = 'none';
                 document.getElementById('rsvpConfirmation').style.display = 'block';
               } else {
                 alert('There was an error submitting your RSVP. Please try again.');
@@ -272,9 +359,9 @@ function createRSVPContent(content) {
               submitBtn.innerHTML = originalText;
               submitBtn.disabled = false;
             });
-          };
+          });
         }
-      })();
+      });
     </script>
   `;
 }

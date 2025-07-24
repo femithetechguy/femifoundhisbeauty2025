@@ -141,15 +141,6 @@
                 { "name": "Deep Olive", "hex": "#485B26" }
               ],
               "examples": ["suits", "dresses", "accessories"]
-            },
-            {
-              "name": "Sage Green",
-              "hex": "#d4af37",
-              "variations": [
-                { "name": "Light Sage", "hex": "#e0c27a" },
-                { "name": "Deep Sage", "hex": "#b38f2c" }
-              ],
-              "examples": ["jewelry", "shoes", "accents"]
             }
           ],
           "description": "Please wear formal attire in shades of Olive Green. The color adds a natural elegance to our celebration!"
@@ -386,7 +377,7 @@
       "icon": "📝",
       "order": 8,
       "content": {
-        "deadline": "2025-11-30",
+        "deadline": "August 31, 2025",
         "form": {
           "formspreeId": "mgvzwven",
           "action": "https://formspree.io/f/mgvzwven",
@@ -426,21 +417,8 @@
               "required": true
             },
             {
-              "name": "mealPreference",
-              "label": "Meal Preference",
-              "type": "select",
-              "options": ["Chicken", "Fish", "Vegetarian", "Vegan"],
-              "required": true
-            },
-            {
               "name": "dietaryRestrictions",
               "label": "Dietary Restrictions",
-              "type": "textarea",
-              "required": false
-            },
-            {
-              "name": "message",
-              "label": "Special Message",
               "type": "textarea",
               "required": false
             }
