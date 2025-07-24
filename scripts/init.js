@@ -10,7 +10,11 @@ async function initializeWebsite() {
   applyColorTheme();
   loadCouplePhoto();
   buildNavigation();
-  buildDynamicSections();
+  // Render dynamic sections into the container
+  const dynamicSectionsContainer = document.getElementById('dynamic-sections');
+  if (dynamicSectionsContainer && typeof buildDynamicSections === 'function') {
+    dynamicSectionsContainer.innerHTML = buildDynamicSections();
+  }
   initializeCountdown();
   initializeCopyButtons();
   initializeLoveEffects();

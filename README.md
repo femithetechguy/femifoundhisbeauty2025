@@ -1,4 +1,4 @@
-# 💍 Beauty & Femi 2025 Wedding Website
+# 💍 EwaFemi2025 Wedding Website
 
 A modern, responsive, and dynamic wedding website built with vanilla JavaScript, Bootstrap 5, and JSON-driven content management.
 

@@ -1,6 +1,6 @@
 {
   "wedding": {
-    "title": "Beauty & Femi 2025",
+    "title": "EwaFemi2025",
     "hashtag": "#EwaFemi2025",
     "date": "2025-12-31",
     "time": "16:00",
@@ -187,44 +187,6 @@
             "relationship": "Best Friend",
             "photo": "images/groomsman-1.jpg"
           }
-        ]
-      }
-    },
-    {
-      "id": "travel",
-      "title": "Travel & Accommodations",
-      "icon": "✈️",
-      "order": 5,
-      "content": {
-        "airports": [
-          {
-            "name": "Murtala Muhammed International Airport",
-            "code": "LOS",
-            "distance": "30 minutes from venue"
-          }
-        ],
-        "hotels": [
-          {
-            "name": "Lagos Continental Hotel",
-            "address": "52A Kofo Abayomi Street, Victoria Island",
-            "phone": "+234-1-461-1700",
-            "specialRate": true,
-            "bookingCode": "BEAUTYFEMI2025",
-            "website": "https://lagoscontinental.com"
-          }
-        ],
-        "transportation": {
-          "shuttle": {
-            "available": true,
-            "description": "Complimentary shuttle from recommended hotels"
-          },
-          "rideshare": "Uber and Bolt are readily available",
-          "parking": "Free valet parking at both venues"
-        },
-        "localTips": [
-          "Nigerian Naira is the local currency",
-          "English is widely spoken",
-          "Dress modestly when visiting religious sites"
         ]
       }
     },
@@ -496,11 +458,23 @@
       "icon": "📜",
       "order": 10,
       "content": {
-        "scripture": {
-          "verse": "Therefore what God has joined together, let no one separate.",
-          "reference": "Mark 10:9",
-          "significance": "This verse represents the sacred bond we're creating before God and our loved ones."
-        },
+        "scripture": [
+          {
+            "verse": "Therefore what God has joined together, let no one separate.",
+            "reference": "Mark 10:9",
+            "significance": "This verse represents the sacred bond we're creating before God and our loved ones."
+          },
+          {
+            "verse": "Love is patient, love is kind. It does not envy, it does not boast, it is not proud.",
+            "reference": "1 Corinthians 13:4",
+            "significance": "This verse embodies the essence of our love and commitment to each other."
+          },
+          {
+            "verse": "Two are better than one, because they have a good return for their labor: If either of them falls down, one can help the other up. Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken.",
+            "reference": "Ecclesiastes 4:9-12",
+            "significance": "This verse emphasizes the benefits of companionship and teamwork."
+          }
+        ],
         "colorPalette": [
           {
             "name": "Gold",
@@ -531,19 +505,11 @@
       "icon": "📬",
       "order": 11,
       "content": {
-        "couple": {
-          "email": "beautyandfemi2025@email.com",
-          "phone": "+1 333-333-3333"
-        },
-        "weddingPlanner": {
-          "name": "Elegant Events Lagos",
-          "contact": "Sarah Johnson",
-          "email": "sarah@elegantevents.ng",
-          "phone": "+1 222-222-2222"
-        },
-        "emergencyContact": {
-          "name": "Best Man - David",
-          "phone": "+1 111-111-1111"
+        "contact": {
+          "plannerName": "Elegant Events Lagos",
+          "plannerContact": "Sarah Johnsons",
+          "plannerEmail": "contact@glamorbybee.com",
+          "plannerPhone": "+1 678-600-5287"
         },
         "form": {
           "enabled": true,
@@ -558,24 +524,13 @@
               "required": true
             },
             {
-              "name": "email",
-              "label": "Email",
-              "type": "email",
-              "required": true
-            },
-            {
-              "name": "subject",
-              "label": "Subject",
-              "type": "text",
-              "required": true
-            },
-            {
-              "name": "message",
-              "label": "Message",
+              "name": "blessing",
+              "label": "Your Blessing / Message",
               "type": "textarea",
               "required": true
             }
-          ]
+          ],
+          "submitText": "Send Blessing"
         }
       }
     },
@@ -596,9 +551,7 @@
             "url": "https://open.spotify.com/playlist/5R2cCAyWGRyR3sOkuLCNdp",
             "embedded": true
           },
-          "songs": [
-           
-          ]
+          "songs": []
         },
         "qrCode": {
           "enabled": true,
@@ -606,7 +559,7 @@
           "url": "https://beautyandfemi2025.com",
           "description": "Scan to visit our wedding website"
         },
-      
+
         "liveStream": {
           "enabled": false,
           "platform": "Zoom",
@@ -635,7 +588,7 @@
     ]
   },
   "meta": {
-    "siteName": "Beauty & Femi 2025 Wedding",
+    "siteName": "EwaFemi2025 Wedding",
     "description": "Join us as we celebrate the union of Beauty and Femi on September 26th, 2025",
     "keywords": ["wedding", "Beauty", "Femi", "2025", "Lagos", "Nigeria"],
     "author": "Beauty & Femi",

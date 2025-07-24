@@ -1,3 +1,110 @@
+/* Subtle card animation */
+@keyframes cardFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.card-custom {
+  animation: cardFadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+  will-change: opacity, transform;
+}
+
+/* Consistent vertical spacing between cards using row-gap */
+.row {
+  row-gap: 2rem !important;
+}
+
+/* Remove margin-bottom from columns and cards to avoid double spacing */
+.col-lg-12.mb-4, .col-lg-6.mb-4, .col-lg-8.mb-4, .col-12.mb-4, .col-md-6.mb-3, .col-12.mb-4, .col-md-6.mb-3 {
+  margin-bottom: 0 !important;
+}
+
+/* Remove extra bottom margin from last card in a row */
+.row > [class*="col-"]:last-child .card-custom {
+  margin-bottom: 0 !important;
+}
+
+/* Remove conflicting margin from columns if present */
+.col-lg-12.mb-4, .col-lg-6.mb-4, .col-lg-8.mb-4, .col-12.mb-4, .col-md-6.mb-3, .col-12.mb-4, .col-md-6.mb-3 {
+  margin-bottom: 0 !important;
+}
+/* --- Ensure QR code, Zoom, and Spotify always show on mobile --- */
+@media (max-width: 991.98px), (max-width: 768px), (max-width: 576px), (max-width: 480px), (max-width: 320px) {
+  .playlist-qr-flex {
+    display: block !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+  .playlist-col, .qr-col {
+    display: block !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .playlist-col > *, .qr-col > * {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+/* --- Consistency Patch: Always show nav, fab, and sections on all screens --- */
+@media (max-width: 991.98px), (max-width: 768px), (max-width: 576px), (max-width: 480px), (max-width: 320px) {
+  .navbar-nav,
+  .navbar-nav .nav-link,
+  #dynamic-sections > section {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* Restore flex for FAB menu and items on mobile for proper alignment */
+@media (max-width: 991.98px), (max-width: 768px), (max-width: 576px), (max-width: 480px), (max-width: 320px) {
+  .fab-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    transition: all var(--transition-medium);
+  }
+  .fab-menu.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .fab-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--color-accent-2);
+    color: var(--color-secondary);
+    box-shadow: var(--shadow-light);
+    font-size: 1.3rem;
+    margin: 0;
+  }
+}
+  /* Remove accidental hiding of important content */
+  .navbar-nav {
+    height: auto !important;
+  height: 100%; /* Ensure equal height for all cards */
+    overflow: visible !important;
+  }
+}
 /* Playlist + QR Code Flex Layout */
 .playlist-qr-flex {
   display: flex;
@@ -677,6 +784,11 @@ main, .main-content, #dynamic-sections {
   box-shadow: var(--shadow-light);
   transition: all var(--transition-medium);
   overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .card-custom:hover {
@@ -686,6 +798,11 @@ main, .main-content, #dynamic-sections {
 
 .card-custom .card-body {
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .card-custom .card-title {
@@ -808,10 +925,10 @@ main, .main-content, #dynamic-sections {
 
 /* Floating Action Button */
 .floating-actions {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 1000;
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  z-index: 1000 !important;
 }
 
 .fab-main {
@@ -1242,10 +1359,61 @@ main, .main-content, #dynamic-sections {
 
 /* Standard Mobile - 576px and below */
 @media (max-width: 576px) {
-  .custom-navbar {
-    padding: 10px 0;
+  .floating-actions {
+    bottom: 20px;
+    right: 20px;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 1200;
   }
-  
+
+  .fab-main {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    color: var(--color-accent-1);
+    position: relative;
+  }
+
+  .fab-menu {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-medium);
+    z-index: 1201;
+  }
+
+  .fab-menu.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .fab-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--color-accent-2);
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-light);
+    font-size: 1.3rem;
+  }
   .custom-navbar.scrolled {
     padding: 6px 0;
   }

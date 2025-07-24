@@ -2,7 +2,7 @@ Certainly, Adefemi! Here’s a full list of 1 to 12 for your wedding website for
 
 ⸻
 
-🌐 Wedding Website Structure: Beauty & Femi 2025
+🌐 Wedding Website Structure: EwaFemi2025
 
 ⸻
 
