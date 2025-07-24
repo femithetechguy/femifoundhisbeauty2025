@@ -14,6 +14,11 @@ async function initializeWebsite() {
   const dynamicSectionsContainer = document.getElementById('dynamic-sections');
   if (dynamicSectionsContainer && typeof buildDynamicSections === 'function') {
     dynamicSectionsContainer.innerHTML = buildDynamicSections();
+    
+    // Trigger gallery initialization after content is loaded
+    if (typeof initGalleryLightbox === 'function') {
+      setTimeout(initGalleryLightbox, 200);
+    }
   }
   initializeCountdown();
   initializeCopyButtons();
