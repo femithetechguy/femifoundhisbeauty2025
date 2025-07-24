@@ -1180,11 +1180,40 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   transition: all var(--transition-medium);
   opacity: 0;
   transform: translateY(10px);
+  position: absolute;
+  margin-left: 5px;
 }
 
 .copy-confirmation.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Venue actions styling */
+.venue-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.venue-actions .btn-group {
+  position: relative;
+}
+
+/* Make venue actions column on mobile */
+@media (max-width: 576px) {
+  .venue-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .venue-actions > div {
+    width: 100%;
+  }
 }
 
 /* Button hover effects - reduced for better clickability */
@@ -2663,4 +2692,64 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
 .color-guide {
   max-width: 500px;
   margin: 0 auto;
+}
+
+/* Wedding Party Containers with Borders */
+.wedding-party-container {
+  position: relative;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+.bridal-party-border {
+  border: 3px solid #FFC0CB; /* Light pink border for bridal party */
+  background-color: rgba(255, 192, 203, 0.05);
+  box-shadow: 0 4px 15px rgba(255, 192, 203, 0.2);
+}
+
+.bridal-party-border::before {
+  content: "♀";
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  background-color: #FFC0CB;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.groomsmen-border {
+  border: 3px solid #7D8F5C; /* Olive green border for groomsmen */
+  background-color: rgba(125, 143, 92, 0.05);
+  box-shadow: 0 4px 15px rgba(125, 143, 92, 0.2);
+}
+
+.groomsmen-border::before {
+  content: "♂";
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  background-color: #7D8F5C;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 767px) {
+  .wedding-party-container {
+    padding: 15px 10px;
+  }
 }

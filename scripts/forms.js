@@ -4,7 +4,7 @@ function copyToClipboard(text) {
     // Modern async clipboard API
     navigator.clipboard.writeText(text).then(
       function () {
-        showNotification('Link copied to clipboard!', 'success');
+        showNotification('Address copied to clipboard!', 'success');
       },
       function () {
         fallbackCopyToClipboard(text);
@@ -14,6 +14,9 @@ function copyToClipboard(text) {
     fallbackCopyToClipboard(text);
   }
 }
+
+// Make copyToClipboard available globally
+window.copyToClipboard = copyToClipboard;
 
 function fallbackCopyToClipboard(text) {
   var textArea = document.createElement('textarea');
@@ -35,12 +38,12 @@ function fallbackCopyToClipboard(text) {
   try {
     var successful = document.execCommand('copy');
     if (successful) {
-      showNotification('Link copied to clipboard!', 'success');
+      showNotification('Address copied to clipboard!', 'success');
     } else {
-      showNotification('Unable to copy link. Please copy manually.', 'error');
+      showNotification('Unable to copy address. Please copy manually.', 'error');
     }
   } catch (err) {
-    showNotification('Unable to copy link. Please copy manually.', 'error');
+    showNotification('Unable to copy address. Please copy manually.', 'error');
   }
   document.body.removeChild(textArea);
 }
