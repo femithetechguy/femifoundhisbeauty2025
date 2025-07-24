@@ -115,7 +115,7 @@
           "time": "3:00 PM",
           "venue": {
             "name": "CHOSEN EVENTS CENTRE",
-            "address": "5825 Mulberry St, Austell, GA 30168",
+            "address": "TBD.",
             "coordinates": {
               "lat": 33.749,
               "lng": -84.3879
@@ -127,7 +127,7 @@
           "time": "5:00 PM",
           "venue": {
             "name": "CHOSEN EVENTS CENTRE",
-            "address": "5825 Mulberry St, Austell, GA 30168",
+            "address": "TBD.",
             "coordinates": {
               "lat": 33.749,
               "lng": -84.3879
@@ -614,14 +614,32 @@
           "title": "Leave us a blessing",
           "description": "Share your wishes and blessings for our marriage"
         },
-        "playlist": {
-          "title": "Our expression via songs",
-          "spotify": {
-            "url": "https://open.spotify.com/playlist/5R2cCAyWGRyR3sOkuLCNdp",
-            "embedded": true
+        "guestMessage": {
+          "enabled": true,
+          "title": "Leave a message for the couple",
+          "description": "Share your thoughts and well wishes for our journey together.",
+          "form": {
+            "fields": [
+              {
+                "name": "name",
+                "label": "Your Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "blessing",
+                "label": "Your Blessing / Message",
+                "type": "textarea",
+                "required": true
+              }
+            ],
+            "submitText": "Send Blessing"
           },
-          "songs": []
+          "successMessage": "Thank you for your blessing! It means so much to us.",
+          "errorMessage": "There was an error submitting your blessing. Please try again.",
+          "formspreeId": "mblkgqdq"
         },
+
         "qrCode": {
           "enabled": true,
           "image": "images/qr_code/qr_code.png",
@@ -666,7 +684,7 @@
     "rsvp": true,
     "gallery": true,
     "guestbook": true,
-    "playlist": true,
+    "guestMessage": true,
     "qrCode": true,
     "liveStream": true,
     "mobileOptimized": true,

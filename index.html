@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EwaFemi2025 Wedding</title>
+    <script>
+      // Global handler for guest message forms
+      window.showGuestMessageSuccess = function(formId, successId) {
+        console.log(`Global handler called for form ${formId} and success ${successId}`);
+        const form = document.getElementById(formId);
+        const success = document.getElementById(successId);
+        if (form && success) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+          setTimeout(() => {
+            success.classList.add('animate-in');
+          }, 10);
+        }
+      };
+    </script>
     <meta
       name="description"
       content="Join us as we celebrate the union of Beauty and Femi on September 26th, 2025"
@@ -31,6 +46,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles/style.css" />
     <link rel="stylesheet" href="styles/responsive-fixes.css" />
+    <link rel="stylesheet" href="styles/form-messages.css" />
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
