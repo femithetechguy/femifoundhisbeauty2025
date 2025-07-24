@@ -59,30 +59,42 @@ function createWeddingPartyContent(content) {
         <div class="card-custom">
           <div class="card-body">
             <h4 class="card-title text-center mb-4">Bridal Party</h4>
-            <div class="row">
-              ${content.bridesmaids.map(bm => `
-                <div class="col-md-4 mb-3">
-                  <div class="card-custom h-100 text-center">
-                    <div class="card-body">
-                      <img src="${bm.photo}" alt="${bm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
-                      <h6>${bm.name}</h6>
-                      <p class="text-muted small">${bm.relationship}</p>
+            
+            <!-- Bridal Party with border -->
+            <div class="wedding-party-container bridal-party-border mb-5">
+              <div class="row">
+                ${content.bridesmaids.map(bm => `
+                  <div class="col-md-4 mb-3">
+                    <div class="card-custom h-100 text-center">
+                      <div class="card-body">
+                        <img src="${bm.photo}" alt="${bm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
+                        <h6>${bm.name}</h6>
+                        <p class="text-muted small">${bm.relationship}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              `).join('')}
-               <h4 class="card-title text-center mb-4">Groomsmen</h4>
-              ${content.groomsmen.map(gm => `
-                <div class="col-md-4 mb-3">
-                  <div class="card-custom h-100 text-center">
-                    <div class="card-body">
-                      <img src="${gm.photo}" alt="${gm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
-                      <h6>${gm.name}</h6>
-                      <p class="text-muted small">${gm.relationship}</p>
+                `).join('')}
+              </div>
+            </div>
+            
+            <h4 class="card-title text-center mb-4">Groomsmen</h4>
+            
+            <!-- Groomsmen with border -->
+            <div class="wedding-party-container groomsmen-border">
+              <div class="row">
+                ${content.groomsmen.map(gm => `
+                  <div class="col-md-4 mb-3">
+                    <div class="card-custom h-100 text-center">
+                      <div class="card-body">
+                        <img src="${gm.photo}" alt="${gm.name}" class="img-fluid rounded-circle mb-2" style="max-width: 100px;">
+                        <h6>${gm.name}</h6>
+                        <p class="text-muted small">${gm.relationship}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              `).join('')}
+                `).join('')}
+              </div>
+            </div>
             </div>
           </div>
         </div>
