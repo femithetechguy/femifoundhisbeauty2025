@@ -2855,7 +2855,8 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible */
+  max-width: 100%;
 }
 
 .bride-photo-container {
@@ -2871,9 +2872,10 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
 .portrait-photo {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: contain; /* Changed from cover to contain */
   transition: transform 0.3s ease;
   margin-bottom: 0 !important;
+  border-radius: 8px;
 }
 
 /* Magnifier Icon */
@@ -2884,24 +2886,44 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   transform: translate(-50%, -50%);
   width: 40px;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 5;
+  opacity: 0.8; /* Always slightly visible */
+  transition: all 0.3s ease;
+  z-index: 100; /* Very high z-index to ensure visibility */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  pointer-events: auto; /* Ensure clicks are captured */
+  border: 1px solid rgba(255, 255, 255, 0.9);
 }
 
 .magnifier-icon i {
-  font-size: 20px;
+  font-size: 20px; /* Reduced size */
   color: #333;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
 .portrait-container:hover .magnifier-icon {
   opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1); /* Subtle scale effect on hover */
+}
+
+/* Make magnifier more accessible on mobile */
+@media (max-width: 767px) {
+  .magnifier-icon {
+    width: 45px; /* Reduced but still visible on mobile */
+    height: 45px;
+    opacity: 0.95; /* More visible on mobile */
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .magnifier-icon i {
+    font-size: 22px; /* Reduced size but still legible */
+  }
 }
 
 .portrait-container:hover .portrait-photo {
@@ -2921,6 +2943,8 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   background-color: rgba(0, 0, 0, 0.9);
   opacity: 0;
   transition: opacity 0.3s ease;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .portrait-modal.show {
@@ -2934,9 +2958,13 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   position: relative;
   background-color: transparent;
   margin: auto;
-  width: 80%;
+  width: 90%;
   max-width: 700px;
   animation: zoomIn 0.3s ease;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @keyframes zoomIn {
@@ -2952,6 +2980,8 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
 
 .portrait-modal-image {
   width: 100%;
+  max-height: 80vh;
+  object-fit: contain; /* Ensures the image is fully visible */
   border-radius: 8px;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
 }
@@ -2991,11 +3021,229 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   }
   
   .portrait-container {
-    width: 120px;
-    height: 120px;
+    max-width: 100%; /* Ensure it fits on mobile */
   }
   
   .portrait-modal-content {
     width: 95%;
+    padding: 10px;
+  }
+  
+  .portrait-modal-image {
+    max-height: 70vh;
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Make sure images don't get cut off on mobile */
+  .portrait-photo {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    max-height: none;
+  }
+  
+  /* Fix for couple section on mobile */
+  .couple-bride, .couple-groom {
+    padding: 0 10px;
+  }
+}
+
+/* Contact Email Link Styles */
+.contact-email {
+  color: #586B36;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.contact-email:hover {
+  color: #D8E460;
+  text-decoration: underline;
+}
+
+.contact-email:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #D8E460;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.contact-email:hover:after {
+  transform: scaleX(1);
+}
+
+/* Gallery Lightbox Styles */
+.gallery-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-lightbox.show {
+  display: flex;
+  opacity: 1;
+}
+
+.gallery-lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gallery-lightbox-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 80vh;
+}
+
+.gallery-lightbox-image {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-lightbox-caption {
+  margin-top: 15px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  font-style: italic;
+}
+
+.gallery-lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s;
+}
+
+.gallery-lightbox-close:hover {
+  transform: scale(1.2);
+  color: #D8E460;
+}
+
+.gallery-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gallery-lightbox-prev {
+  left: -60px;
+}
+
+.gallery-lightbox-next {
+  right: -60px;
+}
+
+.gallery-lightbox-nav i {
+  font-size: 24px;
+  color: #fff;
+}
+
+.gallery-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-lightbox-counter {
+  color: #fff;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.gallery-item {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.gallery-item::after {
+  content: "\F391";  /* Bootstrap icon code for magnifier */
+  font-family: "bootstrap-icons";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: transparent;
+  font-size: 24px;
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.gallery-item:hover::after {
+  color: #fff;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+}
+
+.gallery-item:hover img {
+  filter: brightness(0.8);
+}
+
+/* Mobile adjustments for gallery lightbox */
+@media (max-width: 767px) {
+  .gallery-lightbox-nav {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .gallery-lightbox-prev {
+    left: 10px;
+  }
+  
+  .gallery-lightbox-next {
+    right: 10px;
+  }
+  
+  .gallery-lightbox-close {
+    top: -30px;
+    right: 0;
+    font-size: 30px;
+  }
+  
+  .gallery-lightbox-image {
+    max-height: 60vh;
   }
 }

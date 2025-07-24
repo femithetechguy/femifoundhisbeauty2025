@@ -16,7 +16,7 @@ function buildDynamicSections() {
   };
 
   // Build HTML for each section in order
-  return window.weddingData.sections
+  const sectionsHTML = window.weddingData.sections
     .filter(section => section.id !== 'home')
     .map(section => {
       // Try both id and type for renderer mapping
@@ -29,6 +29,13 @@ function buildDynamicSections() {
       }
     })
     .join('');
+    
+  // After sections are rendered to DOM, dispatch an event to initialize components
+  setTimeout(() => {
+    document.dispatchEvent(new CustomEvent('contentLoaded'));
+  }, 100);
+  
+  return sectionsHTML;
 }
 
 // Meet the Couple / Wedding Party section renderer
@@ -42,7 +49,10 @@ function createWeddingPartyContent(content) {
             <div class="couple-container">
               <div class="couple-bride">
                 <div class="portrait-container bride-photo-container">
-                  <img src="${content.bride.photo}" alt="${content.bride.fullName}" class="img-fluid rounded mb-3 portrait-photo" style="width: 230px; height: auto; max-height: 300px;">
+                  <img src="${content.bride.photo.startsWith('/') ? content.bride.photo : '/' + content.bride.photo}" 
+                       alt="${content.bride.fullName}" 
+                       class="portrait-photo" 
+                       style="width: 230px; height: auto;">
                   <div class="magnifier-icon" data-portrait="bride">
                     <i class="bi bi-zoom-in"></i>
                   </div>
@@ -64,7 +74,10 @@ function createWeddingPartyContent(content) {
               
               <div class="couple-groom">
                 <div class="portrait-container groom-photo-container">
-                  <img src="${content.groom.photo}" alt="${content.groom.fullName}" class="img-fluid rounded mb-3 portrait-photo" style="width: 230px; height: auto; max-height: 300px;">
+                  <img src="${content.groom.photo.startsWith('/') ? content.groom.photo : '/' + content.groom.photo}" 
+                       alt="${content.groom.fullName}" 
+                       class="portrait-photo" 
+                       style="width: 230px; height: auto;">
                   <div class="magnifier-icon" data-portrait="groom">
                     <i class="bi bi-zoom-in"></i>
                   </div>
@@ -140,39 +153,24 @@ function createWeddingPartyContent(content) {
 
 
 function createGalleryContent(content) {
+  // Combine portrait photos and throwback photos for the first row
+  const firstRowPhotos = [...content.portraitPhotos];
+  
+  // Add throwback photo to the first row if available
+  if (content.throwbackPhotos && content.throwbackPhotos.length > 0) {
+    firstRowPhotos.push(...content.throwbackPhotos);
+  }
+  
   return `
         <h2 class="section-title text-center mb-4">Gallery</h2>
         <div class="row">
             <div class="col-12 mb-4">
-                <h3 class="text-center">Portraits</h3>
+                <h3 class="text-center">Our Memories</h3>
                 <div class="row">
-                    ${content.portraitPhotos
+                    ${firstRowPhotos
                       .map(
                         (photo, index) =>
-                          `<div class="col-md-6 col-lg-4 mb-3"><div class="gallery-item" data-index="${index}"><img src="${photo.src}" alt="${photo.caption}" class="img-fluid rounded-custom" data-lightbox-src="${photo.src}" data-lightbox-caption="${photo.caption}"><p class="text-center mt-2 small">${photo.caption}</p></div></div>`
-                      )
-                      .join("")}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 mb-4">
-                <h3 class="text-center">A beautiful garden</h3>
-                <div class="row">
-                    ${content.throwbackPhotos
-                      .map(
-                        (photo, index) =>
-                          `<div class="col-md-6 col-lg-4 mb-3"><div class="gallery-item" data-index="${
-                            index + content.portraitPhotos.length
-                          }"><img src="${photo.src}" alt="${
-                            photo.caption
-                          }" class="img-fluid rounded-custom" data-lightbox-src="${
-                            photo.src
-                          }" data-lightbox-caption="${
-                            photo.caption
-                          }"><p class="text-center mt-2 small">${
-                            photo.caption
-                          }</p></div></div>`
+                          `<div class="col-6 col-md-3 mb-3"><div class="gallery-item" data-index="${index}"><img src="${photo.src}" alt="${photo.caption}" class="img-fluid rounded-custom" data-lightbox-src="${photo.src}" data-lightbox-caption="${photo.caption}"><p class="text-center mt-2 small">${photo.caption}</p></div></div>`
                       )
                       .join("")}
                 </div>
@@ -362,7 +360,7 @@ function createContactContent(content) {
             <h4 class="card-title"><i class="bi bi-people"></i> Contact Information</h4>
             <div class="contact-item mb-4">
               <h6>Wedding Contact</h6>
-              <p><i class="bi bi-envelope"></i> ${content.contact.plannerEmail}</p>
+              <p><i class="bi bi-envelope"></i> <a href="mailto:${content.contact.plannerEmail}" class="contact-email">${content.contact.plannerEmail}</a></p>
             </div>
           </div>
         </div>

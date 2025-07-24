@@ -38,19 +38,19 @@
         "howWeMet": {
           "title": "How We Met",
           "story": "About two years ago, amidst demanding schedules and the echoes of past challenges, fate orchestrated a beautiful beginning...",
-          "detail-story": [
+            "detail-story": [
             "## Our Story: A Serendipitous Melody",
             "",
             "About two years ago, amidst demanding schedules and the echoes of past challenges, fate orchestrated a beautiful beginning. One of us, seeking solace and fun, decided to play a live gig with a senior colleague. That same night, the other, weary from work, chose to unwind at that very show.",
             "",
-            "Across the room, our eyes met. He was striking, quiet, and wore a crisp white shirt that seemed to glow. His voice, a captivating blend of firm and sweet, resonated deeply. Even from that initial distance, there was an undeniable, powerful feeling that he was the one. We exchanged only a brief \"hi\" that night, a prelude to what was to come.",
+            "Across the room, our eyes met. He was striking, quiet, and wore a nicely fitted black polo shirt that exuded effortless cool. Initially, though, it was the way he played the guitar that first captivated her. Then, his voice, a captivating blend of firm and sweet, resonated deeply. Even from that initial distance, there was an undeniable, powerful feeling that he was the one. We exchanged only a brief \"hi\" that night, a prelude to what was to come.",
             "",
-            "At the next gig, destiny intervened again. The conversation flowed, numbers were exchanged, and a quiet promise of future conversations blossomed into an unprecedented union. From that moment, our story truly began.",
+            "Our paths continued to cross at a couple more shows, each encounter deepening the mystery and the silent pull between us. Then, about three gigs in, at a friend's album launch, everything changed. This time, he wasn't on the guitar, giving us the perfect chance to talk, and we even shared a casual dance. The conversation flowed effortlessly, and he was struck by her captivating intelligence and the undeniable sparkle in her eyes as they spoke. He asked to exchange contact info – we did, and a quiet promise of future conversations blossomed into an unprecedented union. From that moment, our story truly began.",
             "",
             "Our shared passion for music quickly became the cornerstone of our bond. He, with his love for instruments, and she, a gifted vocalist and music minister, found harmony in melodies. Then, we discovered another shared delight: food. She, a magnificent chef, and he, a discerning lover of good meals, found joy in the culinary arts.",
             "",
             "Our friendship deepened over a year and a half, a symphony of shared interests and growing affection. As our connection evolved, we both recognized a future together, a future that brought us to this incredible day. The rest, as they say, is history in the making."
-          ],
+            ],
           "date": "2023",
           "location": "Norcross, Georgia"
         },
@@ -179,14 +179,14 @@
           "name": "Beauty",
           "fullName": "Beauty Joshua",
           "bio": "Music lover, fashion enthusiast...",
-          "photo": "images/beauty-portrait.jpg",
+          "photo": "/images/beauty-portrait.jpg",
           "funFacts": [""]
         },
         "groom": {
           "name": "Femi",
           "fullName": "Adefemi Kolawole",
           "bio": "Music lover, servant of Christ...",
-          "photo": "images/femi-portrait.jpg",
+          "photo": "/images/femi-portrait.jpg",
           "funFacts": [""]
         },
         "bridesmaids": [
@@ -263,15 +263,15 @@
       "content": {
         "portraitPhotos": [
           {
-            "src": "images/femi-portrait.jpg",
+            "src": "/images/femi-portrait.jpg",
             "caption": "gentleman"
           },
           {
-            "src": "images/couple-main2.jpg",
+            "src": "/images/couple-main2.jpg",
             "caption": "one sunday afternoon"
           },
           {
-            "src": "images/beauty-portrait.jpg",
+            "src": "/images/beauty-portrait.jpg",
             "caption": "beautiful lady"
           }
         ],
