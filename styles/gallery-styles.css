@@ -17,11 +17,11 @@
     --gallery-error: #E74C3C;
     --gallery-gradient-hero: linear-gradient(135deg, #D8E460 0%, #A2C579 50%, #586B36 100%);
     --gallery-gradient-subtle: linear-gradient(135deg, #F9F9F9 0%, #FFFFFF 100%);
-}
 
+/* Fix hero background image path */
 .gallery-hero {
     background: linear-gradient(135deg, rgba(216, 228, 96, 0.9), rgba(88, 107, 54, 0.9)),
-                url('images/hero-bg.jpg') center/cover;
+                url('../images/couple-main.jpg') center/cover;
     min-height: 40vh;
     color: white;
     position: relative;

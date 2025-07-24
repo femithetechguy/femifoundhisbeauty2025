@@ -1,0 +1,174 @@
+/* Responsive Fixes and Style Enhancements */
+
+/* CSS Variables for Consistency */
+:root {
+  /* Spacing system */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-xxl: 3rem;     /* 48px */
+  
+  /* Animation timings */
+  --transition-fast: 0.15s;
+  --transition-medium: 0.3s;
+  --transition-slow: 0.5s;
+  
+  /* Consistent border radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  
+  /* Box shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Consistent Section Spacing */
+section, .section {
+  padding-top: var(--space-xxl);
+  padding-bottom: var(--space-xxl);
+}
+
+/* Card Consistency */
+.card-custom {
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+  margin-bottom: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-md);
+}
+
+.card-custom:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-body {
+  padding: var(--space-lg);
+}
+
+/* Mobile Navbar Enhancements */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: var(--space-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    margin-top: var(--space-sm);
+  }
+  
+  .navbar-nav .nav-item {
+    margin-bottom: var(--space-sm);
+  }
+}
+
+/* Floating Action Button Mobile Fixes */
+@media (max-width: 767px) {
+  .floating-actions {
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+  }
+  
+  .fab-menu {
+    bottom: 60px;
+  }
+  
+  .fab-item {
+    width: 44px; /* Minimum touch target size */
+    height: 44px; /* Minimum touch target size */
+  }
+}
+
+/* Hero Section Mobile Optimization */
+@media (max-width: 767px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .countdown-timer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .countdown-item {
+    margin-bottom: var(--space-md);
+  }
+  
+  .couple-photo-container {
+    margin-top: var(--space-xl);
+  }
+}
+
+/* Better Animation Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Consistent Image Styles */
+.img-fluid {
+  border-radius: var(--border-radius-md);
+}
+
+/* Improve Form Styling */
+.form-control {
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-radius: var(--border-radius-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25); /* Assuming gold is your primary color */
+}
+
+/* Animation Consistency */
+.card-custom, .btn, .nav-link, .fab-item, .back-to-top {
+  transition-property: transform, box-shadow, background-color, color;
+  transition-duration: var(--transition-medium);
+  transition-timing-function: ease-in-out;
+}
+
+/* Ensure Footer Always Looks Good */
+.footer {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+/* Consistent Icon Spacing */
+.bi {
+  margin-right: 0.35em;
+}
+
+/* Text Alignment on Mobile */
+@media (max-width: 767px) {
+  .text-center-mobile {
+    text-align: center !important;
+  }
+  
+  /* Ensure buttons stack properly on mobile */
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+    margin-bottom: var(--space-sm);
+  }
+}
+
+/* Improve Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Adjust based on your navbar height */
+}

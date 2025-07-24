@@ -1,0 +1,24 @@
+{
+  "title": "Leave us a blessing",
+  "description": "Share your wishes and blessings for our marriage.",
+  "form": {
+    "fields": [
+      {
+        "name": "name",
+        "label": "Your Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "blessing",
+        "label": "Your Blessing / Message",
+        "type": "textarea",
+        "required": true
+      }
+    ],
+    "submitText": "Send Blessing"
+  },
+  "successMessage": "Thank you for your blessing! It means so much to us.",
+  "errorMessage": "There was an error submitting your blessing. Please try again.",
+  "formspreeId": "mblkgqdq"
+}
