@@ -1,8 +1,8 @@
 {
   "wedding": {
-    "title": "EwaFemi2025",
-    "hashtag": "#EwaFemi2025",
-    "date": "2025-12-31",
+    "title": "EWAFEMI2025",
+    "hashtag": "#EWAFEMI2025",
+    "date": "2025-09-26T15:00:00",
     "time": "16:00",
     "theme": {
       "primaryColor": "#D8E460",
@@ -24,7 +24,7 @@
         },
         "countdown": {
           "enabled": true,
-          "targetDate": "2025-12-31T16:00:00"
+          "targetDate": "2025-09-26T15:00:00"
         },
         "announcement": "We're getting married and we'd love for you to celebrate with us!"
       }
@@ -111,33 +111,43 @@
       "order": 3,
       "content": {
         "ceremony": {
-          "date": "2025-12-31",
-          "time": "16:00",
+          "date": "2025-09-26",
+          "time": "15:00",
           "venue": {
-            "name": "Grace Cathedral",
-            "address": "123 Wedding Lane, Lagos, Nigeria",
+            "name": "CHOSEN EVENTS CENTRE",
+            "address": "5825 Mulberry St, Austell, GA 30168",
             "coordinates": {
-              "lat": 6.5244,
-              "lng": 3.3792
+              "lat": 33.7490,
+              "lng": -84.3879
             }
           }
         },
         "reception": {
-          "date": "2025-12-31",
-          "time": "18:00",
+          "date": "2025-09-26",
+          "time": "17:00",
           "venue": {
-            "name": "Royal Ballroom",
-            "address": "456 Reception Ave, Lagos, Nigeria",
+            "name": "CHOSEN EVENTS CENTRE",
+            "address": "5825 Mulberry St, Austell, GA 30168",
             "coordinates": {
-              "lat": 6.5244,
-              "lng": 3.3792
+              "lat": 33.7490,
+              "lng": -84.3879
             }
           }
         },
         "dressCode": {
           "formal": true,
-          "colors": [{ "name": "Olive Green", "hex": "#808000" }],
-          "description": "Dress for the occasion!"
+          "colors": [
+            { 
+              "name": "Olive Green", 
+              "hex": "#586B36",
+              "variations": [
+                {"name": "Light Olive", "hex": "#7D8F5C"},
+                {"name": "Deep Olive", "hex": "#485B26"}
+              ],
+              "examples": ["suits", "dresses", "accessories"]
+            }
+          ],
+          "description": "Please wear formal attire in shades of Olive Green. The color adds a natural elegance to our celebration!"
         },
         "directions": {
           "ceremony": "Detailed directions to ceremony venue...",
@@ -170,7 +180,7 @@
         "groom": {
           "name": "Femi",
           "fullName": "Adefemi Kolawole",
-          "bio": "Music lover, bond servant of Jesus Christ...",
+          "bio": "Music lover, bond servant of Christ...",
           "photo": "images/femi-portrait.jpg",
           "funFacts": [""]
         },
@@ -178,64 +188,64 @@
           {
             "name": "Bridesmaid 1",
             "relationship": "Sister",
-            "photo": "images/bridesmaid-1.jpg"
+            "photo": "images/bridalparty/couple-main2.jpg"
           },
           {
             "name": "Bridesmaid 2",
             "relationship": "Best Friend",
-            "photo": "images/bridesmaid-2.jpg"
+            "photo": "images/bridalparty/couple-main2.jpg"
           }, 
           {
             "name": "Bridesmaid 3",
             "relationship": "Cousin",
-            "photo": "images/bridesmaid-3.jpg"
+            "photo": "images/bridalparty/couple-main2.jpg"
           },
           {
             "name": "Bridesmaid 4",
             "relationship": "College Friend",
-            "photo": "images/bridesmaid-4.jpg"
+            "photo": "images/bridalparty/couple-main2.jpg"
           },
           {
             "name": "Bridesmaid 5",
             "relationship": "Sister-in-law",
-            "photo": "images/bridesmaid-5.jpg"
+            "photo": "images/bridalparty/couple-main2.jpg"
           },
           {
             "name": "Bridesmaid 6",
             "relationship": "Childhood Friend",
-            "photo": "images/bridesmaid-6.jpg"
+            "photo": "images/bridalparty/couple-main2.jpg"
           }
         ],
         "groomsmen": [
           {
             "name": "Groomsman 1",
             "relationship": "Best Friend",
-            "photo": "images/groomsman-1.jpg"
+            "photo": "images/groomsmen/couple-main2.jpg"
           },
           {
             "name": "Groomsman 2",
             "relationship": "Brother",
-            "photo": "images/groomsman-2.jpg"
+            "photo": "images/groomsmen/couple-main2.jpg"
           },
           {
             "name": "Groomsman 3",
             "relationship": "College Friend",
-            "photo": "images/groomsman-3.jpg"
+            "photo": "images/groomsmen/couple-main2.jpg"
           },
           {
             "name": "Groomsman 4",
             "relationship": "Cousin",
-            "photo": "images/groomsman-4.jpg"
+            "photo": "images/groomsmen/couple-main2.jpg"
           },
           {
             "name": "Groomsman 5",
             "relationship": "Childhood Friend",
-            "photo": "images/groomsman-5.jpg"
+            "photo": "images/groomsmen/couple-main2.jpg"
           },
           {
             "name": "Groomsman 6",
             "relationship": "Work Colleague",
-            "photo": "images/groomsman-6.jpg"
+            "photo": "images/groomsmen/couple-main2.jpg"
           }
         ]
       }
@@ -504,7 +514,7 @@
     },
     {
       "id": "scripture-theme",
-      "title": "Our Watchword",
+      "title": "Our Anchor Scriptures",
       "icon": "📜",
       "order": 10,
       "content": {
@@ -596,7 +606,7 @@
           "description": "Share your wishes and blessings for our marriage"
         },
         "playlist": {
-          "title": "Our Love Story in Songs",
+          "title": "Our expression via songs",
           "spotify": {
             "url": "https://open.spotify.com/playlist/5R2cCAyWGRyR3sOkuLCNdp",
             "embedded": true

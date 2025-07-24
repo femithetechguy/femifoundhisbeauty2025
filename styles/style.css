@@ -1,4 +1,4 @@
-/* Subtle card animation */
+/* Card animations */
 @keyframes cardFadeInUp {
   0% {
     opacity: 0;
@@ -10,6 +10,29 @@
   }
 }
 
+@keyframes cardPulse {
+  0% {
+    box-shadow: 0 0 0 rgba(216, 228, 96, 0);
+  }
+  70% {
+    box-shadow: 0 0 20px rgba(216, 228, 96, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(216, 228, 96, 0);
+  }
+}
+
+@keyframes cardSoftSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.5deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(-0.5deg) translateY(2px);
+  }
+}
 
 .card-custom {
   animation: cardFadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
@@ -51,6 +74,12 @@
   flex-direction: column !important;
 }
 
+/* Ensure Spotify embed is wide enough to see titles */
+.spotify-embed {
+  width: 100% !important;
+  min-width: 300px !important;
+}
+
 /* On mobile: stacked */
 @media (max-width: 991.98px) {
   .playlist-qr-flex {
@@ -68,6 +97,12 @@
   .playlist-col > *, .qr-col > * {
     width: 100% !important;
     max-width: 100% !important;
+  }
+  
+  /* Ensure Spotify embed has proper width on mobile */
+  .spotify-embed {
+    width: 100% !important;
+    overflow: hidden !important;
   }
 }
 /* --- Consistency Patch: Always show nav, fab, and sections on all screens --- */
@@ -296,13 +331,14 @@ body {
 }
 
 .navbar-nav .nav-link {
-  font-weight: 500;
+  font-weight: 500; /* Increased from 500 */
   color: var(--color-accent-1) !important;
   margin: 0 10px;
-  padding: 8px 16px !important;
+  padding: 6px 14px !important; /* Increased from 8px 16px */
   border-radius: var(--border-radius-sm);
   transition: all var(--transition-fast);
   position: relative;
+  font-size: 1.1rem; /* Added for bigger text */
 }
 
 .navbar-nav .nav-link:hover,
@@ -310,10 +346,73 @@ body {
   color: var(--color-secondary) !important;
   background: var(--gradient-primary);
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Added for better hover effect */
 }
 
 .navbar-nav .nav-link i {
   margin-right: 5px;
+  font-size: 1.2rem; /* Added for bigger icons */
+}
+
+/* Mobile Navigation Styles */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-md);
+    padding: 15px;
+    margin-top: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 12px 20px !important; /* Even larger on mobile for better touch targets */
+    margin: 8px 0;
+    text-align: center;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .navbar-nav .nav-link:active {
+    transform: scale(0.95); /* Added for touch feedback */
+  }
+  
+  /* Animated hover effect for mobile */
+  .navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  
+  .navbar-nav .nav-link:hover::before {
+    width: 80%;
+    opacity: 1;
+  }
+  
+  /* Improved toggle button */
+  .navbar-toggler {
+    border: none;
+    padding: 10px;
+    transition: all 0.3s ease;
+    border-radius: var(--border-radius-sm);
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .navbar-toggler:hover {
+    background-color: rgba(88, 107, 54, 0.1);
+    transform: translateY(-2px);
+  }
 }
 
 /* Hero Section */
@@ -374,6 +473,8 @@ body {
 .groom-name {
   display: block;
   animation: slideInUp 1s ease-out;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .groom-name {
@@ -429,37 +530,149 @@ body {
   font-weight: 400;
 }
 
+.countdown-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  border-radius: var(--border-radius-lg);
+  padding: 20px 10px;
+  transition: all 0.4s ease;
+}
+
 .countdown-timer {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .countdown-item {
   text-align: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(220, 220, 255, 0.15));
   padding: 20px 15px;
   border-radius: var(--border-radius-md);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  min-width: 80px;
+  min-width: 90px; /* Increased from 80px */
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.countdown-item:hover {
+  transform: translateY(-8px) rotate(1deg);
+  box-shadow: 0 15px 25px rgba(150, 180, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.countdown-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-size: 200% 100%;
+}
+
+.countdown-item:hover::before {
+  opacity: 1;
+  animation: shimmerEffect 2s infinite;
+}
+
+.countdown-item::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  transform: translateZ(-10px);
+  pointer-events: none;
+}
+
+.countdown-item:hover::after {
+  opacity: 1;
+  animation: pulseLight 2s infinite;
 }
 
 .countdown-number {
   display: block;
-  font-size: 2rem;
+  font-size: 2.5rem; /* Increased from 2rem */
   font-weight: 700;
   font-family: var(--font-primary);
   color: var(--color-primary);
+  line-height: 1.1; /* Added for better spacing */
+  text-shadow: 0 0 10px rgba(200, 200, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.countdown-item:hover .countdown-number {
+  transform: scale(1.05);
 }
 
 .countdown-label {
-  font-size: 0.9rem;
+  font-size: 1.1rem; /* Increased from 0.9rem */
   opacity: 0.9;
   text-transform: uppercase;
+  font-weight: 500; /* Added for better visibility */
   letter-spacing: 1px;
+  margin-top: 5px;
+  transition: all 0.3s ease;
 }
+
+@keyframes shimmerEffect {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulseLight {
+  0% { opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+@keyframes sparkle {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* Wedding day message styling */
+.wedding-day-message {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent-light, rgba(88, 107, 54, 0.15));
+  border-radius: 8px;
+  text-align: center;
+  animation: fadeIn 1s ease-out;
+}
+
+.wedding-day-message h4 {
+  margin: 0;
+  color: var(--color-primary);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 
 /* Hero Buttons */
 .hero-buttons {
@@ -767,18 +980,89 @@ main, .main-content, #dynamic-sections {
   border: none;
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-light);
-  transition: all var(--transition-medium);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+  position: relative;
+  perspective: 1000px;
+}
+
+/* Create a staggered animation effect based on position */
+.row > [class*="col-"]:nth-child(1) .card-custom { animation-delay: 0.1s; }
+.row > [class*="col-"]:nth-child(2) .card-custom { animation-delay: 0.2s; }
+.row > [class*="col-"]:nth-child(3) .card-custom { animation-delay: 0.3s; }
+.row > [class*="col-"]:nth-child(4) .card-custom { animation-delay: 0.4s; }
+.row > [class*="col-"]:nth-child(5) .card-custom { animation-delay: 0.5s; }
+.row > [class*="col-"]:nth-child(6) .card-custom { animation-delay: 0.6s; }
+
+/* Special animated border for important cards */
+.card-custom.highlight {
+  border: double 4px transparent;
+  background-image: linear-gradient(white, white), 
+                    linear-gradient(to right, var(--color-primary), var(--color-accent));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  position: relative;
+}
+
+.card-custom.highlight::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--color-primary) 0%, 
+    transparent 50%,
+    var(--color-accent) 100%);
+  border-radius: calc(var(--border-radius-md) + 2px);
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(8px);
+  animation: rotateBorder 6s linear infinite;
+}
+
+@keyframes rotateBorder {
+  0% {
+    filter: blur(8px) hue-rotate(0deg);
+  }
+  100% {
+    filter: blur(8px) hue-rotate(360deg);
+  }
 }
 
 .card-custom:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.02);
   box-shadow: var(--shadow-heavy);
+  animation: cardPulse 2s infinite;
+}
+
+.card-custom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(216, 228, 96, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(88, 107, 54, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-custom:hover::before {
+  opacity: 1;
 }
 
 .card-custom .card-body {
@@ -788,6 +1072,13 @@ main, .main-content, #dynamic-sections {
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.5s ease;
+}
+
+.card-custom:hover .card-body {
+  transform: translateZ(10px);
 }
 
 .card-custom .card-title {
@@ -795,6 +1086,30 @@ main, .main-content, #dynamic-sections {
   font-weight: 600;
   color: var(--color-accent-1);
   margin-bottom: 15px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.card-custom:hover .card-title {
+  transform: scale(1.05);
+  color: var(--color-primary);
+}
+
+.card-custom img {
+  transition: all 0.5s ease;
+}
+
+.card-custom:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.card-custom p {
+  transition: all 0.3s ease;
+}
+
+.card-custom:hover p {
+  transform: translateY(2px);
 }
 
 /* Buttons */
@@ -816,19 +1131,126 @@ main, .main-content, #dynamic-sections {
 .btn-primary-custom:hover {
   background: var(--gradient-secondary);
   color: var(--color-secondary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
+  /* Removed transform for better clickability */
+  box-shadow: var(--shadow-light);
+}
+
+.btn-primary-custom:active {
+  /* Removed transform for better clickability */
+  box-shadow: var(--shadow-light);
 }
 
 .btn-outline-custom {
   background: transparent;
   color: var(--color-accent-1);
   border: 2px solid var(--color-accent-1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .btn-outline-custom:hover {
   background: var(--color-accent-1);
   color: var(--color-secondary);
+  /* Removed transform for better clickability */
+  box-shadow: var(--shadow-light);
+}
+
+.btn-outline-custom:active {
+  /* Removed transform for better clickability */
+}
+
+/* Read More button styling */
+button[onclick="openStoryPopup('howWeMet')"] {
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+button[onclick="openStoryPopup('howWeMet')"] i {
+  margin-right: 8px;
+}
+
+button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
+  /* Removed transform for better clickability */
+  box-shadow: 0 4px 8px rgba(88, 107, 54, 0.25);
+}
+
+/* Copy confirmation styling */
+.copy-confirmation {
+  transition: all var(--transition-medium);
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.copy-confirmation.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Button hover effects - reduced for better clickability */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn.pulse {
+  animation: pulse 0.3s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.btn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Notification styling */
+#notification-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.notification {
+  margin-top: 10px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.notification.success {
+  background-color: var(--color-success);
+}
+
+.notification.warning {
+  background-color: var(--color-warning);
+}
+
+.notification.error {
+  background-color: var(--color-error);
+}
+
+.notification.info {
+  background-color: var(--color-info);
+}
+
+.notification i {
+  margin-right: 8px;
 }
 
 /* Forms */
@@ -1024,6 +1446,309 @@ main, .main-content, #dynamic-sections {
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-border-light);
   margin: 20px 0;
+}
+
+/* Couple Container Styling */
+.couple-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  gap: 30px;
+  position: relative;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.couple-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent-2), var(--color-primary), var(--color-accent-2));
+  opacity: 0.5;
+}
+
+.couple-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent-2), var(--color-primary), var(--color-accent-2));
+  opacity: 0.5;
+}
+
+.couple-bride, .couple-groom {
+  flex: 1;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.couple-bride:hover, .couple-groom:hover {
+  transform: translateY(-5px);
+}
+
+.couple-bride img, .couple-groom img {
+  transition: all 0.4s ease;
+  border: 5px solid transparent;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: 230px;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 20px;
+}
+
+.couple-bride img {
+  border-image: linear-gradient(135deg, #FFD1DC, #FF85A2) 1;
+}
+
+.couple-groom img {
+  border-image: linear-gradient(135deg, #A2C579, #586B36) 1;
+}
+
+.couple-bride img:hover, .couple-groom img:hover {
+  transform: scale(1.05);
+}
+
+.couple-love {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+}
+
+.heart-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 50%;
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.heart-icon {
+  font-size: 3.5rem;
+  position: relative;
+  z-index: 3;
+  animation: heartbeat 1.5s infinite;
+  color: #D8E460;
+  background: linear-gradient(to bottom, #D8E460, #A2C579);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(216, 228, 96, 0.6);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.heart-container::before {
+  content: "❤️";
+  position: absolute;
+  font-size: 2.5rem;
+  opacity: 0.3;
+  filter: blur(8px);
+  z-index: 1;
+  animation: float 4s ease-in-out infinite;
+}
+
+.heart-container::after {
+  content: "💘";
+  position: absolute;
+  font-size: 2rem;
+  top: -10px;
+  right: -10px;
+  z-index: 4;
+  animation: rotate 10s linear infinite;
+}
+
+.heart-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(216, 228, 96, 0.3) 0%, rgba(162, 197, 121, 0) 70%);
+  z-index: 2;
+  animation: pulse 2s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.heart-text {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--color-accent-1);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  background: linear-gradient(45deg, var(--color-primary), var(--color-accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .couple-container {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .couple-love {
+    order: 2;
+    margin: 0;
+    transform: scale(0.6);
+    height: 40px;
+  }
+  
+  .couple-bride {
+    order: 1;
+    margin: 0;
+    padding: 10px 0;
+  }
+  
+  .couple-groom {
+    order: 3;
+    margin: 0;
+    padding: 10px 0;
+  }
+  
+  /* Make the dividers thinner on mobile */
+  .couple-container::before,
+  .couple-container::after {
+    height: 1px;
+    opacity: 0.3;
+  }
+  }
+  
+  .couple-bride, .couple-groom {
+    padding: 10px; /* Reduced from 30px 20px */
+  }
+
+  .couple-bride img, .couple-groom img {
+    width: 200px;
+    height: auto;
+  }
+  
+  /* Add subtle visual dividers between sections */
+  .couple-bride::after {
+    content: '';
+    width: 30%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    position: absolute;
+    bottom: -5px; /* Closer to the content */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.5;
+  }
+  
+  .couple-groom::before {
+    content: '';
+    width: 30%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    position: absolute;
+    top: -5px; /* Closer to the content */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.5;
+  }
+  
+  /* Make heart smaller and more compact on mobile */
+  .heart-container {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+  }
+  
+  .heart-icon {
+    font-size: 1.8rem;
+  }
+  
+  /* Adjust the pulse effect to be more compact */
+  .heart-pulse {
+    transform: scale(0.6);
+    max-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .couple-bride img, .couple-groom img {
+    width: 180px;
+    height: auto;
+    max-height: 220px;
+  }
 }
 
 /* Notification Styles */
@@ -1422,16 +2147,16 @@ main, .main-content, #dynamic-sections {
   }
   
   .countdown-item {
-    min-width: 60px;
+    min-width: 70px;
     padding: 10px 8px;
   }
   
   .countdown-number {
-    font-size: 1.2rem;
+    font-size: 1.6rem; /* Increased from 1.2rem */
   }
   
   .countdown-label {
-    font-size: 0.8rem;
+    font-size: 0.95rem; /* Increased from 0.8rem */
   }
 }
 
@@ -1520,16 +2245,17 @@ main, .main-content, #dynamic-sections {
   }
   
   .countdown-item {
-    min-width: 50px;
+    min-width: 55px;
     padding: 6px 4px;
   }
   
   .countdown-number {
-    font-size: 1rem;
+    font-size: 1.4rem; /* Increased from 1rem */
   }
   
   .countdown-label {
-    font-size: 0.7rem;
+    font-size: 0.85rem; /* Increased from 0.7rem */
+    font-weight: 500;
   }
   
   .hero-btn {
@@ -1825,4 +2551,116 @@ main, .main-content, #dynamic-sections {
   .gallery-item::after {
     font-size: 1.5rem;
   }
+}
+
+/* Enhanced Mobile Navigation Styles */
+@media (max-width: 480px) {
+  /* Larger and more touch-friendly nav items for small screens */
+  .navbar-nav .nav-link {
+    padding: 14px 20px !important;
+    font-size: 1.2rem;
+    margin: 10px 0;
+    border-radius: 10px;
+  }
+  
+  /* Add ripple effect on touch */
+  .navbar-nav .nav-link:active {
+    background-color: rgba(88, 107, 54, 0.2);
+    transform: scale(0.98);
+  }
+  
+  /* Improved toggle button for smaller screens */
+  .navbar-toggler {
+    padding: 8px;
+  }
+  
+  /* Make sure the mobile menu has good spacing */
+  .navbar-collapse {
+    padding: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}
+
+/* Enhanced color swatch styling */
+.color-display {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.color-display:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.main-color-swatch {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.main-color-swatch:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.main-color-swatch::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  bottom: -5px;
+  left: -5px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  animation: pulseBorder 2s infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.main-color-swatch:hover::after {
+  opacity: 1;
+}
+
+@keyframes pulseBorder {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+.color-variations {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.variation-item {
+  transition: transform 0.2s ease;
+}
+
+.variation-item:hover {
+  transform: translateY(-3px);
+}
+
+.color-examples {
+  font-style: italic;
+  color: #666;
+}
+
+.color-guide {
+  max-width: 500px;
+  margin: 0 auto;
 }

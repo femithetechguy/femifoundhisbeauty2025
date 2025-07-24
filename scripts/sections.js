@@ -16,33 +16,40 @@ function buildDynamicSections() {
   };
 // Meet the Couple / Wedding Party section renderer
 function createWeddingPartyContent(content) {
-  // Previous/original implementation for Meet the Couple
   return `
     <h2 class="section-title text-center mb-4">Meet the Couple</h2>
     <div class="row">
-      <div class="col-lg-6 mb-4">
-        <div class="card-custom h-100 text-center">
+      <div class="col-12 mb-4">
+        <div class="card-custom h-100">
           <div class="card-body">
-            <img src="${content.bride.photo}" alt="${content.bride.fullName}" class="img-fluid rounded-circle mb-3" style="max-width: 180px;">
-            <h4 class="card-title">${content.bride.fullName}</h4>
-            <p class="text-muted">Bride</p>
-            <p>${content.bride.bio}</p>
-            <ul class="list-unstyled">
-              ${content.bride.funFacts.map(fact => `<li>💡 ${fact}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6 mb-4">
-        <div class="card-custom h-100 text-center">
-          <div class="card-body">
-            <img src="${content.groom.photo}" alt="${content.groom.fullName}" class="img-fluid rounded-circle mb-3" style="max-width: 180px;">
-            <h4 class="card-title">${content.groom.fullName}</h4>
-            <p class="text-muted">Groom</p>
-            <p>${content.groom.bio}</p>
-            <ul class="list-unstyled">
-              ${content.groom.funFacts.map(fact => `<li>💡 ${fact}</li>`).join('')}
-            </ul>
+            <div class="couple-container">
+              <div class="couple-bride">
+                <img src="${content.bride.photo}" alt="${content.bride.fullName}" class="img-fluid rounded mb-3" style="width: 230px; height: auto; max-height: 300px;">
+                <h4 class="card-title">${content.bride.fullName}</h4>
+                <p class="text-muted">Bride</p>
+                <p>${content.bride.bio}</p>
+                <ul class="list-unstyled">
+                  ${content.bride.funFacts.map(fact => `<li>${fact}</li>`).join('')}
+                </ul>
+              </div>
+              
+              <div class="couple-love">
+                <div class="heart-container">
+                  <div class="heart-icon">❤️</div>
+                  <div class="heart-pulse"></div>
+                </div>
+              </div>
+              
+              <div class="couple-groom">
+                <img src="${content.groom.photo}" alt="${content.groom.fullName}" class="img-fluid rounded mb-3" style="width: 230px; height: auto; max-height: 300px;">
+                <h4 class="card-title">${content.groom.fullName}</h4>
+                <p class="text-muted">Groom</p>
+                <p>${content.groom.bio}</p>
+                <ul class="list-unstyled">
+                  ${content.groom.funFacts.map(fact => `<li>${fact}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -279,7 +286,7 @@ function createScriptureThemeContent(content) {
   // Handle scripture as an array
   const scriptures = Array.isArray(content.scripture) ? content.scripture : [content.scripture];
   return `
-    <h2 class="section-title text-center mb-4">Our Watchword</h2>
+    <h2 class="section-title text-center mb-4">Our Anchor Scriptures</h2>
     <div class="row">
       <div class="col-lg-8 mx-auto">
         <div class="card-custom h-100 text-center">
@@ -288,11 +295,24 @@ function createScriptureThemeContent(content) {
             <h4 class="card-title">Our Scripture${scriptures.length > 1 ? 's' : ''}</h4>
             ${scriptures
               .map(
-                (s) =>
-                  `<blockquote class="blockquote mb-3"><p class="lead">"${s.verse}"</p><footer class="blockquote-footer">${s.reference}</footer></blockquote>` +
-                  (s.significance ? `<p class="mt-2">${s.significance}</p>` : '')
+                (s) => `
+                  <div class="scripture-container">
+                    <div class="scripture-verse">
+                      <i class="bi bi-quote me-2"></i>
+                      ${s.verse}
+                      <i class="bi bi-quote ms-2"></i>
+                    </div>
+                    <div class="scripture-reference">
+                      ${s.reference}
+                    </div>
+                    ${s.significance ? 
+                      `<div class="scripture-significance">
+                        <i class="bi bi-heart-fill me-2"></i>${s.significance}
+                      </div>` : ''}
+                  </div>
+                `
               )
-              .join('<hr class="my-3">')}
+              .join('<hr class="scripture-divider my-4">')}
           </div>
         </div>
       </div>
@@ -342,7 +362,7 @@ function createExtrasContent(content) {
           "open.spotify.com/embed/playlist/"
         );
       }
-      html += `<div class="spotify-embed mb-3"><iframe src="${embedUrl}" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>`;
+      html += `<div class="spotify-embed mb-3"><iframe src="${embedUrl}" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media" style="min-width: 320px;"></iframe></div>`;
       if (content.playlist.songs && Array.isArray(content.playlist.songs)) {
         html += '<ul class="playlist-songs">';
         content.playlist.songs.forEach((song) => {
@@ -362,12 +382,13 @@ function createExtrasContent(content) {
       const qr = content.qrCode;
       html += '<div class="card-custom h-100 d-flex flex-column align-items-center justify-content-center">';
       html += '<div class="card-body text-center d-flex flex-column align-items-center justify-content-center">';
-      html += `<h4 class="card-title mb-3"><i class="bi bi-qr-code"></i> Scan to Visit</h4>`;
+      html += `<h4 class="card-title mb-3"><i class="bi bi-qr-code"></i> Scan Me!</h4>`;
       html += `<img src="${qr.image}" alt="QR Code" class="img-fluid mb-3" style="max-width: 220px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">`;
       html += `<p class="mb-2">${qr.description || ''}</p>`;
       html += `<div class="mb-3">`;
       html += `<button class="btn btn-primary-custom btn-share-qr" data-link="${qr.url}"><i class="bi bi-share"></i> Share</button>`;
       html += `<button class="btn btn-outline-custom ms-2 copy-qr-link" data-link="${qr.url}"><i class="bi bi-clipboard"></i> Copy Link</button>`;
+      html += `<span class="copy-confirmation ms-2 text-success" style="display:none; font-size:0.95em;"><i class="bi bi-check-circle"></i> Copied!</span>`;
       html += `</div>`;
       html += '</div></div>';
     }
@@ -394,6 +415,7 @@ function createExtrasContent(content) {
     html += `<button class="btn btn-outline-custom copy-livestream-link" data-link="${content.liveStream.link}">`;
     html += '<i class="bi bi-clipboard"></i> Copy Link';
     html += "</button>";
+    html += `<span class="copy-confirmation ms-2 text-success" style="display:none; font-size:0.95em;"><i class="bi bi-check-circle"></i> Copied!</span>`;
     html += "</div>";
     html += "</div>";
     html += "</div>";
@@ -413,7 +435,7 @@ function createOurStoryContent(content) {
             <h4 class="card-title"><i class="bi bi-heart"></i> ${content.howWeMet.title}</h4>
             <p class="text-muted"><i class="bi bi-geo-alt"></i> ${content.howWeMet.location} • ${content.howWeMet.date}</p>
             <p>${content.howWeMet.story}</p>
-            <button class="btn btn-primary-custom btn-sm mt-2" onclick="openStoryPopup('howWeMet')">
+            <button class="btn btn-primary-custom mt-3 px-4 py-2" onclick="openStoryPopup('howWeMet')">
               <i class="bi bi-book"></i> Read More
             </button>
           </div>
@@ -496,14 +518,16 @@ function createWeddingDetailsContent(content) {
               <div class="color-palette">
                 ${content.dressCode.colors
                   .map((color) => {
-                    let colorName, colorHex;
+                    let colorName, colorHex, variations = [], examples = [];
                     if (typeof color === 'object' && color !== null) {
                       colorName = color.name || '';
                       colorHex = color.hex || '';
+                      variations = color.variations || [];
+                      examples = color.examples || [];
                     } else if (typeof color === 'string') {
                       colorName = color;
                       const colorMap = {
-                        'Olive Green': '#808000',
+                        'Olive Green': '#586B36',
                         'Green': '#008000',
                         'Gold': '#d4af37',
                         'Navy Blue': '#1e3a8a',
@@ -639,19 +663,58 @@ function createWeddingDetailsContent(content) {
                       colorName = '';
                       colorHex = '';
                     }
-                    return `<span class="color-chip" style="display:inline-flex;align-items:center;margin-right:8px;">
-                      <span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${colorHex ? colorHex : 'transparent'};border:1px solid #ccc;margin-right:6px;"></span>
-                      <span>${colorName}</span>
-                    </span>`;
+                    // Create enhanced color display with larger swatch and variations
+                    let html = `
+                      <div class="color-display mb-4">
+                        <div class="main-color-swatch" style="display:inline-block;width:80px;height:80px;border-radius:8px;background:${colorHex ? colorHex : 'transparent'};border:2px solid #ccc;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                        </div>
+                        <h5 class="mt-2 mb-1">${colorName}</h5>
+                    `;
+                    
+                    // Add color variations if available
+                    if (variations && variations.length > 0) {
+                      html += `<div class="color-variations mb-3 mt-2">`;
+                      variations.forEach(variation => {
+                        html += `
+                          <div class="variation-item" style="display:inline-block;margin:0 5px;">
+                            <div style="display:inline-block;width:30px;height:30px;border-radius:4px;background:${variation.hex};border:1px solid #ccc;"></div>
+                            <div class="small text-muted">${variation.name}</div>
+                          </div>
+                        `;
+                      });
+                      html += `</div>`;
+                    }
+                    
+                    // Add example suggestions if available
+                    if (examples && examples.length > 0) {
+                      html += `<div class="color-examples small">
+                        <p>Suggested items: ${examples.join(', ')}</p>
+                      </div>`;
+                    }
+                    
+                    html += `</div>`;
+                    return html;
                   })
                   .join("")}
+                
+                <!-- Add an image example of the color -->
+                <div class="color-guide mt-3">
+                  <div class="row align-items-center">
+                    <div class="col-12">
+                      <div class="alert alert-light" role="alert">
+                        <i class="bi bi-info-circle"></i> 
+                        <strong>Tip:</strong> When shopping, look for colors labeled as Olive Green, Olive, Sage, or Military Green.
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       ${content.virtualAttendance && content.virtualAttendance.enabled
-        ? `<div class="col-lg-6 mb-4"><div class="card-custom h-100"><div class="card-body text-center"><i class="bi bi-laptop display-4 text-primary-custom mb-3"></i><h4 class="card-title">Virtual Attendance</h4><p>${content.virtualAttendance.description}</p><div class="mt-3"><a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom me-2"><i class="bi bi-camera-video"></i> Join Virtually</a><button class="btn btn-outline-custom copy-virtual-link" data-link="${content.virtualAttendance.link}"><i class="bi bi-clipboard"></i> Copy Link</button><span class="copy-confirmation ms-2 text-success" style="display:none; font-size:0.95em;">Copied!</span></div></div></div></div>`
+        ? `<div class="col-lg-6 mb-4"><div class="card-custom h-100"><div class="card-body text-center"><i class="bi bi-laptop display-4 text-primary-custom mb-3"></i><h4 class="card-title">Virtual Attendance</h4><p>${content.virtualAttendance.description}</p><div class="mt-3"><a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom me-2"><i class="bi bi-camera-video"></i> Join Virtually</a><button class="btn btn-outline-custom copy-virtual-link" data-link="${content.virtualAttendance.link}"><i class="bi bi-clipboard"></i> Copy Link</button><span class="copy-confirmation ms-2 text-success" style="display:none; font-size:0.95em;"><i class="bi bi-check-circle"></i> Copied!</span></div></div></div></div>`
         : ''}
     </div>
   `;
