@@ -2703,6 +2703,106 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   transition: all 0.3s ease;
 }
 
+/* Wedding party photos styling */
+.wedding-party-container img {
+  border-radius: 8px !important;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Style for the wedding party cards to accommodate popup effect */
+.wedding-party-card {
+  overflow: visible !important; /* Allow popup to extend beyond card */
+  margin-bottom: 25px; /* Space for popup effect */
+}
+
+.wedding-party-info {
+  position: relative;
+  z-index: 1;
+  padding-top: 10px;
+}
+
+/* We don't need the keyframe animation anymore since we're using transitions */
+
+/* Create a wrapper for the popup effect */
+.wedding-party-image-wrapper {
+  display: inline-block;
+  margin-bottom: 15px;
+  overflow: visible; /* Allow popup effect to extend beyond container */
+  border-radius: 8px;
+  position: relative;
+  padding: 5px;
+  background: transparent;
+  /* Add space around for popup effect */
+  margin: 10px;
+  z-index: 1;
+  transition: z-index 0.01s; /* Quick transition for z-index to ensure proper layering */
+}
+
+/* Add a subtle highlight effect on hover */
+.wedding-party-image-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.5s ease;
+  border-radius: 8px;
+}
+
+/* Soft highlight for bridal party */
+.bridal-party-border .wedding-party-image-wrapper:hover::after {
+  opacity: 1;
+  background: radial-gradient(circle at center, 
+              rgba(255, 192, 203, 0.1) 0%, 
+              rgba(255, 192, 203, 0) 70%);
+  box-shadow: 0 0 15px rgba(255, 192, 203, 0.3);
+}
+
+/* Soft highlight for groomsmen */
+.groomsmen-border .wedding-party-image-wrapper:hover::after {
+  opacity: 1;
+  background: radial-gradient(circle at center, 
+              rgba(125, 143, 92, 0.1) 0%, 
+              rgba(125, 143, 92, 0) 70%);
+  box-shadow: 0 0 15px rgba(125, 143, 92, 0.3);
+}
+
+/* Apply hover effect to bridal party and groomsmen images */
+.bridal-party-border .wedding-party-image-wrapper img,
+.groomsmen-border .wedding-party-image-wrapper img {
+  transform: scale(1) translateY(0);
+  will-change: transform; /* Optimize performance */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* On hover, apply scale up, rise, and enhanced shadow */
+.bridal-party-border .wedding-party-image-wrapper:hover img,
+.groomsmen-border .wedding-party-image-wrapper:hover img {
+  transform: scale(1.25) translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  z-index: 5; /* Ensure hovered image appears above others */
+}
+
+/* When not hovering, smoothly return to original state */
+.bridal-party-border .wedding-party-image-wrapper:not(:hover) img,
+.groomsmen-border .wedding-party-image-wrapper:not(:hover) img {
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Define a class for JavaScript to toggle if needed */
+.flipped {
+  transform: rotateY(180deg) !important;
+}
+
 .bridal-party-border {
   border: 3px solid #FFC0CB; /* Light pink border for bridal party */
   background-color: rgba(255, 192, 203, 0.05);
@@ -2747,9 +2847,155 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   font-weight: bold;
 }
 
+/* Portrait Container Styles */
+.portrait-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bride-photo-container {
+  box-shadow: 0 5px 15px rgba(255, 192, 203, 0.3);
+  border: 3px solid rgba(255, 192, 203, 0.5);
+}
+
+.groom-photo-container {
+  box-shadow: 0 5px 15px rgba(125, 143, 92, 0.3);
+  border: 3px solid rgba(125, 143, 92, 0.5);
+}
+
+.portrait-photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  margin-bottom: 0 !important;
+}
+
+/* Magnifier Icon */
+.magnifier-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.magnifier-icon i {
+  font-size: 20px;
+  color: #333;
+}
+
+.portrait-container:hover .magnifier-icon {
+  opacity: 1;
+}
+
+.portrait-container:hover .portrait-photo {
+  transform: scale(1.1);
+}
+
+/* Portrait Modal */
+.portrait-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.portrait-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+}
+
+.portrait-modal-content {
+  position: relative;
+  background-color: transparent;
+  margin: auto;
+  width: 80%;
+  max-width: 700px;
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.portrait-modal-image {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.portrait-modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.portrait-modal-close:hover {
+  color: #d8e460;
+  transform: scale(1.2);
+}
+
+.bride-modal .portrait-modal-image {
+  border: 5px solid rgba(255, 192, 203, 0.7);
+}
+
+.groom-modal .portrait-modal-image {
+  border: 5px solid rgba(125, 143, 92, 0.7);
+}
+
 /* Media query for mobile responsiveness */
 @media (max-width: 767px) {
   .wedding-party-container {
     padding: 15px 10px;
+  }
+  
+  .couple-photos-section {
+    gap: 10px;
+  }
+  
+  .portrait-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .portrait-modal-content {
+    width: 95%;
   }
 }
