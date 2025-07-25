@@ -386,16 +386,6 @@ function createScheduleContent(content) {
         </div>
       </div>
     </div>
-    ${
-      content.preWeddingEvents.length > 0
-        ? `<div class="row mt-5"><div class="col-12"><h3 class="text-center mb-4">Pre-Wedding Events</h3><div class="row">${content.preWeddingEvents
-            .map(
-              (event) =>
-                `<div class="col-md-6 mb-3"><div class="card-custom"><div class="card-body"><h5>${event.event}</h5><p class="text-muted">${event.date} at ${event.time}</p><p class="text-muted">${event.location}</p><p>${event.description}</p></div></div></div>`
-            )
-            .join("")}</div></div></div>`
-        : ""
-    }
   `;
 }
 
