@@ -360,14 +360,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="section-header text-center">
-                        <h2 class="section-title mb-4">
-                            <i class="bi bi-heart-fill"></i> RSVP
-                        </h2>
-                        <p class="section-subtitle">
-                            We're so excited to celebrate with you! Please respond by <strong>August 31, 2025</strong>
-                        </p>
-                    </div>
+                    <!-- RSVP header will be loaded dynamically from JSON -->
                     
                     <!-- RSVP Container - Content will be loaded from the same source as index.html -->
                     <div id="dynamic-rsvp-container">
@@ -713,7 +706,12 @@
             }
             
             galleryManager = new GalleryManager();
-            initializeRSVPForm();
+            
+            // Load RSVP data (handled by the script at the bottom of the page)
+            loadData().then(() => {
+                initializeDynamicRSVP(); 
+            });
+            
             initializeFooter();
             
             // Initialize floating action button
@@ -726,7 +724,11 @@
                 if (!window.galleryManager) {
                     galleryManager = new GalleryManager();
                 }
-                initializeRSVPForm();
+                
+                loadData().then(() => {
+                    initializeDynamicRSVP();
+                });
+                
                 initializeFooter();
                 if (typeof initFAB === 'function') {
                     initFAB();
@@ -734,90 +736,10 @@
             };
         });
         
-        // Initialize RSVP form
-        function initializeRSVPForm() {
-            const rsvpForm = document.getElementById('rsvpForm');
-            if (rsvpForm) {
-                rsvpForm.onsubmit = function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(rsvpForm);
-                    const submitBtn = rsvpForm.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.innerHTML;
-                    
-                    // Show submitting state
-                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
-                    submitBtn.disabled = true;
-                    
-                    // Simulate form submission (replace with actual endpoint in production)
-                    setTimeout(() => {
-                        rsvpForm.style.display = 'none';
-                        document.getElementById('rsvpConfirmation').style.display = 'block';
-                        
-                        // Reset button state
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    }, 1500);
-                };
-            }
-        }
+        // RSVP initialization is now handled by initializeDynamicRSVP
         
-        // Toggle guest details based on attendance
-        function toggleGuestDetails(attending) {
-            const guestDetailsSection = document.getElementById('guestDetailsSection');
-            if (guestDetailsSection) {
-                guestDetailsSection.style.display = attending ? 'block' : 'none';
-                
-                // Update required attribute for inputs in this section
-                const requiredInputs = guestDetailsSection.querySelectorAll('[required]');
-                requiredInputs.forEach(input => {
-                    input.required = attending;
-                });
-            }
-        }
-        
-        // Initialize RSVP form in gallery
-        function initializeRSVPForm() {
-            const form = document.getElementById('galleryRsvpForm');
-            if (form) {
-                // Set initial state of guest details
-                const attendingYes = document.getElementById('attending_yes');
-                const attendingNo = document.getElementById('attending_no');
-                
-                if (attendingYes && attendingNo) {
-                    toggleGuestDetails(attendingYes.checked);
-                }
-                
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.innerHTML;
-                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
-                    submitBtn.disabled = true;
-                    
-                    fetch(form.action, {
-                        method: form.method,
-                        body: new FormData(form),
-                        headers: { 'Accept': 'application/json' }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            form.style.display = 'none';
-                            document.getElementById('galleryRsvpConfirmation').style.display = 'block';
-                        } else {
-                            alert('There was an error submitting your RSVP. Please try again.');
-                        }
-                    })
-                    .catch(() => {
-                        alert('There was an error submitting your RSVP. Please check your connection and try again.');
-                    })
-                    .finally(() => {
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    });
-                });
-            }
-        }
+        // RSVP form handling is now consolidated in the initializeDynamicRSVP function
+        // and contentLoaded event listener for consistent behavior with index.html
         
         // Initialize footer content
         async function initializeFooter() {
@@ -984,81 +906,35 @@
 
     <!-- RSVP Form Handling Script -->
     <script>
-        // Initialize RSVP form
-        function loadRsvpForm() {
-            // Form is already embedded in the page, just initialize handlers
-            const rsvpForm = document.getElementById('galleryRsvpForm');
-            
-            if (rsvpForm) {
-                console.log("RSVP form found, initializing...");
-                
-                // Add submit event listener
-                rsvpForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const submitBtn = rsvpForm.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
-                        submitBtn.disabled = true;
-                    }
-                    
-                    // Simulate form submission with a delay
-                    setTimeout(() => {
-                        // Hide the form container
-                        const formContainer = document.getElementById('embeddedRsvpForm');
-                        if (formContainer) {
-                            formContainer.style.display = 'none';
-                        }
-                        
-                        // Show the confirmation message
-                        const confirmation = document.getElementById('confirmationMessage');
-                        if (confirmation) {
-                            confirmation.style.display = 'block';
-                        }
-                    }, 1000);
-                });
-                
-                // Handle attendance radio changes
-                const attendingYes = document.getElementById('attendingYes');
-                const attendingNo = document.getElementById('attendingNo');
-                
-                if (attendingYes && attendingNo) {
-                    // Make sure the radio buttons behave correctly
-                    attendingYes.addEventListener('change', function() {
-                        if (this.checked) {
-                            // Show additional fields if needed
-                        }
-                    });
-                    
-                    attendingNo.addEventListener('change', function() {
-                        if (this.checked) {
-                            // Hide additional fields if needed
-                        }
-                    });
-                }
-            } else {
-                console.error("RSVP form not found in the page");
-            }
-        }
+        // RSVP form is now handled by the dynamic implementation via sections.js and the contentLoaded event
         
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM content loaded, initializing gallery RSVP...");
+            
             // Load the JSON data first
-            loadData().then(() => {
-                // Initialize the dynamic RSVP content
-                initializeDynamicRSVP();
-                
-                // RSVP navigation in navbar is handled in gallery-navigation.js
-                
-                // Only handle the floating action button if it exists
-                const fabLink = document.getElementById('rsvp-fab-link');
-                if (fabLink) {
-                    fabLink.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
-                    });
-                }
-            });
+            if (typeof loadData === 'function') {
+                loadData().then(() => {
+                    console.log("Data loaded, initializing dynamic RSVP...");
+                    // Initialize the dynamic RSVP content
+                    initializeDynamicRSVP();
+                    
+                    // RSVP navigation in navbar is handled in gallery-navigation.js
+                    
+                    // Only handle the floating action button if it exists
+                    const fabLink = document.getElementById('rsvp-fab-link');
+                    if (fabLink) {
+                        fabLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
+                        });
+                    }
+                }).catch(error => {
+                    console.error("Error loading data:", error);
+                });
+            } else {
+                console.error("loadData function not found. Make sure data.js is loaded properly.");
+            }
         });
         
         // Function to initialize the dynamic RSVP content
@@ -1087,6 +963,29 @@
             // Initialize RSVP functionality
             document.dispatchEvent(new CustomEvent('contentLoaded'));
             console.log('Dynamic RSVP content loaded successfully');
+            
+            // Register functions for conditional sections
+            window.showAttendanceDetails = function() {
+                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                conditionalSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+            };
+            
+            window.hideAttendanceDetails = function() {
+                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                conditionalSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+            };
+            
+            window.toggleAttendanceDetails = function(isAttending) {
+                if (isAttending) {
+                    window.showAttendanceDetails();
+                } else {
+                    window.hideAttendanceDetails();
+                }
+            };
         }
         
         // Add an event listener for the contentLoaded event to initialize the form
@@ -1100,13 +999,45 @@
                     hideAttendanceDetails();
                 }
                 
-                // Check if first radio button (Yes) is selected
-                const yesRadio = document.getElementById('attendance_0');
-                if (yesRadio && yesRadio.checked) {
-                    if (typeof showAttendanceDetails === 'function') {
-                        showAttendanceDetails();
+                // Initialize radio buttons for attendance
+                const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+                if (attendanceRadios.length > 0) {
+                    attendanceRadios.forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            if (this.value === 'yes') {
+                                if (typeof showAttendanceDetails === 'function') {
+                                    showAttendanceDetails();
+                                }
+                            } else {
+                                if (typeof hideAttendanceDetails === 'function') {
+                                    hideAttendanceDetails();
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Check if first radio button (Yes) is selected
+                    const yesRadio = document.getElementById('attendance_0');
+                    if (yesRadio && yesRadio.checked) {
+                        if (typeof showAttendanceDetails === 'function') {
+                            showAttendanceDetails();
+                        }
                     }
                 }
+                
+                // Initialize all conditional fields
+                const conditionalFields = document.querySelectorAll('[data-depends-on]');
+                conditionalFields.forEach(field => {
+                    const dependsOn = field.getAttribute('data-depends-on');
+                    const showWhen = field.getAttribute('data-show-when');
+                    const dependentInput = document.querySelector(`input[name="${dependsOn}"]:checked`);
+                    
+                    if (dependentInput && dependentInput.value === showWhen) {
+                        field.style.display = 'block';
+                    } else {
+                        field.style.display = 'none';
+                    }
+                });
                 
                 // Handle form submission
                 rsvpForm.addEventListener('submit', function(e) {
@@ -1118,14 +1049,31 @@
                     submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
                     submitBtn.disabled = true;
                     
-                    // Simulate form submission with a delay (replace with actual submission if needed)
-                    setTimeout(() => {
-                        rsvpForm.style.display = 'none';
-                        const confirmation = document.getElementById('rsvpConfirmation');
-                        if (confirmation) {
-                            confirmation.style.display = 'block';
+                    // Use formspree for actual submission
+                    fetch(rsvpForm.getAttribute('action'), {
+                        method: rsvpForm.getAttribute('method'),
+                        body: new FormData(rsvpForm),
+                        headers: {
+                            'Accept': 'application/json'
                         }
-                    }, 1500);
+                    }).then(response => {
+                        if (response.ok) {
+                            rsvpForm.style.display = 'none';
+                            const confirmation = document.getElementById('rsvpConfirmation');
+                            if (confirmation) {
+                                confirmation.style.display = 'block';
+                            }
+                        } else {
+                            alert('There was an error submitting your RSVP. Please try again.');
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        alert('There was an error submitting your RSVP. Please try again later.');
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    });
                 });
             }
         });
