@@ -369,98 +369,14 @@
                         </p>
                     </div>
                     
-                    <!-- RSVP Form -->
-                    <div id="embeddedRsvpForm" class="card-custom">
-                        <div class="card-body">
-                            <form id="galleryRsvpForm" class="form-custom">
-                                <!-- Personal Information -->
-                                <div class="form-section mb-4">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-person"></i> Personal Information
-                                    </h4>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName" class="form-label">First Name *</label>
-                                            <input type="text" class="form-control" id="firstName" name="firstName" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="lastName" class="form-label">Last Name *</label>
-                                            <input type="text" class="form-control" id="lastName" name="lastName" required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="email" class="form-label">Email Address *</label>
-                                            <input type="email" class="form-control" id="email" name="email" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="phone" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="phone" name="phone">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Attendance -->
-                                <div class="form-section mb-4">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-calendar-check"></i> Attendance
-                                    </h4>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Will you be attending? *</label>
-                                        <div class="attendance-options">
-                                            <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="radio" name="attendance" id="attendingYes" value="yes" required>
-                                                <label class="form-check-label" for="attendingYes">
-                                                    <i class="bi bi-heart-fill text-primary-custom"></i>
-                                                    Yes, I'll be there! Can't wait to celebrate with you!
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="radio" name="attendance" id="attendingNo" value="no" required>
-                                                <label class="form-check-label" for="attendingNo">
-                                                    <i class="bi bi-heart text-muted"></i>
-                                                    Sorry, I can't make it, but I'm thinking of you!
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Special Message -->
-                                <div class="form-section mb-4">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-chat-heart"></i> Special Message
-                                    </h4>
-                                    
-                                    <div class="mb-3">
-                                        <label for="specialMessage" class="form-label">Leave us a special message or blessing</label>
-                                        <textarea class="form-control" id="specialMessage" name="specialMessage" rows="4" placeholder="We'd love to hear your thoughts, wishes, or any special memories you'd like to share..."></textarea>
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary-custom btn-lg px-5">
-                                        <i class="bi bi-heart-fill"></i> Submit RSVP
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <!-- Confirmation Message (hidden initially) -->
-                    <div id="confirmationMessage" class="card-custom mt-4" style="display: none;">
-                        <div class="card-body text-center">
-                            <i class="bi bi-check-circle display-4 text-success mb-3"></i>
-                            <h3>Thank You!</h3>
-                            <p class="lead">Your RSVP has been submitted successfully.</p>
-                            <p>We can't wait to celebrate with you on our special day!</p>
-                            <a href="index.html" class="btn btn-outline-custom">
-                                <i class="bi bi-house"></i> Back to Home
-                            </a>
+                    <!-- RSVP Container - Content will be loaded from the same source as index.html -->
+                    <div id="dynamic-rsvp-container">
+                        <!-- Content will be loaded dynamically by sections.js -->
+                        <div class="text-center p-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading RSVP form...</p>
                         </div>
                     </div>
                 </div>
@@ -959,6 +875,7 @@
     <!-- Critical Modularized JavaScript (load first) -->
     <script src="scripts/data.js"></script>
     <script src="scripts/utils.js"></script>
+    <script src="scripts/sections.js"></script>
     
     <!-- Feature JavaScript -->
     <script src="scripts/colors.js" defer></script>
@@ -1126,17 +1043,89 @@
         
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the RSVP form when the page loads
-            loadRsvpForm();
+            // Load the JSON data first
+            loadData().then(() => {
+                // Initialize the dynamic RSVP content
+                initializeDynamicRSVP();
+                
+                // RSVP navigation in navbar is handled in gallery-navigation.js
+                
+                // Only handle the floating action button if it exists
+                const fabLink = document.getElementById('rsvp-fab-link');
+                if (fabLink) {
+                    fabLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
+            });
+        });
+        
+        // Function to initialize the dynamic RSVP content
+        function initializeDynamicRSVP() {
+            const dynamicRsvpContainer = document.getElementById('dynamic-rsvp-container');
+            if (!dynamicRsvpContainer) {
+                console.error('Dynamic RSVP container not found');
+                return;
+            }
             
-            // RSVP navigation in navbar is handled in gallery-navigation.js
+            // Check if we have the necessary functions and data
+            if (typeof createRSVPContent !== 'function') {
+                console.error('createRSVPContent function not found. Make sure sections.js is loaded properly.');
+                return;
+            }
             
-            // Only handle the floating action button if it exists
-            const fabLink = document.getElementById('rsvp-fab-link');
-            if (fabLink) {
-                fabLink.addEventListener('click', function(e) {
+            if (!window.rsvpData || Object.keys(window.rsvpData).length === 0) {
+                console.error('RSVP data not loaded. Make sure data.js is loaded properly and rsvp.json exists.');
+                return;
+            }
+            
+            // Create the RSVP content using the same function as index.html
+            const rsvpHTML = createRSVPContent(window.rsvpData);
+            dynamicRsvpContainer.innerHTML = rsvpHTML;
+            
+            // Initialize RSVP functionality
+            document.dispatchEvent(new CustomEvent('contentLoaded'));
+            console.log('Dynamic RSVP content loaded successfully');
+        }
+        
+        // Add an event listener for the contentLoaded event to initialize the form
+        document.addEventListener('contentLoaded', function() {
+            const rsvpForm = document.getElementById('rsvpForm');
+            if (rsvpForm) {
+                console.log('RSVP form found in gallery.html, initializing...');
+                
+                // Set the initial state (hide attendance details by default)
+                if (typeof hideAttendanceDetails === 'function') {
+                    hideAttendanceDetails();
+                }
+                
+                // Check if first radio button (Yes) is selected
+                const yesRadio = document.getElementById('attendance_0');
+                if (yesRadio && yesRadio.checked) {
+                    if (typeof showAttendanceDetails === 'function') {
+                        showAttendanceDetails();
+                    }
+                }
+                
+                // Handle form submission
+                rsvpForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
+                    
+                    var submitBtn = rsvpForm.querySelector('button[type="submit"]');
+                    var originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate form submission with a delay (replace with actual submission if needed)
+                    setTimeout(() => {
+                        rsvpForm.style.display = 'none';
+                        const confirmation = document.getElementById('rsvpConfirmation');
+                        if (confirmation) {
+                            confirmation.style.display = 'block';
+                        }
+                    }, 1500);
                 });
             }
         });
