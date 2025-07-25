@@ -2656,6 +2656,12 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .color-display:hover {
@@ -2674,22 +2680,15 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+/* Removed the dashed border that was causing overlap issues */
 .main-color-swatch::after {
-  content: '';
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  bottom: -5px;
-  left: -5px;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  animation: pulseBorder 2s infinite;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  content: none;
+  /* All properties removed to prevent any visual issues */
 }
 
 .main-color-swatch:hover::after {
-  opacity: 1;
+  /* No effect since content is set to none */
+  /* opacity: 1; */
 }
 
 @keyframes pulseBorder {

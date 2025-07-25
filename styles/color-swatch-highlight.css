@@ -1,0 +1,72 @@
+/* 
+ * Color Swatch Highlight Styles
+ * This file contains styles specifically for highlighting the main color (Olive Green) in the color palette
+ */
+
+/* Special styling for the Olive Green swatch */
+.color-display.mb-4.col-md-6:has(.main-color-swatch[style*="#586B36"]) {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+/* Add a primary color badge to the Olive Green swatch - REMOVED to prevent text overlap */
+/* .main-color-swatch[style*="#586B36"]:before {
+  content: 'Primary Color';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-accent-1);
+  color: white;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  z-index: 2;
+} */
+
+/* Enhance the Olive Green swatch appearance */
+.main-color-swatch[style*="#586B36"] {
+  border: 3px solid var(--color-accent-1);
+  box-shadow: 0 5px 15px rgba(88, 107, 54, 0.3);
+  transform: scale(1.1);
+}
+
+/* Alternate styling for browsers that don't support :has() */
+h5:contains("Olive Green"), 
+h5[title*="Olive Green"] {
+  font-weight: 700;
+  position: relative;
+}
+
+/* Removed star symbol that might overlap with text */
+h5:contains("Olive Green"):after, 
+h5[title*="Olive Green"]:after {
+  /* content: ' ★'; */
+  color: var(--color-accent-1);
+}
+
+/* Fallback for direct swatch targeting */
+.color-display h5:contains("Olive Green") + .main-color-swatch,
+.color-display h5[title*="Olive Green"] + .main-color-swatch {
+  margin: 0 auto;
+  border: 3px solid var(--color-accent-1);
+}
+
+/* Add responsive adjustments */
+@media (max-width: 768px) {
+  .color-display.mb-4.col-md-6:has(.main-color-swatch[style*="#586B36"]) {
+    transform: scale(1.05);
+    margin-bottom: 25px !important;
+  }
+  
+  .main-color-swatch[style*="#586B36"] {
+    transform: scale(1.05);
+  }
+}

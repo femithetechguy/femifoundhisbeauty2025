@@ -979,7 +979,7 @@ function createWeddingDetailsContent(content) {
             <h4 class="card-title text-center"><i class="bi bi-palette"></i> Dress Code + Color</h4>
             <div class="text-center">
               <p class="mb-3">${content.dressCode.description}</p>
-              <div class="color-palette row">
+              <div class="color-palette row justify-content-center">
                 ${content.dressCode.colors
                   .map((color) => {
                     let colorName, colorHex, variations = [], examples = [];
@@ -1128,11 +1128,12 @@ function createWeddingDetailsContent(content) {
                       colorHex = '';
                     }
                     // Create enhanced color display with larger swatch and variations
+                    const isOliveGreen = colorName === "Olive Green";
                     let html = `
-                      <div class="color-display mb-4 col-md-6">
-                        <div class="main-color-swatch" style="display:inline-block;width:80px;height:80px;border-radius:8px;background:${colorHex ? colorHex : 'transparent'};border:2px solid #ccc;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                      <div class="color-display mb-4 col-md-6 ${isOliveGreen ? 'primary-color-container' : ''}">
+                        <div class="main-color-swatch" style="display:inline-block;width:80px;height:80px;border-radius:8px;background:${colorHex ? colorHex : 'transparent'};border:2px solid #ccc;box-shadow:0 2px 8px rgba(0,0,0,0.1);" ${isOliveGreen ? 'title="Primary Wedding Color"' : ''}>
                         </div>
-                        <h5 class="mt-2 mb-1">${colorName}</h5>
+                        <h5 class="mt-2 mb-1" ${isOliveGreen ? 'title="Olive Green - Primary Wedding Color"' : ''}>${colorName}</h5>
                     `;
                     
                     // Add color variations if available

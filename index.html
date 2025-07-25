@@ -6,10 +6,7 @@
     <title>EwaFemi2025 Wedding</title>
     <script>
       // Global handler for guest message forms
-      window.s       <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script> GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>stMessageSuccess = function(formId, successId) {
+      window.guestMessageSuccess = function(formId, successId) {
         console.log(`Global handler called for form ${formId} and success ${successId}`);
         const form = document.getElementById(formId);
         const success = document.getElementById(successId);
@@ -53,6 +50,9 @@
     <link rel="stylesheet" href="styles/rsvp.css" />
     <link rel="stylesheet" href="styles/dynamic-content.css" />
     <link rel="stylesheet" href="styles/special-message-fix.css" />
+    <link rel="stylesheet" href="styles/color-swatch-highlight.css" />
+    <link rel="stylesheet" href="styles/primary-color-highlight.css" />
+    <link rel="stylesheet" href="styles/color-center-fix.css" />
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -384,5 +384,8 @@
         </div>
       </div>
     </div>
+    
+    <!-- Custom Scripts -->
+    <script src="scripts/color-highlight.js"></script>
   </body>
 </html>

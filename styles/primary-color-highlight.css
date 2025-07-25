@@ -1,0 +1,77 @@
+.primary-color-container {
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem !important;
+  padding: 1rem;
+  background: rgba(88, 107, 54, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(88, 107, 54, 0.1);
+}
+
+/* Removed top line that was overlapping with text */
+/* .primary-color-container::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-accent-1);
+  border-radius: 2px;
+} */
+
+/* Modified label position to prevent overlap */
+.primary-color-container::after {
+  content: 'Primary Wedding Color';
+  position: absolute;
+  bottom: -10px; /* Moved from top to bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-accent-1);
+  color: white;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.primary-color-container .main-color-swatch {
+  transform: scale(1.15);
+  border: 3px solid var(--color-accent-1) !important;
+  box-shadow: 0 8px 16px rgba(88, 107, 54, 0.2) !important;
+}
+
+.primary-color-container h5 {
+  font-weight: 700;
+  color: var(--color-accent-1);
+  margin-top: 0.75rem !important;
+}
+
+/* Add an animation to draw attention */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(88, 107, 54, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(88, 107, 54, 0.5);
+  }
+}
+
+.primary-color-container .main-color-swatch {
+  animation: pulseGlow 3s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .primary-color-container {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 85%;
+  }
+}

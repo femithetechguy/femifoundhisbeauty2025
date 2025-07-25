@@ -69,5 +69,5 @@ function fixSpecialMessageSectionVisibility() {
 // Run the fix
 fixSpecialMessageSectionVisibility();
 
-// Export the function so it can be called from other files if needed
-export { fixSpecialMessageSectionVisibility };
+// Make the function available globally instead of using export
+window.fixSpecialMessageSectionVisibility = fixSpecialMessageSectionVisibility;
