@@ -4,23 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery - EwaFemi2025 Wedding</title>
-    <meta name="description" content="Browse through our beautiful collection of photos from engagement to wedding day">
-    
+    <script>
+      // Global handler for guest message forms
+      window.showGuestMessageSuccess = function(formId, successId) {
+        console.log(`Global handler called for form ${formId} and success ${successId}`);
+        const form = document.getElementById(formId);
+        const success = document.getElementById(successId);
+        if (form && success) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+          setTimeout(() => {
+            success.classList.add('animate-in');
+          }, 10);
+        }
+      };
+    </script>
+    <meta
+      name="description"
+      content="Browse through our beautiful collection of photos from engagement to wedding day"
+    />
+    <meta
+      name="keywords"
+      content="wedding, Beauty, Femi, 2025, Lagos, Nigeria, gallery, photos"
+    />
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family:Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/responsive-fixes.css">
+    <link rel="stylesheet" href="styles/form-messages.css">
+    <link rel="stylesheet" href="styles/rsvp.css">
     <!-- Gallery Styles -->
     <link rel="stylesheet" href="styles/gallery-styles.css">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ImageGallery",
+      "name": "Beauty & Femi's Wedding Gallery",
+      "about": {
+        "@type": "Event",
+        "name": "Beauty & Femi's Wedding",
+        "startDate": "2025-09-26T16:00:00",
+        "endDate": "2025-09-26T23:00:00",
+        "location": {
+          "@type": "Place",
+          "name": "Grace Cathedral",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Lagos",
+            "addressCountry": "Nigeria"
+          }
+        }
+      },
+      "image": "/images/couple-main.jpg",
+      "description": "Photo gallery from Beauty and Femi's wedding celebration"
+    }
+    </script>
 </head>
 
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-content">
+        <div class="loading-rings">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+        <h3 class="loading-text">EwaFemi2025</h3>
+      </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top custom-navbar">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top custom-navbar" id="mainNavbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <span class="brand-text">B & F</span>
@@ -32,19 +95,14 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto" id="navbarMenu">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">
                             <i class="bi bi-house"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="gallery.html">
-                            <i class="bi bi-images"></i> Gallery
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#rsvp">
+                        <a class="nav-link" href="rsvp.html" id="rsvp-nav-link">
                             <i class="bi bi-heart-fill"></i> RSVP
                         </a>
                     </li>
@@ -53,17 +111,19 @@
         </div>
     </nav>
 
-    <!-- Gallery Hero Section -->
-    <section class="gallery-hero d-flex align-items-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-4 mb-4">Our Gallery</h1>
-                    <p class="lead mb-0">Capturing the beautiful moments of our love story</p>
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Gallery Hero Section -->
+        <section class="gallery-hero d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto text-center">
+                        <h1 class="display-4 mb-4">Our Gallery</h1>
+                        <p class="lead mb-0">Capturing the beautiful moments of our love story</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
     <!-- Gallery Stats -->
     <section class="gallery-stats">
@@ -91,79 +151,6 @@
                     <div class="stat-item">
                         <div class="stat-number" id="memoriesCount">∞</div>
                         <div class="stat-label">Love & Memories</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Photo Upload Section -->
-    <section class="upload-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <div class="upload-card">
-                        <div class="text-center mb-3">
-                            <i class="bi bi-cloud-upload upload-icon"></i>
-                            <h4 class="mb-2">Share Your Photos</h4>
-                            <p class="text-muted">Upload your favorite moments from our special day!</p>
-                        </div>
-                        
-                        <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
-                            <div class="upload-area" id="uploadArea">
-                                <input type="file" id="photoInput" name="photo" class="file-input" accept="image/*" multiple>
-                                <div class="upload-content">
-                                    <i class="bi bi-images display-4 text-muted mb-3"></i>
-                                    <h5>Drop photos here or click to browse</h5>
-                                    <p class="text-muted mb-3">Support: JPG, PNG, GIF (Max 10MB per file)</p>
-                                    <button type="button" class="btn upload-btn" onclick="document.getElementById('photoInput').click()">
-                                        <i class="bi bi-plus-circle"></i> Choose Photos
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div class="upload-preview" id="uploadPreview">
-                                <h6>Selected Photos:</h6>
-                                <div id="previewContainer" class="d-flex flex-wrap gap-2 mt-2"></div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="uploaderName" class="form-label">Your Name</label>
-                                        <input type="text" class="form-control" id="uploaderName" name="name" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="uploaderEmail" class="form-label">Email/Phone (optional)</label>
-                                        <input type="text" class="form-control" id="uploaderEmail" name="email_phone">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="upload-progress" id="uploadProgress">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                                         role="progressbar" style="width: 0%"></div>
-                                </div>
-                                <p class="text-center mt-2">Uploading photos...</p>
-                            </div>
-                            
-                            <div class="success-message" id="successMessage">
-                                <i class="bi bi-check-circle"></i> Thank you! Your photos have been uploaded successfully.
-                            </div>
-                            
-                            <div class="error-message" id="errorMessage">
-                                <i class="bi bi-exclamation-triangle"></i> <span id="errorText">Something went wrong. Please try again.</span>
-                            </div>
-                            
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn upload-btn btn-lg" id="submitBtn">
-                                    <i class="bi bi-cloud-upload"></i> Upload Photos
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -368,16 +355,36 @@
         </button>
     </div>
 
+    <!-- RSVP Section -->
+    <section id="rsvp" class="section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- RSVP header will be loaded dynamically from JSON -->
+                    
+                    <!-- RSVP Container - Content will be loaded from the same source as index.html -->
+                    <div id="dynamic-rsvp-container">
+                        <!-- Content will be loaded dynamically by sections.js -->
+                        <div class="text-center p-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading RSVP form...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
     <!-- Footer -->
     <footer class="footer">
         <!-- Footer content will be loaded dynamically from JSON -->
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- Gallery JavaScript -->
-    <script>
+    <script type="text/javascript">
         class GalleryManager {
             constructor() {
                 this.currentCategory = 'all';
@@ -395,14 +402,12 @@
                     whiteWedding: [],
                     specialMoments: []
                 };
-                this.selectedFiles = [];
                 this.init();
             }
 
             async init() {
                 await this.loadPhotos();
                 this.setupEventListeners();
-                this.setupUploadHandlers();
                 this.displayPhotos('all');
             }
 
@@ -500,7 +505,7 @@
                 document.getElementById('photoCategories').textContent = categoriesWithPhotos.size;
                 
                 // Calculate days together (from when they first met)
-                const relationshipStart = new Date('2020-01-15'); // When Beauty & Femi first met
+                const relationshipStart = new Date('2023-06-16'); // When Beauty & Femi first met
                 const today = new Date();
                 const daysTogether = Math.floor((today - relationshipStart) / (1000 * 60 * 60 * 24));
                 document.getElementById('daysTogether').textContent = daysTogether + '+';
@@ -651,202 +656,9 @@
                 }
             }
 
-            setupUploadHandlers() {
-                const uploadArea = document.getElementById('uploadArea');
-                const fileInput = document.getElementById('photoInput');
-                const uploadForm = document.getElementById('uploadForm');
 
-                if (!uploadArea || !fileInput || !uploadForm) return;
 
-                // File input change
-                fileInput.addEventListener('change', (e) => {
-                    this.handleFileSelection(e.target.files);
-                });
 
-                // Drag and drop
-                uploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.add('dragover');
-                });
-
-                uploadArea.addEventListener('dragleave', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('dragover');
-                });
-
-                uploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('dragover');
-                    this.handleFileSelection(e.dataTransfer.files);
-                });
-
-                // Form submission
-                uploadForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleUpload();
-                });
-            }
-
-            handleFileSelection(files) {
-                this.selectedFiles = Array.from(files);
-                this.displayFilePreview();
-            }
-
-            displayFilePreview() {
-                const previewContainer = document.getElementById('previewContainer');
-                const uploadPreview = document.getElementById('uploadPreview');
-
-                if (!previewContainer || !uploadPreview) return;
-
-                if (this.selectedFiles.length === 0) {
-                    uploadPreview.style.display = 'none';
-                    return;
-                }
-
-                uploadPreview.style.display = 'block';
-                previewContainer.innerHTML = '';
-
-                this.selectedFiles.forEach((file, index) => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const previewDiv = document.createElement('div');
-                            previewDiv.className = 'position-relative';
-                            previewDiv.innerHTML = `
-                                <img src="${e.target.result}" class="preview-image" alt="Preview">
-                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
-                                        onclick="galleryManager.removeFile(${index})" style="transform: translate(50%, -50%);">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            `;
-                            previewContainer.appendChild(previewDiv);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-
-            removeFile(index) {
-                this.selectedFiles.splice(index, 1);
-                this.displayFilePreview();
-                
-                // Update file input
-                const dt = new DataTransfer();
-                this.selectedFiles.forEach(file => dt.items.add(file));
-                document.getElementById('photoInput').files = dt.files;
-            }
-
-            async handleUpload() {
-                if (this.selectedFiles.length === 0) {
-                    this.showError('Please select at least one photo to upload.');
-                    return;
-                }
-
-                const form = document.getElementById('uploadForm');
-                const submitBtn = document.getElementById('submitBtn');
-                const progressSection = document.getElementById('uploadProgress');
-                const progressBar = progressSection.querySelector('.progress-bar');
-
-                // Show progress
-                progressSection.style.display = 'block';
-                submitBtn.disabled = true;
-                this.hideMessages();
-
-                try {
-                    // Create FormData
-                    const formData = new FormData();
-                    
-                    // Add form fields
-                    formData.append('name', document.getElementById('uploaderName').value);
-                    formData.append('email_phone', document.getElementById('uploaderEmail').value);
-                    formData.append('_subject', 'Photo Upload for Beauty & Femi Wedding');
-                    formData.append('_next', `${window.location.origin}/gallery.html?success=true`);
-                    formData.append('_format', 'json');
-
-                    // Add files
-                    this.selectedFiles.forEach((file, index) => {
-                        formData.append(`photo_${index}`, file);
-                    });
-
-                    // Simulate progress
-                    let progress = 0;
-                    const progressInterval = setInterval(() => {
-                        progress += Math.random() * 30;
-                        if (progress > 90) progress = 90;
-                        progressBar.style.width = progress + '%';
-                    }, 500);
-
-                    // Submit to Formspree
-                    const response = await fetch('https://formspree.io/f/mnnzanqe', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    clearInterval(progressInterval);
-                    progressBar.style.width = '100%';
-
-                    if (response.ok) {
-                        setTimeout(() => {
-                            this.showSuccess();
-                            this.resetForm();
-                            // Refresh photos and update statistics after successful upload
-                            setTimeout(() => {
-                                this.loadPhotos();
-                            }, 2000);
-                        }, 500);
-                    } else {
-                        throw new Error('Upload failed');
-                    }
-
-                } catch (error) {
-                    console.error('Upload error:', error);
-                    this.showError('Upload failed. Please try again.');
-                } finally {
-                    setTimeout(() => {
-                        progressSection.style.display = 'none';
-                        submitBtn.disabled = false;
-                        progressBar.style.width = '0%';
-                    }, 1000);
-                }
-            }
-
-            showSuccess() {
-                const successMessage = document.getElementById('successMessage');
-                if (successMessage) {
-                    successMessage.style.display = 'block';
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                    }, 5000);
-                }
-            }
-
-            showError(message) {
-                const errorMessage = document.getElementById('errorMessage');
-                const errorText = document.getElementById('errorText');
-                if (errorMessage && errorText) {
-                    errorText.textContent = message;
-                    errorMessage.style.display = 'block';
-                    setTimeout(() => {
-                        errorMessage.style.display = 'none';
-                    }, 5000);
-                }
-            }
-
-            hideMessages() {
-                const successMessage = document.getElementById('successMessage');
-                const errorMessage = document.getElementById('errorMessage');
-                if (successMessage) successMessage.style.display = 'none';
-                if (errorMessage) errorMessage.style.display = 'none';
-            }
-
-            resetForm() {
-                const uploadForm = document.getElementById('uploadForm');
-                if (uploadForm) {
-                    uploadForm.reset();
-                    this.selectedFiles = [];
-                    this.displayFilePreview();
-                }
-            }
 
             setupTouchNavigation() {
                 const lightboxModal = document.getElementById('lightboxModal');
@@ -882,52 +694,389 @@
         // Initialize gallery when page loads
         let galleryManager;
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize loading screen
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                setTimeout(() => {
+                    loadingScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }, 1000);
+            }
+            
             galleryManager = new GalleryManager();
-            loadFooterContent();
+            
+            // Load RSVP data (handled by the script at the bottom of the page)
+            loadData().then(() => {
+                initializeDynamicRSVP(); 
+            });
+            
+            initializeFooter();
+            
+            // Initialize floating action button
+            if (typeof initFAB === 'function') {
+                initFAB();
+            }
+            
+            // Expose a function that can be called when the page is loaded dynamically
+            window.initGalleryPage = function() {
+                if (!window.galleryManager) {
+                    galleryManager = new GalleryManager();
+                }
+                
+                loadData().then(() => {
+                    initializeDynamicRSVP();
+                });
+                
+                initializeFooter();
+                if (typeof initFAB === 'function') {
+                    initFAB();
+                }
+            };
         });
         
-        // Load footer content from JSON
-        async function loadFooterContent() {
-            try {
-                const response = await fetch('./json/footer.json');
-                const footerData = await response.json();
-                const footer = footerData.footer;
-                
-                const footerElement = document.querySelector('.footer');
-                const footerHTML = `
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="footer-content">
-                                    <h5>${footer.leftColumn.title}</h5>
-                                    <p>${footer.leftColumn.subtitle}</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="footer-hashtag">
-                                    <h3>${footer.rightColumn.hashtag}</h3>
-                                    <p>${footer.rightColumn.message}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="footer-divider">
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                <p class="footer-copyright">
-                                    ${footer.copyright.text}
-                                    <br>
-                                    <small>${footer.copyright.attribution.text} <i class="${footer.copyright.attribution.icon}"></i> by <a href="${footer.copyright.attribution.linkUrl}" target="${footer.copyright.attribution.linkTarget}" rel="${footer.copyright.attribution.linkRel}" class="${footer.copyright.attribution.linkClass}">${footer.copyright.attribution.linkText}</a></small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                footerElement.innerHTML = footerHTML;
-            } catch (error) {
-                console.error('Error loading footer:', error);
-            }
+        // RSVP initialization is now handled by initializeDynamicRSVP
+        
+        // RSVP form handling is now consolidated in the initializeDynamicRSVP function
+        // and contentLoaded event listener for consistent behavior with index.html
+        
+        // Initialize footer content
+        async function initializeFooter() {
+          try {
+            const footers = document.querySelectorAll('.footer');
+            
+            footers.forEach(footer => {
+              renderFooterContent(footer);
+            });
+          } catch (error) {
+            console.error("Error initializing footer:", error);
+          }
         }
+        
+        // Render footer content from JSON data
+        function renderFooterContent(footerElement) {
+          const footer = footerData.footer;
+          
+          const footerHTML = `
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="footer-content">
+                    <h5>${footer.leftColumn.title}</h5>
+                    <p>${footer.leftColumn.subtitle}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="footer-hashtag">
+                    <h3>${footer.rightColumn.hashtag}</h3>
+                    <p>${footer.rightColumn.message}</p>
+                  </div>
+                </div>
+              </div>
+              <hr class="footer-divider">
+              <div class="row">
+                <div class="col-12 text-center">
+                  <p class="footer-copyright">
+                    ${footer.copyright.text}
+                    <br>
+                    <small>${footer.copyright.attribution.text} <i class="${footer.copyright.attribution.icon}"></i> by <a href="${footer.copyright.attribution.linkUrl}" target="${footer.copyright.attribution.linkTarget}" rel="${footer.copyright.attribution.linkRel}" class="${footer.copyright.attribution.linkClass}">${footer.copyright.attribution.linkText}</a></small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          footerElement.innerHTML = footerHTML;
+        }
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    
+    <!-- Critical Modularized JavaScript (load first) -->
+    <script src="scripts/data.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/sections.js"></script>
+    
+    <!-- Feature JavaScript -->
+    <script src="scripts/colors.js" defer></script>
+    <script src="scripts/gallery-navigation.js" defer></script>
+    <script src="scripts/footer.js" defer></script>
+    <script src="scripts/gallery.js" defer></script>
+    <script src="scripts/forms.js" defer></script>
+    <script src="scripts/copy-buttons.js" defer></script>
+    <script src="scripts/share.js" defer></script>
+    <script src="scripts/card-animations.js" defer></script>
+    
+    <!-- Main init scripts (load last) -->
+    <script src="scripts/gallery-init.js" defer></script>
+    <!-- script.js is intentionally excluded to prevent navigation overrides -->
+    <script src="scripts/fab.js" defer></script>
+    
+    <!-- Final Navigation Override - Ensure the gallery navigation is not overridden -->
+    <script>
+      // Run this script last to ensure the navigation shows correctly
+      document.addEventListener("DOMContentLoaded", function() {
+        // Run after a delay to ensure it overrides any other initialization scripts
+        setTimeout(function() {
+          console.log("Final navigation check: ensuring gallery navigation is applied");
+          const navbarMenu = document.getElementById("navbarMenu");
+          if (!navbarMenu) return;
+          
+          // Only override if not set up by gallery-navigation.js
+          if (window._galleryNavigationBuilt !== true) {
+            console.log("Gallery navigation was overridden, reapplying...");
+            
+            // Clear existing navigation
+            navbarMenu.innerHTML = "";
+            
+            // Add Home link
+            const homeLi = document.createElement("li");
+            homeLi.className = "nav-item";
+            const homeLink = document.createElement("a");
+            homeLink.className = "nav-link";
+            homeLink.href = "index.html";
+            homeLink.innerHTML = '<i class="bi bi-house"></i> Home';
+            homeLi.appendChild(homeLink);
+            navbarMenu.appendChild(homeLi);
+            
+            // Add RSVP link
+            const rsvpLi = document.createElement("li");
+            rsvpLi.className = "nav-item";
+            const rsvpLink = document.createElement("a");
+            rsvpLink.className = "nav-link";
+            rsvpLink.href = "rsvp.html";
+            rsvpLink.id = "rsvp-nav-link";
+            rsvpLink.innerHTML = '<i class="bi bi-heart-fill"></i> RSVP';
+            rsvpLi.appendChild(rsvpLink);
+            navbarMenu.appendChild(rsvpLi);
+            
+            // Set flag
+            window._galleryNavigationBuilt = true;
+          } else {
+            console.log("Gallery navigation already correctly set up");
+          }
+        }, 300);
+      });
+    </script>
+    
+    <!-- Gallery Lightbox Modal -->
+    <div class="gallery-lightbox" id="galleryLightbox">
+      <div class="gallery-lightbox-content">
+        <span class="gallery-lightbox-close">&times;</span>
+        <div class="gallery-lightbox-image-container">
+          <img src="" alt="Gallery Image" id="galleryLightboxImage" class="gallery-lightbox-image">
+          <p id="galleryLightboxCaption" class="gallery-lightbox-caption"></p>
+        </div>
+        <button class="gallery-lightbox-nav gallery-lightbox-prev">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="gallery-lightbox-nav gallery-lightbox-next">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+        <div class="gallery-lightbox-counter">
+          <span id="galleryLightboxCurrent">1</span> / <span id="galleryLightboxTotal">4</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <div class="floating-actions">
+      <button class="fab-main" id="fabMain" aria-label="Open menu" aria-expanded="false" aria-controls="fabMenu">
+        <i class="bi bi-plus" aria-hidden="true"></i>
+      </button>
+      <div class="fab-menu" id="fabMenu" aria-hidden="true">
+        <a href="#rsvp" class="fab-item" title="RSVP" id="rsvp-fab-link">
+          <i class="bi bi-heart"></i>
+        </a>
+        <a href="index.html#contact" class="fab-item" title="Contact">
+          <i class="bi bi-envelope"></i>
+        </a>
+        <a href="#" class="fab-item" title="Share" id="shareBtn">
+          <i class="bi bi-share"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+      <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- RSVP Form Handling Script -->
+    <script>
+        // RSVP form is now handled by the dynamic implementation via sections.js and the contentLoaded event
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM content loaded, initializing gallery RSVP...");
+            
+            // Load the JSON data first
+            if (typeof loadData === 'function') {
+                loadData().then(() => {
+                    console.log("Data loaded, initializing dynamic RSVP...");
+                    // Initialize the dynamic RSVP content
+                    initializeDynamicRSVP();
+                    
+                    // RSVP navigation in navbar is handled in gallery-navigation.js
+                    
+                    // Only handle the floating action button if it exists
+                    const fabLink = document.getElementById('rsvp-fab-link');
+                    if (fabLink) {
+                        fabLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
+                        });
+                    }
+                }).catch(error => {
+                    console.error("Error loading data:", error);
+                });
+            } else {
+                console.error("loadData function not found. Make sure data.js is loaded properly.");
+            }
+        });
+        
+        // Function to initialize the dynamic RSVP content
+        function initializeDynamicRSVP() {
+            const dynamicRsvpContainer = document.getElementById('dynamic-rsvp-container');
+            if (!dynamicRsvpContainer) {
+                console.error('Dynamic RSVP container not found');
+                return;
+            }
+            
+            // Check if we have the necessary functions and data
+            if (typeof createRSVPContent !== 'function') {
+                console.error('createRSVPContent function not found. Make sure sections.js is loaded properly.');
+                return;
+            }
+            
+            if (!window.rsvpData || Object.keys(window.rsvpData).length === 0) {
+                console.error('RSVP data not loaded. Make sure data.js is loaded properly and rsvp.json exists.');
+                return;
+            }
+            
+            // Create the RSVP content using the same function as index.html
+            const rsvpHTML = createRSVPContent(window.rsvpData);
+            dynamicRsvpContainer.innerHTML = rsvpHTML;
+            
+            // Initialize RSVP functionality
+            document.dispatchEvent(new CustomEvent('contentLoaded'));
+            console.log('Dynamic RSVP content loaded successfully');
+            
+            // Register functions for conditional sections
+            window.showAttendanceDetails = function() {
+                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                conditionalSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+            };
+            
+            window.hideAttendanceDetails = function() {
+                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                conditionalSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+            };
+            
+            window.toggleAttendanceDetails = function(isAttending) {
+                if (isAttending) {
+                    window.showAttendanceDetails();
+                } else {
+                    window.hideAttendanceDetails();
+                }
+            };
+        }
+        
+        // Add an event listener for the contentLoaded event to initialize the form
+        document.addEventListener('contentLoaded', function() {
+            const rsvpForm = document.getElementById('rsvpForm');
+            if (rsvpForm) {
+                console.log('RSVP form found in gallery.html, initializing...');
+                
+                // Set the initial state (hide attendance details by default)
+                if (typeof hideAttendanceDetails === 'function') {
+                    hideAttendanceDetails();
+                }
+                
+                // Initialize radio buttons for attendance
+                const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+                if (attendanceRadios.length > 0) {
+                    attendanceRadios.forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            if (this.value === 'yes') {
+                                if (typeof showAttendanceDetails === 'function') {
+                                    showAttendanceDetails();
+                                }
+                            } else {
+                                if (typeof hideAttendanceDetails === 'function') {
+                                    hideAttendanceDetails();
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Check if first radio button (Yes) is selected
+                    const yesRadio = document.getElementById('attendance_0');
+                    if (yesRadio && yesRadio.checked) {
+                        if (typeof showAttendanceDetails === 'function') {
+                            showAttendanceDetails();
+                        }
+                    }
+                }
+                
+                // Initialize all conditional fields
+                const conditionalFields = document.querySelectorAll('[data-depends-on]');
+                conditionalFields.forEach(field => {
+                    const dependsOn = field.getAttribute('data-depends-on');
+                    const showWhen = field.getAttribute('data-show-when');
+                    const dependentInput = document.querySelector(`input[name="${dependsOn}"]:checked`);
+                    
+                    if (dependentInput && dependentInput.value === showWhen) {
+                        field.style.display = 'block';
+                    } else {
+                        field.style.display = 'none';
+                    }
+                });
+                
+                // Handle form submission
+                rsvpForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    var submitBtn = rsvpForm.querySelector('button[type="submit"]');
+                    var originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    // Use formspree for actual submission
+                    fetch(rsvpForm.getAttribute('action'), {
+                        method: rsvpForm.getAttribute('method'),
+                        body: new FormData(rsvpForm),
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            rsvpForm.style.display = 'none';
+                            const confirmation = document.getElementById('rsvpConfirmation');
+                            if (confirmation) {
+                                confirmation.style.display = 'block';
+                            }
+                        } else {
+                            alert('There was an error submitting your RSVP. Please try again.');
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        alert('There was an error submitting your RSVP. Please try again later.');
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+        });
     </script>
 </body>
 </html>

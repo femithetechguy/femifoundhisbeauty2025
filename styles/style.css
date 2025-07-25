@@ -309,12 +309,12 @@ body {
 .navbar-brand {
   font-family: var(--font-primary);
   font-weight: 700;
-  font-size: 1.8rem;
+  font-size: 1.5rem; /* Slightly reduced size */
   color: var(--color-accent-1) !important;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 3px; /* Smaller gap */
 }
 
 .brand-text {
@@ -331,14 +331,14 @@ body {
 }
 
 .navbar-nav .nav-link {
-  font-weight: 500; /* Increased from 500 */
+  font-weight: 500;
   color: var(--color-accent-1) !important;
-  margin: 0 10px;
-  padding: 6px 14px !important; /* Increased from 8px 16px */
+  margin: 0 5px;
+  padding: 5px 10px !important;
   border-radius: var(--border-radius-sm);
   transition: all var(--transition-fast);
   position: relative;
-  font-size: 1.1rem; /* Added for bigger text */
+  font-size: 0.9rem; /* Reduced font size */
 }
 
 .navbar-nav .nav-link:hover,
@@ -350,8 +350,8 @@ body {
 }
 
 .navbar-nav .nav-link i {
-  margin-right: 5px;
-  font-size: 1.2rem; /* Added for bigger icons */
+  margin-right: 4px;
+  font-size: 0.95rem; /* Reduced icon size */
 }
 
 /* Mobile Navigation Styles */
@@ -1301,6 +1301,44 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   font-weight: 600;
   color: var(--color-accent-1);
   margin-bottom: 8px;
+}
+
+.form-check-custom {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-neutral-light);
+  transition: all var(--transition-fast);
+}
+
+.form-check-custom:hover {
+  background-color: rgba(216, 228, 96, 0.1);
+}
+
+.form-check-custom .form-check-input {
+  margin-top: 0.3em;
+}
+
+.form-check-custom .form-check-label {
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.success-message {
+  background: rgba(162, 197, 121, 0.1);
+  color: var(--color-accent-1);
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  border-left: 4px solid var(--color-primary);
+}
+
+.success-message i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: var(--color-primary);
 }
 
 /* Footer */
@@ -2587,7 +2625,7 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   /* Larger and more touch-friendly nav items for small screens */
   .navbar-nav .nav-link {
     padding: 14px 20px !important;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
     margin: 10px 0;
     border-radius: 10px;
   }
@@ -2618,6 +2656,12 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .color-display:hover {
@@ -2636,22 +2680,15 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+/* Removed the dashed border that was causing overlap issues */
 .main-color-swatch::after {
-  content: '';
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  bottom: -5px;
-  left: -5px;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  animation: pulseBorder 2s infinite;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  content: none;
+  /* All properties removed to prevent any visual issues */
 }
 
 .main-color-swatch:hover::after {
-  opacity: 1;
+  /* No effect since content is set to none */
+  /* opacity: 1; */
 }
 
 @keyframes pulseBorder {

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tree Background Generator</title>
+<script>
+// This is just a simple script to generate a tree SVG for the background
+document.addEventListener('DOMContentLoaded', function() {
+    const svg = document.getElementById('treeSvg');
+    drawTree(svg, 400, 800, 20);
+});
+
+function drawTree(svg, width, height, branchWidth) {
+    // Set viewBox
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    
+    // Draw trunk
+    const trunk = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    trunk.setAttribute('d', `M${width/2},${height} L${width/2},${height/3}`);
+    trunk.setAttribute('stroke', '#586B36');
+    trunk.setAttribute('stroke-width', branchWidth);
+    trunk.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(trunk);
+    
+    // Draw branches
+    drawBranches(svg, width/2, height/3, branchWidth*0.8, 0, -Math.PI/2, height/3, 5);
+}
+
+function drawBranches(svg, x, y, width, angle, baseAngle, length, depth) {
+    if (depth <= 0) return;
+    
+    const endX = x + Math.cos(baseAngle + angle) * length;
+    const endY = y + Math.sin(baseAngle + angle) * length;
+    
+    const branch = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    branch.setAttribute('d', `M${x},${y} L${endX},${endY}`);
+    branch.setAttribute('stroke', '#586B36');
+    branch.setAttribute('stroke-width', width);
+    branch.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(branch);
+    
+    // Draw child branches
+    const newLength = length * 0.7;
+    const newWidth = width * 0.7;
+    drawBranches(svg, endX, endY, newWidth, angle - 0.5, baseAngle + angle, newLength, depth - 1);
+    drawBranches(svg, endX, endY, newWidth, angle + 0.5, baseAngle + angle, newLength, depth - 1);
+    
+    // Add leaf if we're near the end
+    if (depth <= 2) {
+        const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        leaf.setAttribute('cx', endX);
+        leaf.setAttribute('cy', endY);
+        leaf.setAttribute('r', width * 2);
+        leaf.setAttribute('fill', '#D8E460');
+        svg.insertBefore(leaf, svg.firstChild);
+    }
+}
+
+// Export function
+function saveSvg() {
+    const svg = document.getElementById('treeSvg');
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svg);
+    
+    // Add XML declaration and SVG namespace
+    const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+    const svgUrl = URL.createObjectURL(svgBlob);
+    
+    const downloadLink = document.createElement('a');
+    downloadLink.href = svgUrl;
+    downloadLink.download = 'tree-bg.svg';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+</script>
+<style>
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+svg {
+    border: 1px solid #ddd;
+    background: white;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #586B36;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #D8E460;
+    color: #333;
+}
+</style>
+</head>
+<body>
+    <svg id="treeSvg" width="400" height="800"></svg>
+    <button onclick="saveSvg()">Save SVG</button>
+    <p>Right click on the image and save as "tree-bg.png" in the images folder</p>
+</body>
+</html>

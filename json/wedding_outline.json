@@ -37,17 +37,18 @@
       "content": {
         "howWeMet": {
           "title": "How We Met",
-          "story": "About two years ago, amidst demanding schedules and the echoes of past challenges, fate orchestrated a beautiful beginning...",
+            "story": "About two years ago, amidst demanding schedules and the echoes of past challenges, fate orchestrated a beautiful beginning...",
             "detail-story": [
+            "---",
             "## Our Story: A Serendipitous Melody",
             "",
-            "About two years ago, amidst demanding schedules and the echoes of past challenges, fate orchestrated a beautiful beginning. One of us, seeking solace and fun, decided to play a live gig with a senior colleague. That same night, the other, weary from work, chose to unwind at that very show.",
+            "A little over two years ago, amidst demanding schedules and the echoes of life's tumultuous currents, fate orchestrated a beautiful beginning. One of us, seeking solace and respite, decided to play a live gig with a senior colleague. That same night, the other, weary from work, chose to unwind at that very show.",
             "",
-            "Across the room, our eyes met. He was striking, quiet, and wore a nicely fitted black polo shirt that exuded effortless cool. Initially, though, it was the way he played the guitar that first captivated her. Then, his voice, a captivating blend of firm and sweet, resonated deeply. Even from that initial distance, there was an undeniable, powerful feeling that he was the one. We exchanged only a brief \"hi\" that night, a prelude to what was to come.",
+            "Across the room, our eyes met. He was striking and quiet, dressed in a black polo shirt, his fingers expertly placed on the guitar frets. She was vibrant and serene, seated in the audience, her eyes sparkling with appreciation as the music filled the room. We exchanged only a brief \"hi\" that night, a prelude to what was to come. The first two encounters, however, were merely fleeting greetings.",
             "",
-            "Our paths continued to cross at a couple more shows, each encounter deepening the mystery and the silent pull between us. Then, about three gigs in, at a friend's album launch, everything changed. This time, he wasn't on the guitar, giving us the perfect chance to talk, and we even shared a casual dance. The conversation flowed effortlessly, and he was struck by her captivating intelligence and the undeniable sparkle in her eyes as they spoke. He asked to exchange contact info – we did, and a quiet promise of future conversations blossomed into an unprecedented union. From that moment, our story truly began.",
+            "It was at a third, pivotal session—an album launch for a mutual friend and fellow band member—that destiny truly intervened. This time, he wasn't on stage with his guitar. Instead, we found ourselves on opposite bar stools, where he truly went to work, weaving a witty and captivating conversation. Though she tried to hold back, he seemed to read her soul, and amidst the evening's festivities, we even shared a casual dance. On this memorable evening, the conversation deepened, numbers were exchanged, and from that moment, our unprecedented union unknowingly began.",
             "",
-            "Our shared passion for music quickly became the cornerstone of our bond. He, with his love for instruments, and she, a gifted vocalist and music minister, found harmony in melodies. Then, we discovered another shared delight: food. She, a magnificent chef, and he, a discerning lover of good meals, found joy in the culinary arts.",
+            "Our shared passion for music quickly became the cornerstone of our bond. He, with his love for instruments, and she, a gifted vocalist and music minister, found harmony in melodies. Then, we discovered another shared delight: food. She, a magnificent chef, and he, a discerning lover of good meals, found joy in the culinary arts. His first taste of her cooking, jollof rice and vegetable soup with assorted meat and fried fish, was sumptuous to say the least.",
             "",
             "Our friendship deepened over a year and a half, a symphony of shared interests and growing affection. As our connection evolved, we both recognized a future together, a future that brought us to this incredible day. The rest, as they say, is history in the making."
             ],
@@ -61,38 +62,6 @@
           "date": "June 20, 2024",
           "location": "Sunset Beach"
         },
-        "timeline": [
-          {
-            "date": "Jan 2023",
-            "event": "First Met - Kunle Kuti Music Gig",
-            "description": "Our paths crossed for the first time. Femi went to play guitar with Mr Kunle Kuti,  she came as Mr Kunle's guest. We never said a word, just stared at each other. (😂)"
-          },
-          {
-            "date": "Mar 2023",
-            "event": "Second Contact - Kunle Kuti Music Gig",
-            "description": "Another Kunle Kuti evening gig, this time though, we had some music breaks. Everyone got a chance to conversate. That was our first official time talking but it was indirect since it was a group conversation."
-          },
-          {
-            "date": "April 2023",
-            "event": "Third Contact - Mr Confess Album lunch",
-            "description": "First official one on one conversation and contact xchange (phone & IG)."
-          },
-          {
-            "date": "April 2023",
-            "event": "First official one on one conversation and contact xchange (phone & IG)",
-            "description": "A perfect evening that started it all"
-          },
-          {
-            "date": "June 20, 2024",
-            "event": "Engagement",
-            "description": "He asked, she said yes!"
-          },
-          {
-            "date": "September 26, 2025",
-            "event": "Wedding Day",
-            "description": "Our forever begins"
-          }
-        ],
         "favoriteMemories": [
           "Our first trip together",
           "Meeting each other's families",
@@ -141,15 +110,6 @@
                 { "name": "Deep Olive", "hex": "#485B26" }
               ],
               "examples": ["suits", "dresses", "accessories"]
-            },
-            {
-              "name": "Sage Green",
-              "hex": "#d4af37",
-              "variations": [
-                { "name": "Light Sage", "hex": "#e0c27a" },
-                { "name": "Deep Sage", "hex": "#b38f2c" }
-              ],
-              "examples": ["jewelry", "shoes", "accents"]
             }
           ],
           "description": "Please wear formal attire in shades of Olive Green. The color adds a natural elegance to our celebration!"
@@ -386,7 +346,7 @@
       "icon": "📝",
       "order": 8,
       "content": {
-        "deadline": "2025-11-30",
+        "deadline": "August 31, 2025",
         "form": {
           "formspreeId": "mgvzwven",
           "action": "https://formspree.io/f/mgvzwven",
@@ -426,21 +386,8 @@
               "required": true
             },
             {
-              "name": "mealPreference",
-              "label": "Meal Preference",
-              "type": "select",
-              "options": ["Chicken", "Fish", "Vegetarian", "Vegan"],
-              "required": true
-            },
-            {
               "name": "dietaryRestrictions",
               "label": "Dietary Restrictions",
-              "type": "textarea",
-              "required": false
-            },
-            {
-              "name": "message",
-              "label": "Special Message",
               "type": "textarea",
               "required": false
             }
@@ -449,74 +396,7 @@
         "confirmationMessage": "Thank you for your RSVP! We can't wait to celebrate with you."
       }
     },
-    {
-      "id": "schedule",
-      "title": "Schedule",
-      "icon": "📖",
-      "order": 9,
-      "content": {
-        "weddingDay": [
-          {
-            "time": "2:00 PM",
-            "event": "Bridal Party Photos",
-            "location": "Grace Cathedral",
-            "description": "Pre-ceremony photos with the wedding party"
-          },
-          {
-            "time": "3:30 PM",
-            "event": "Guest Arrival",
-            "location": "Grace Cathedral",
-            "description": "Guests arrive and are seated"
-          },
-          {
-            "time": "4:00 PM",
-            "event": "Wedding Ceremony",
-            "location": "Grace Cathedral",
-            "description": "The main event - we become husband and wife!"
-          },
-          {
-            "time": "5:00 PM",
-            "event": "Cocktail Hour",
-            "location": "Royal Ballroom",
-            "description": "Drinks, hors d'oeuvres, and mingling"
-          },
-          {
-            "time": "6:00 PM",
-            "event": "Reception Dinner",
-            "location": "Royal Ballroom",
-            "description": "Dinner, speeches, and celebration"
-          },
-          {
-            "time": "8:00 PM",
-            "event": "Dancing & Party",
-            "location": "Royal Ballroom",
-            "description": "Let's dance the night away!"
-          },
-          {
-            "time": "11:00 PM",
-            "event": "Send-off",
-            "location": "Royal Ballroom",
-            "description": "Farewell celebration"
-          }
-        ],
-        "preWeddingEvents": [
-          {
-            "date": "December 29, 2025",
-            "time": "7:00 PM",
-            "event": "Welcome Dinner",
-            "location": "Private Restaurant",
-            "description": "Casual dinner for out-of-town guests"
-          },
-          {
-            "date": "December 30, 2025",
-            "time": "3:00 PM",
-            "event": "Rehearsal",
-            "location": "Grace Cathedral",
-            "description": "Wedding party rehearsal"
-          }
-        ]
-      }
-    },
+
     {
       "id": "scripture-theme",
       "title": "Our Anchor Scriptures",
@@ -664,7 +544,6 @@
       { "id": "wedding_party", "label": "Wedding", "icon": "👰🏾🤵🏾" },
       { "id": "gallery", "label": "Gallery", "icon": "📸" },
       { "id": "rsvp", "label": "RSVP", "icon": "📝" },
-      { "id": "schedule", "label": "Schedule", "icon": "📖" },
       { "id": "contact", "label": "Contact", "icon": "📬" }
     ]
   },

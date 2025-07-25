@@ -1,54 +1,345 @@
-// RSVP Form functionality extracted from rsvp.html
-export function toggleGuestDetails(attending) {
-    const guestDetails = document.getElementById('guestDetails');
-    const mealSection = document.getElementById('mealSection');
-    const eventsSection = document.getElementById('eventsSection');
-    const transportationSection = document.getElementById('transportationSection');
-    if (attending) {
-        guestDetails.style.display = 'block';
-        mealSection.style.display = 'block';
-        eventsSection.style.display = 'block';
-        transportationSection.style.display = 'block';
-        document.getElementById('guestCount').required = true;
-    } else {
-        guestDetails.style.display = 'none';
-        mealSection.style.display = 'none';
-        eventsSection.style.display = 'none';
-        transportationSection.style.display = 'none';
-        document.getElementById('guestCount').required = false;
+// RSVP Form functionality with JSON data support
+export async function loadRSVPData() {
+    try {
+        const response = await fetch('./json/rsvp.json');
+        if (!response.ok) {
+            throw new Error('Failed to load RSVP data');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading RSVP data:', error);
+        return null;
     }
 }
 
-export function updateGuestNames() {
-    const guestCount = parseInt(document.getElementById('guestCount').value);
-    const guestNamesContainer = document.getElementById('guestNames');
-    const mealPreferencesContainer = document.getElementById('mealPreferences');
-    guestNamesContainer.innerHTML = '';
-    mealPreferencesContainer.innerHTML = '';
-    if (guestCount > 0) {
-        for (let i = 1; i <= guestCount; i++) {
-            const guestNameDiv = document.createElement('div');
-            guestNameDiv.className = 'mb-3';
-            guestNameDiv.innerHTML = `
-                <label for="guest${i}Name" class="form-label">Guest ${i} Full Name ${i === 1 ? '(You)' : ''} *</label>
-                <input type="text" class="form-control" id="guest${i}Name" name="guest${i}Name" required>
-            `;
-            guestNamesContainer.appendChild(guestNameDiv);
-            const mealPrefDiv = document.createElement('div');
-            mealPrefDiv.className = 'mb-3';
-            mealPrefDiv.innerHTML = `
-                <label for="guest${i}Meal" class="form-label">Guest ${i} Meal Preference ${i === 1 ? '(You)' : ''} *</label>
-                <select class="form-control" id="guest${i}Meal" name="guest${i}Meal" required>
-                    <option value="">Select meal preference</option>
-                    <option value="chicken">Grilled Chicken with Rice</option>
-                    <option value="fish">Grilled Fish with Vegetables</option>
-                    <option value="vegetarian">Vegetarian Pasta</option>
-                    <option value="vegan">Vegan Buddha Bowl</option>
-                </select>
-            `;
-            mealPreferencesContainer.appendChild(mealPrefDiv);
-        }
+export function renderRSVPForm(rsvpData) {
+    if (!rsvpData) return;
+    
+    // Update page title and meta
+    document.title = rsvpData.meta.title;
+    document.querySelector('meta[name="description"]').content = rsvpData.meta.description;
+    
+    // Update header
+    const sectionHeader = document.querySelector('.section-header');
+    if (sectionHeader) {
+        const title = sectionHeader.querySelector('.section-title');
+        const subtitle = sectionHeader.querySelector('.section-subtitle');
+        
+        if (title) title.innerHTML = `<i class="bi ${rsvpData.header.icon}"></i> ${rsvpData.header.title}`;
+        if (subtitle) subtitle.innerHTML = `${rsvpData.header.subtitle.replace(rsvpData.meta.deadline, `<strong>${rsvpData.meta.deadline}</strong>`)}`;
     }
+    
+    // Apply styling classes from JSON
+    const form = document.getElementById(rsvpData.form.id);
+    if (form) {
+        form.className = rsvpData.styling.formClass;
+        form.method = rsvpData.form.method;
+        form.action = rsvpData.form.action;
+        
+        // Build dynamic form based on JSON
+        buildFormFromJSON(rsvpData);
+    }
+}
+
+export function toggleAttendanceDetails(attending) {
+    console.log('toggleAttendanceDetails called with:', attending);
+    
+    // Find all elements with data-depends-on="attendance" and data-show-when="yes"
+    const conditionalElements = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+    console.log('Found conditional elements:', conditionalElements.length);
+    
+    // Debug - log each element
+    conditionalElements.forEach((el, i) => {
+        console.log(`Conditional element ${i}:`, el.id, el.tagName, el.className);
+    });
+    
+    // Explicitly check for the special-message section
+    const specialMessageSection = document.getElementById('special-message');
+    if (specialMessageSection) {
+        console.log('Found special-message section by ID');
+    } else {
+        // Try finding by class or other attributes if ID doesn't work
+        const possibleSpecialMessageSections = document.querySelectorAll('[id*="special-message"], [id*="special"], .form-section:nth-child(3)');
+        console.log('Possible special message sections found:', possibleSpecialMessageSections.length);
+        possibleSpecialMessageSections.forEach((section, i) => {
+            console.log(`Possible section ${i}:`, section.id, section.tagName, section.className);
+        });
+    }
+    
+    if (attending) {
+        console.log('Showing conditional elements...');
+        // Show all conditional elements
+        conditionalElements.forEach(element => {
+            // Make sure we use the right display type for form sections
+            if (element.classList.contains('form-section')) {
+                element.style.display = 'block';
+                // Ensure proper styling is maintained
+                element.style.padding = '20px';
+                element.style.borderRadius = '12px';
+                element.style.backgroundColor = 'var(--color-background-alt)';
+                element.style.boxShadow = 'var(--shadow-light)';
+            } else {
+                element.style.display = 'block';
+            }
+            
+            console.log('Showing element:', element.id || element.className);
+            
+            // Re-enable required fields
+            const requiredFields = element.querySelectorAll('[data-required="true"]');
+            requiredFields.forEach(field => field.required = true);
+        });
+        
+        // Direct handling for special message section to ensure it's displayed
+        if (specialMessageSection) {
+            specialMessageSection.style.display = 'block';
+            // Ensure proper styling is maintained
+            specialMessageSection.style.padding = '20px';
+            specialMessageSection.style.borderRadius = '12px';
+            specialMessageSection.style.backgroundColor = 'var(--color-background-alt)';
+            specialMessageSection.style.boxShadow = 'var(--shadow-light)';
+            console.log('Explicitly showed special-message section');
+        } else {
+            // Try to find section by title if ID doesn't work
+            const specialSection = Array.from(document.querySelectorAll('.form-section-title')).find(
+                title => title.textContent.includes('Special Message')
+            );
+            if (specialSection) {
+                const parentSection = specialSection.closest('.form-section');
+                if (parentSection) {
+                    parentSection.style.display = 'block';
+                    // Ensure proper styling is maintained
+                    parentSection.style.padding = '20px';
+                    parentSection.style.borderRadius = '12px';
+                    parentSection.style.backgroundColor = 'var(--color-background-alt)';
+                    parentSection.style.boxShadow = 'var(--shadow-light)';
+                    console.log('Found and showed special message section by title');
+                }
+            }
+        }
+    } else {
+        // Hide all conditional elements
+        conditionalElements.forEach(element => {
+            element.style.display = 'none';
+            
+            // Disable required fields
+            const requiredFields = element.querySelectorAll('[required]');
+            requiredFields.forEach(field => field.required = false);
+        });
+    }
+}
+
+export async function buildFormFromJSON(rsvpData) {
+    if (!rsvpData || !rsvpData.form) return;
+    
+    const formElement = document.getElementById(rsvpData.form.id);
+    if (!formElement) return;
+    
+    console.log('Building form from JSON data');
+    
+    // Clear existing form content
+    formElement.innerHTML = '';
+    
+    // Build each section
+    rsvpData.form.sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.id = section.id; // This keeps the original section.id as the element ID
+        sectionDiv.className = rsvpData.styling.sectionClass;
+        
+        console.log('Building section:', section.id);
+        
+        // Handle section-level conditionals
+        if (section.conditional) {
+            sectionDiv.setAttribute('data-depends-on', section.conditional.dependsOn);
+            sectionDiv.setAttribute('data-show-when', section.conditional.showWhen);
+            // Log that we're setting up a conditional section
+            console.log(`Section ${section.id} is conditional on ${section.conditional.dependsOn}=${section.conditional.showWhen}`);
+            
+            if (section.conditional.showWhen === 'yes') {
+                sectionDiv.style.display = 'none'; // Initially hidden
+                console.log(`Section ${section.id} initially hidden`);
+            }
+        }
+        
+        // Create section header
+        const sectionTitle = document.createElement('h4');
+        sectionTitle.className = 'form-section-title';
+        sectionTitle.innerHTML = `<i class="bi ${section.icon}"></i> ${section.title}`;
+        sectionDiv.appendChild(sectionTitle);
+        
+        // Create section fields
+        section.fields.forEach(field => {
+            const fieldWrapper = document.createElement('div');
+            fieldWrapper.className = 'mb-3';
+            
+            if (field.conditional) {
+                fieldWrapper.setAttribute('data-depends-on', field.conditional.dependsOn);
+                fieldWrapper.setAttribute('data-show-when', field.conditional.showWhen);
+                if (field.conditional.showWhen === 'yes') {
+                    fieldWrapper.style.display = 'none'; // Initially hidden
+                }
+            }
+            
+            // Create field based on type
+            switch(field.type) {
+                case 'text':
+                case 'email':
+                case 'tel':
+                    createInputField(fieldWrapper, field, rsvpData.styling);
+                    break;
+                case 'textarea':
+                    createTextareaField(fieldWrapper, field, rsvpData.styling);
+                    break;
+                case 'radio':
+                    createRadioField(fieldWrapper, field, rsvpData.styling);
+                    break;
+                case 'select':
+                    createSelectField(fieldWrapper, field, rsvpData.styling);
+                    break;
+            }
+            
+            sectionDiv.appendChild(fieldWrapper);
+        });
+        
+        formElement.appendChild(sectionDiv);
+    });
+    
+    // Add submit button
+    const submitDiv = document.createElement('div');
+    submitDiv.className = 'text-center';
+    
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.className = rsvpData.form.submitButton.class;
+    
+    // Initialize event handlers now that all sections are built
+    setTimeout(initializeEventHandlers, 100);
+    submitButton.innerHTML = `<i class="bi ${rsvpData.form.submitButton.icon}"></i> ${rsvpData.form.submitButton.text}`;
+    
+    submitDiv.appendChild(submitButton);
+    formElement.appendChild(submitDiv);
+    
+    // Configure confirmation message
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    if (confirmationMessage) {
+        const confirmData = rsvpData.confirmationMessage;
+        confirmationMessage.innerHTML = `
+            <div class="card-body text-center">
+                <i class="bi ${confirmData.icon} display-4 text-success mb-3"></i>
+                <h3>${confirmData.title}</h3>
+                <p class="lead">${confirmData.message}</p>
+                <p>${confirmData.subMessage}</p>
+                <a href="${confirmData.backButton.link}" class="btn btn-outline-custom">
+                    <i class="bi ${confirmData.backButton.icon}"></i> ${confirmData.backButton.text}
+                </a>
+            </div>
+        `;
+    }
+}
+
+function createInputField(wrapper, field, styling) {
+    const label = document.createElement('label');
+    label.htmlFor = field.id;
+    label.className = styling.labelClass;
+    label.textContent = field.label + (field.required ? ' *' : '');
+    
+    const input = document.createElement('input');
+    input.type = field.type;
+    input.className = styling.inputClass;
+    input.id = field.id;
+    input.name = field.id;
+    if (field.placeholder) input.placeholder = field.placeholder;
+    if (field.required) input.required = true;
+    
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+}
+
+function createTextareaField(wrapper, field, styling) {
+    const label = document.createElement('label');
+    label.htmlFor = field.id;
+    label.className = styling.labelClass;
+    label.textContent = field.label + (field.required ? ' *' : '');
+    
+    const textarea = document.createElement('textarea');
+    textarea.className = styling.inputClass;
+    textarea.id = field.id;
+    textarea.name = field.id;
+    textarea.rows = field.rows || 3;
+    if (field.placeholder) textarea.placeholder = field.placeholder;
+    if (field.required) textarea.required = true;
+    
+    wrapper.appendChild(label);
+    wrapper.appendChild(textarea);
+}
+
+function createRadioField(wrapper, field, styling) {
+    const label = document.createElement('label');
+    label.className = styling.labelClass;
+    label.textContent = field.label + (field.required ? ' *' : '');
+    
+    const optionsDiv = document.createElement('div');
+    optionsDiv.className = 'attendance-options';
+    
+    field.options.forEach((option, index) => {
+        const optionId = `${field.id}${index === 0 ? 'Yes' : 'No'}`;
+        const optionValue = field.values[index];
+        const iconClass = field.icons ? field.icons[index] : '';
+        
+        const checkDiv = document.createElement('div');
+        checkDiv.className = 'form-check form-check-custom';
+        
+        const input = document.createElement('input');
+        input.className = 'form-check-input';
+        input.type = 'radio';
+        input.name = field.id;
+        input.id = optionId;
+        input.value = optionValue;
+        if (field.required) input.required = true;
+        
+        if (field.onChange) {
+            input.setAttribute('onchange', `${field.onChange}(${optionValue === 'yes'})`);
+        }
+        
+        const optionLabel = document.createElement('label');
+        optionLabel.className = 'form-check-label';
+        optionLabel.htmlFor = optionId;
+        
+        if (iconClass) {
+            optionLabel.innerHTML = `<i class="bi ${iconClass}"></i> ${option}`;
+        } else {
+            optionLabel.textContent = option;
+        }
+        
+        checkDiv.appendChild(input);
+        checkDiv.appendChild(optionLabel);
+        optionsDiv.appendChild(checkDiv);
+    });
+    
+    wrapper.appendChild(label);
+    wrapper.appendChild(optionsDiv);
+}
+
+function createSelectField(wrapper, field, styling) {
+    const label = document.createElement('label');
+    label.htmlFor = field.id;
+    label.className = styling.labelClass;
+    label.textContent = field.label + (field.required ? ' *' : '');
+    
+    const select = document.createElement('select');
+    select.className = styling.inputClass;
+    select.id = field.id;
+    select.name = field.id;
+    if (field.required) select.required = true;
+    
+    field.options.forEach((option, index) => {
+        const optionEl = document.createElement('option');
+        optionEl.value = field.values[index];
+        optionEl.textContent = option;
+        select.appendChild(optionEl);
+    });
+    
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
 }
 
 export function handleRSVPSubmission(event) {
@@ -102,12 +393,89 @@ export function applyColorTheme() {
         .catch(error => console.error('Error loading colors:', error));
 }
 
+// Function to initialize event handlers for the form
+function initializeEventHandlers() {
+    console.log('Initializing event handlers');
+    
+    // Set up attendance radio buttons to toggle visibility of conditional elements
+    const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+    console.log('Found attendance radios:', attendanceRadios.length);
+    
+    if (attendanceRadios.length) {
+        attendanceRadios.forEach(radio => {
+            console.log('Setting up radio:', radio.id, radio.value);
+            
+            // Remove existing event listeners first
+            const newRadio = radio.cloneNode(true);
+            radio.parentNode.replaceChild(newRadio, radio);
+            
+            // Add new event listener
+            newRadio.addEventListener('change', function() {
+                console.log('Radio changed:', this.id, this.value);
+                if (this.value === 'yes') {
+                    toggleAttendanceDetails(true);
+                    
+                    // Force check special message section visibility
+                    setTimeout(() => {
+                        // Find all sections with conditional attributes for attendance=yes
+                        const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                        console.log('Post-timeout check - conditional sections found:', conditionalSections.length);
+                        
+                        // Explicitly look for special message section
+                        const specialMessageSection = document.getElementById('special-message');
+                        if (specialMessageSection) {
+                            specialMessageSection.style.display = 'block';
+                            console.log('Timeout action: Forced special-message section display');
+                        }
+                        
+                        // Also try to find by section title
+                        document.querySelectorAll('.form-section-title').forEach(title => {
+                            if (title.textContent.includes('Special Message')) {
+                                const parentSection = title.closest('.form-section');
+                                if (parentSection) {
+                                    parentSection.style.display = 'block';
+                                    console.log('Timeout action: Found special message by title and showed it');
+                                }
+                            }
+                        });
+                    }, 100);
+                    
+                } else {
+                    toggleAttendanceDetails(false);
+                }
+            });
+            
+            // Also add click handler for extra measure
+            newRadio.onclick = function() {
+                console.log('Radio clicked:', this.id, this.value);
+                if (this.value === 'yes') {
+                    toggleAttendanceDetails(true);
+                } else {
+                    toggleAttendanceDetails(false);
+                }
+            };
+        });
+    }
+    
+    // Force call toggleAttendanceDetails based on current selection
+    const yesRadio = document.querySelector('input[name="attendance"][value="yes"]');
+    if (yesRadio && yesRadio.checked) {
+        console.log('Yes is checked, showing conditionals');
+        toggleAttendanceDetails(true);
+    } else {
+        console.log('Yes is NOT checked, hiding conditionals');
+        toggleAttendanceDetails(false);
+    }
+    
+    console.log('RSVP form event handlers initialized');
+}
+
 export async function loadFooterContent() {
     try {
-        const response = await fetch('./json/footer.json');
-        const footerData = await response.json();
-        const footer = footerData.footer;
-        const footerElement = document.querySelector('.footer');
+        const footerRes = await fetch('./json/footer.json');
+        const footer = await footerRes.json();
+        
+        const footerElement = document.querySelector('footer.footer');
         const footerHTML = `
             <div class="container">
                 <div class="row">

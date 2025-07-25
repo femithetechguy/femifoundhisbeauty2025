@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "title": "RSVP - EwaFemi2025 Wedding",
+    "description": "RSVP for Beauty and Femi's wedding celebration",
+    "deadline": "August 31, 2025"
+  },
+  "header": {
+    "title": "RSVP",
+    "icon": "bi-heart-fill",
+    "subtitle": "We're so excited to celebrate with you! Please respond by August 31, 2025"
+  },
+  "form": {
+    "id": "rsvpForm",
+    "method": "POST",
+    "action": "https://formspree.io/f/mgvzwven",
+    "handler": "handleRSVPSubmission",
+    "formspree": {
+      "id": "mgvzwven"
+    },
+    "sections": [
+    {
+        "id": "personal-information",
+        "title": "Personal Information",
+        "icon": "bi-person",
+        "fields": [
+          {
+            "id": "name",
+            "type": "text",
+            "label": "Name",
+            "required": true,
+            "placeholder": ""
+          },
+          {
+            "id": "phone",
+            "type": "tel",
+            "label": "Phone Number",
+            "required": true,
+            "placeholder": ""
+          },
+          {
+            "id": "email",
+            "type": "email",
+            "label": "Email Address",
+            "required": true,
+            "placeholder": ""
+          }
+        ]
+      },
+      {
+        "id": "attendance",
+        "title": "Attendance",
+        "icon": "bi-calendar-check",
+        "fields": [
+          {
+            "id": "attendance",
+            "type": "radio",
+            "label": "Will you be attending?",
+            "required": true,
+            "options": ["Yes, I'll be there! Can't wait to celebrate with you!", "Sorry, I can't make it, but I'm thinking of you!"],
+            "values": ["yes", "no"],
+            "icons": ["bi-heart-fill text-primary-custom", "bi-heart text-muted"],
+            "onChange": "toggleAttendanceDetails"
+          },
+          {
+            "id": "guestCount",
+            "type": "select",
+            "label": "Number of Guests (including yourself)",
+            "required": true,
+            "conditional": {
+              "dependsOn": "attendance",
+              "showWhen": "yes"
+            },
+            "options": [
+              "Select number of guests",
+              "1 Guest",
+              "2 Guests",
+              "3 Guests",
+              "4 Guests"
+            ],
+            "values": ["", "1", "2", "3", "4"]
+          },
+          {
+            "id": "dietaryRestrictions",
+            "type": "textarea",
+            "label": "Dietary Restrictions or Allergies",
+            "required": false,
+            "placeholder": "Please let us know about any dietary restrictions, allergies, or special meal requirements...",
+            "rows": 3,
+            "conditional": {
+              "dependsOn": "attendance",
+              "showWhen": "yes"
+            }
+          }
+        ]
+      },
+      {
+        "id": "special-message",
+        "title": "Special Message",
+        "icon": "bi-chat-heart",
+        "conditional": {
+          "dependsOn": "attendance",
+          "showWhen": "yes"
+        },
+        "fields": [
+          {
+            "id": "specialMessage",
+            "type": "textarea",
+            "label": "Leave us a special message or blessing",
+            "required": false,
+            "placeholder": "We'd love to hear your thoughts, wishes, or any special memories you'd like to share...",
+            "rows": 4
+          }
+        ]
+      }
+    ],
+    "submitButton": {
+      "text": "Submit RSVP",
+      "icon": "bi-heart-fill",
+      "class": "btn-primary-custom btn-lg px-5"
+    }
+  },
+  "confirmationMessage": {
+    "icon": "bi-check-circle",
+    "title": "Thank You!",
+    "message": "Your RSVP has been submitted successfully.",
+    "subMessage": "We can't wait to celebrate with you on our special day!",
+    "backButton": {
+      "text": "Back to Home",
+      "icon": "bi-house",
+      "link": "index.html"
+    }
+  },
+  "styling": {
+    "formClass": "form-custom",
+    "cardClass": "card-custom",
+    "inputClass": "form-control",
+    "sectionClass": "form-section mb-4",
+    "labelClass": "form-label"
+  }
+}
