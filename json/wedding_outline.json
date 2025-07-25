@@ -62,38 +62,6 @@
           "date": "June 20, 2024",
           "location": "Sunset Beach"
         },
-        "timeline": [
-          {
-            "date": "Jan 2023",
-            "event": "First Met - Kunle Kuti Music Gig",
-            "description": "Our paths crossed for the first time. Femi went to play guitar with Mr Kunle Kuti,  she came as Mr Kunle's guest. We never said a word, just stared at each other. (😂)"
-          },
-          {
-            "date": "Mar 2023",
-            "event": "Second Contact - Kunle Kuti Music Gig",
-            "description": "Another Kunle Kuti evening gig, this time though, we had some music breaks. Everyone got a chance to conversate. That was our first official time talking but it was indirect since it was a group conversation."
-          },
-          {
-            "date": "April 2023",
-            "event": "Third Contact - Mr Confess Album lunch",
-            "description": "First official one on one conversation and contact xchange (phone & IG)."
-          },
-          {
-            "date": "April 2023",
-            "event": "First official one on one conversation and contact xchange (phone & IG)",
-            "description": "A perfect evening that started it all"
-          },
-          {
-            "date": "June 20, 2024",
-            "event": "Engagement",
-            "description": "He asked, she said yes!"
-          },
-          {
-            "date": "September 26, 2025",
-            "event": "Wedding Day",
-            "description": "Our forever begins"
-          }
-        ],
         "favoriteMemories": [
           "Our first trip together",
           "Meeting each other's families",
@@ -428,74 +396,7 @@
         "confirmationMessage": "Thank you for your RSVP! We can't wait to celebrate with you."
       }
     },
-    {
-      "id": "schedule",
-      "title": "Schedule",
-      "icon": "📖",
-      "order": 9,
-      "content": {
-        "weddingDay": [
-          {
-            "time": "2:00 PM",
-            "event": "Bridal Party Photos",
-            "location": "Grace Cathedral",
-            "description": "Pre-ceremony photos with the wedding party"
-          },
-          {
-            "time": "3:30 PM",
-            "event": "Guest Arrival",
-            "location": "Grace Cathedral",
-            "description": "Guests arrive and are seated"
-          },
-          {
-            "time": "4:00 PM",
-            "event": "Wedding Ceremony",
-            "location": "Grace Cathedral",
-            "description": "The main event - we become husband and wife!"
-          },
-          {
-            "time": "5:00 PM",
-            "event": "Cocktail Hour",
-            "location": "Royal Ballroom",
-            "description": "Drinks, hors d'oeuvres, and mingling"
-          },
-          {
-            "time": "6:00 PM",
-            "event": "Reception Dinner",
-            "location": "Royal Ballroom",
-            "description": "Dinner, speeches, and celebration"
-          },
-          {
-            "time": "8:00 PM",
-            "event": "Dancing & Party",
-            "location": "Royal Ballroom",
-            "description": "Let's dance the night away!"
-          },
-          {
-            "time": "11:00 PM",
-            "event": "Send-off",
-            "location": "Royal Ballroom",
-            "description": "Farewell celebration"
-          }
-        ],
-        "preWeddingEvents": [
-          {
-            "date": "December 29, 2025",
-            "time": "7:00 PM",
-            "event": "Welcome Dinner",
-            "location": "Private Restaurant",
-            "description": "Casual dinner for out-of-town guests"
-          },
-          {
-            "date": "December 30, 2025",
-            "time": "3:00 PM",
-            "event": "Rehearsal",
-            "location": "Grace Cathedral",
-            "description": "Wedding party rehearsal"
-          }
-        ]
-      }
-    },
+
     {
       "id": "scripture-theme",
       "title": "Our Anchor Scriptures",
@@ -643,7 +544,6 @@
       { "id": "wedding_party", "label": "Wedding", "icon": "👰🏾🤵🏾" },
       { "id": "gallery", "label": "Gallery", "icon": "📸" },
       { "id": "rsvp", "label": "RSVP", "icon": "📝" },
-      { "id": "schedule", "label": "Schedule", "icon": "📖" },
       { "id": "contact", "label": "Contact", "icon": "📬" }
     ]
   },

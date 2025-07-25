@@ -42,13 +42,89 @@ export function renderRSVPForm(rsvpData) {
 }
 
 export function toggleAttendanceDetails(attending) {
-    const attendanceDetails = document.getElementById('attendanceDetails');
-    if (attending) {
-        attendanceDetails.style.display = 'block';
-        document.getElementById('guestCount').required = true;
+    console.log('toggleAttendanceDetails called with:', attending);
+    
+    // Find all elements with data-depends-on="attendance" and data-show-when="yes"
+    const conditionalElements = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+    console.log('Found conditional elements:', conditionalElements.length);
+    
+    // Debug - log each element
+    conditionalElements.forEach((el, i) => {
+        console.log(`Conditional element ${i}:`, el.id, el.tagName, el.className);
+    });
+    
+    // Explicitly check for the special-message section
+    const specialMessageSection = document.getElementById('special-message');
+    if (specialMessageSection) {
+        console.log('Found special-message section by ID');
     } else {
-        attendanceDetails.style.display = 'none';
-        document.getElementById('guestCount').required = false;
+        // Try finding by class or other attributes if ID doesn't work
+        const possibleSpecialMessageSections = document.querySelectorAll('[id*="special-message"], [id*="special"], .form-section:nth-child(3)');
+        console.log('Possible special message sections found:', possibleSpecialMessageSections.length);
+        possibleSpecialMessageSections.forEach((section, i) => {
+            console.log(`Possible section ${i}:`, section.id, section.tagName, section.className);
+        });
+    }
+    
+    if (attending) {
+        console.log('Showing conditional elements...');
+        // Show all conditional elements
+        conditionalElements.forEach(element => {
+            // Make sure we use the right display type for form sections
+            if (element.classList.contains('form-section')) {
+                element.style.display = 'block';
+                // Ensure proper styling is maintained
+                element.style.padding = '20px';
+                element.style.borderRadius = '12px';
+                element.style.backgroundColor = 'var(--color-background-alt)';
+                element.style.boxShadow = 'var(--shadow-light)';
+            } else {
+                element.style.display = 'block';
+            }
+            
+            console.log('Showing element:', element.id || element.className);
+            
+            // Re-enable required fields
+            const requiredFields = element.querySelectorAll('[data-required="true"]');
+            requiredFields.forEach(field => field.required = true);
+        });
+        
+        // Direct handling for special message section to ensure it's displayed
+        if (specialMessageSection) {
+            specialMessageSection.style.display = 'block';
+            // Ensure proper styling is maintained
+            specialMessageSection.style.padding = '20px';
+            specialMessageSection.style.borderRadius = '12px';
+            specialMessageSection.style.backgroundColor = 'var(--color-background-alt)';
+            specialMessageSection.style.boxShadow = 'var(--shadow-light)';
+            console.log('Explicitly showed special-message section');
+        } else {
+            // Try to find section by title if ID doesn't work
+            const specialSection = Array.from(document.querySelectorAll('.form-section-title')).find(
+                title => title.textContent.includes('Special Message')
+            );
+            if (specialSection) {
+                const parentSection = specialSection.closest('.form-section');
+                if (parentSection) {
+                    parentSection.style.display = 'block';
+                    // Ensure proper styling is maintained
+                    parentSection.style.padding = '20px';
+                    parentSection.style.borderRadius = '12px';
+                    parentSection.style.backgroundColor = 'var(--color-background-alt)';
+                    parentSection.style.boxShadow = 'var(--shadow-light)';
+                    console.log('Found and showed special message section by title');
+                }
+            }
+        }
+    } else {
+        // Hide all conditional elements
+        conditionalElements.forEach(element => {
+            element.style.display = 'none';
+            
+            // Disable required fields
+            const requiredFields = element.querySelectorAll('[required]');
+            requiredFields.forEach(field => field.required = false);
+        });
     }
 }
 
@@ -58,14 +134,31 @@ export async function buildFormFromJSON(rsvpData) {
     const formElement = document.getElementById(rsvpData.form.id);
     if (!formElement) return;
     
+    console.log('Building form from JSON data');
+    
     // Clear existing form content
     formElement.innerHTML = '';
     
     // Build each section
     rsvpData.form.sections.forEach(section => {
         const sectionDiv = document.createElement('div');
-        sectionDiv.id = section.id;
+        sectionDiv.id = section.id; // This keeps the original section.id as the element ID
         sectionDiv.className = rsvpData.styling.sectionClass;
+        
+        console.log('Building section:', section.id);
+        
+        // Handle section-level conditionals
+        if (section.conditional) {
+            sectionDiv.setAttribute('data-depends-on', section.conditional.dependsOn);
+            sectionDiv.setAttribute('data-show-when', section.conditional.showWhen);
+            // Log that we're setting up a conditional section
+            console.log(`Section ${section.id} is conditional on ${section.conditional.dependsOn}=${section.conditional.showWhen}`);
+            
+            if (section.conditional.showWhen === 'yes') {
+                sectionDiv.style.display = 'none'; // Initially hidden
+                console.log(`Section ${section.id} initially hidden`);
+            }
+        }
         
         // Create section header
         const sectionTitle = document.createElement('h4');
@@ -117,6 +210,9 @@ export async function buildFormFromJSON(rsvpData) {
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
     submitButton.className = rsvpData.form.submitButton.class;
+    
+    // Initialize event handlers now that all sections are built
+    setTimeout(initializeEventHandlers, 100);
     submitButton.innerHTML = `<i class="bi ${rsvpData.form.submitButton.icon}"></i> ${rsvpData.form.submitButton.text}`;
     
     submitDiv.appendChild(submitButton);
@@ -297,12 +393,89 @@ export function applyColorTheme() {
         .catch(error => console.error('Error loading colors:', error));
 }
 
+// Function to initialize event handlers for the form
+function initializeEventHandlers() {
+    console.log('Initializing event handlers');
+    
+    // Set up attendance radio buttons to toggle visibility of conditional elements
+    const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+    console.log('Found attendance radios:', attendanceRadios.length);
+    
+    if (attendanceRadios.length) {
+        attendanceRadios.forEach(radio => {
+            console.log('Setting up radio:', radio.id, radio.value);
+            
+            // Remove existing event listeners first
+            const newRadio = radio.cloneNode(true);
+            radio.parentNode.replaceChild(newRadio, radio);
+            
+            // Add new event listener
+            newRadio.addEventListener('change', function() {
+                console.log('Radio changed:', this.id, this.value);
+                if (this.value === 'yes') {
+                    toggleAttendanceDetails(true);
+                    
+                    // Force check special message section visibility
+                    setTimeout(() => {
+                        // Find all sections with conditional attributes for attendance=yes
+                        const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                        console.log('Post-timeout check - conditional sections found:', conditionalSections.length);
+                        
+                        // Explicitly look for special message section
+                        const specialMessageSection = document.getElementById('special-message');
+                        if (specialMessageSection) {
+                            specialMessageSection.style.display = 'block';
+                            console.log('Timeout action: Forced special-message section display');
+                        }
+                        
+                        // Also try to find by section title
+                        document.querySelectorAll('.form-section-title').forEach(title => {
+                            if (title.textContent.includes('Special Message')) {
+                                const parentSection = title.closest('.form-section');
+                                if (parentSection) {
+                                    parentSection.style.display = 'block';
+                                    console.log('Timeout action: Found special message by title and showed it');
+                                }
+                            }
+                        });
+                    }, 100);
+                    
+                } else {
+                    toggleAttendanceDetails(false);
+                }
+            });
+            
+            // Also add click handler for extra measure
+            newRadio.onclick = function() {
+                console.log('Radio clicked:', this.id, this.value);
+                if (this.value === 'yes') {
+                    toggleAttendanceDetails(true);
+                } else {
+                    toggleAttendanceDetails(false);
+                }
+            };
+        });
+    }
+    
+    // Force call toggleAttendanceDetails based on current selection
+    const yesRadio = document.querySelector('input[name="attendance"][value="yes"]');
+    if (yesRadio && yesRadio.checked) {
+        console.log('Yes is checked, showing conditionals');
+        toggleAttendanceDetails(true);
+    } else {
+        console.log('Yes is NOT checked, hiding conditionals');
+        toggleAttendanceDetails(false);
+    }
+    
+    console.log('RSVP form event handlers initialized');
+}
+
 export async function loadFooterContent() {
     try {
-        const response = await fetch('./json/footer.json');
-        const footerData = await response.json();
-        const footer = footerData.footer;
-        const footerElement = document.querySelector('.footer');
+        const footerRes = await fetch('./json/footer.json');
+        const footer = await footerRes.json();
+        
+        const footerElement = document.querySelector('footer.footer');
         const footerHTML = `
             <div class="container">
                 <div class="row">

@@ -2,6 +2,7 @@
 window.weddingData = {};
 window.colorData = {};
 window.footerData = {};
+window.rsvpData = {};
 
 async function loadData() {
   // Check if we're on gallery.html - if so, don't load full navigation
@@ -46,5 +47,14 @@ async function loadData() {
   } catch (err) {
     // Not critical, fallback to empty
     window.footerData = {};
+  }
+  
+  // Load RSVP data from rsvp.json
+  try {
+    const rsvpRes = await fetch('json/rsvp.json');
+    window.rsvpData = await rsvpRes.json();
+  } catch (err) {
+    console.error('Failed to load rsvp.json', err);
+    window.rsvpData = {};
   }
 }

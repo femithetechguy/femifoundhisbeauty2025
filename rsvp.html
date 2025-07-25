@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles/style.css">
+    <!-- <link rel="stylesheet" href="styles/special-message-fix.css"> -->
 </head>
 <body>
     <!-- Navigation -->
@@ -82,11 +83,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Network Debugger for Formspree -->
     <script src="scripts/network-debugger.js"></script>
+    <!-- Direct Fix for RSVP Form -->
+    <script src="scripts/direct-fix.js"></script>
 
     <!-- Modular RSVP Form Script and Styles -->
     <link rel="stylesheet" href="styles/rsvp-form.css">
-    <script type="module">
+      <script type="module">
       import { toggleAttendanceDetails, handleRSVPSubmission, applyColorTheme, loadFooterContent, loadRSVPData, renderRSVPForm, buildFormFromJSON } from './scripts/rsvp-form.js';
+      // Make functions globally available
       window.toggleAttendanceDetails = toggleAttendanceDetails;
       window.handleRSVPSubmission = handleRSVPSubmission;
       
@@ -96,6 +100,133 @@
         if (rsvpData) {
           renderRSVPForm(rsvpData);
           buildFormFromJSON(rsvpData);
+          
+          // Direct fix for special message section
+          setTimeout(() => {
+            console.log("Direct special message fix in rsvp.html");
+            
+            // Function to force show special message
+            function forceShowSpecialMessage() {
+              // Try multiple ways to find and show the special message section
+              // 1. By ID
+              const specialMessage = document.getElementById('special-message');
+              if (specialMessage) {
+                specialMessage.style.display = 'block';
+                console.log('Showed special-message by ID');
+                return true;
+              }
+              
+              // 2. By section-id
+              const sectionSpecialMessage = document.getElementById('section-special-message');
+              if (sectionSpecialMessage) {
+                sectionSpecialMessage.style.display = 'block';
+                console.log('Showed section-special-message by ID');
+                return true;
+              }
+              
+              // 3. By data attributes
+              const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+              let found = false;
+              conditionalSections.forEach(section => {
+                section.style.display = 'block';
+                found = true;
+                console.log('Showed conditional section:', section.id || section.className);
+              });
+              if (found) return true;
+              
+              // 4. By content
+              const allTitles = document.querySelectorAll('.form-section-title');
+              for (let i = 0; i < allTitles.length; i++) {
+                if (allTitles[i].textContent.includes('Special Message')) {
+                  const parent = allTitles[i].closest('.form-section');
+                  if (parent) {
+                    parent.style.display = 'block';
+                    console.log('Showed special message by title content');
+                    return true;
+                  }
+                }
+              }
+              
+              return false;
+            }
+            
+            // Set up direct event handlers on attendance radios
+            const yesRadios = document.querySelectorAll('input[name="attendance"][value="yes"]');
+            yesRadios.forEach(radio => {
+              radio.addEventListener('click', forceShowSpecialMessage);
+              radio.addEventListener('change', forceShowSpecialMessage);
+            });
+            
+            // Check if yes is already selected
+            const checkedYes = document.querySelector('input[name="attendance"][value="yes"]:checked');
+            if (checkedYes) {
+              console.log('Yes already checked, forcing special message');
+              forceShowSpecialMessage();
+            }
+          }, 1000);
+          
+          // Import and run the fix script
+          import('./scripts/rsvp-fix.js').then(module => {
+            console.log('RSVP fix script loaded');
+            if (typeof module.fixSpecialMessageSectionVisibility === 'function') {
+              module.fixSpecialMessageSectionVisibility();
+            }
+          });
+          
+          // Add click handlers manually to ensure they work
+          const attendanceYesRadio = document.getElementById('attendanceYes');
+          const attendanceNoRadio = document.getElementById('attendanceNo');
+          
+          if (attendanceYesRadio) {
+            attendanceYesRadio.onclick = function() { 
+              console.log('Yes radio clicked');
+              toggleAttendanceDetails(true);
+            };
+          }
+          
+          if (attendanceNoRadio) {
+            attendanceNoRadio.onclick = function() { 
+              console.log('No radio clicked');
+              toggleAttendanceDetails(false);
+            };
+          }
+          
+          // Initial hide of conditional sections
+          // Wait a moment for the form to be fully built
+          setTimeout(() => {
+            const attendanceNo = document.getElementById('attendanceNo');
+            if (attendanceNo && attendanceNo.checked) {
+              toggleAttendanceDetails(false);
+            } else {
+              const attendanceYes = document.getElementById('attendanceYes');
+              if (attendanceYes && attendanceYes.checked) {
+                toggleAttendanceDetails(true);
+              }
+            }
+            
+            // Force show conditional sections if Yes is selected (for debugging)
+            const specialMessageSection = document.getElementById('special-message');
+            if (specialMessageSection) {
+              console.log('Special message section found:', specialMessageSection.id);
+              if (attendanceYesRadio && attendanceYesRadio.checked) {
+                specialMessageSection.style.display = 'block';
+              }
+            } else {
+              console.error('Special message section not found!');
+            }
+          }, 500);
+          
+          // Additional debug code - force show after a longer delay
+          setTimeout(() => {
+            console.log('FINAL DEBUG CHECK');
+            const allSections = document.querySelectorAll('div[id="special-message"]');
+            console.log('Found by direct selector:', allSections.length);
+            
+            allSections.forEach(section => {
+              console.log('Forcing visible:', section.id);
+              section.style.display = 'block';
+            });
+          }, 2000);
         }
         
         // Apply theme and load footer

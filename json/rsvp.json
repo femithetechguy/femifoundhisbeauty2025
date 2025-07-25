@@ -12,10 +12,13 @@
   "form": {
     "id": "rsvpForm",
     "method": "POST",
-    "action": "#",
+    "action": "https://formspree.io/f/mgvzwven",
     "handler": "handleRSVPSubmission",
+    "formspree": {
+      "id": "mgvzwven"
+    },
     "sections": [
-      {
+    {
         "id": "personal-information",
         "title": "Personal Information",
         "icon": "bi-person",
@@ -94,6 +97,10 @@
         "id": "special-message",
         "title": "Special Message",
         "icon": "bi-chat-heart",
+        "conditional": {
+          "dependsOn": "attendance",
+          "showWhen": "yes"
+        },
         "fields": [
           {
             "id": "specialMessage",
