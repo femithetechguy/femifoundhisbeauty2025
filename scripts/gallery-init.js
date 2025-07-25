@@ -1,22 +1,16 @@
-// Website initialization logic
-// Loads data, applies color theme, initializes all main features
+// Gallery-specific initialization logic
+// Loads data, applies color theme, initializes all gallery features
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await initializeWebsite();
+  await initializeGalleryWebsite();
 });
 
-async function initializeWebsite() {
+async function initializeGalleryWebsite() {
   await loadData();
   applyColorTheme();
-  // Check if loadCouplePhoto function exists before calling it
-  if (typeof loadCouplePhoto === 'function') {
-    loadCouplePhoto();
-  } else if (typeof window.loadCouplePhoto === 'function') {
-    window.loadCouplePhoto();
-  } else {
-    console.warn('loadCouplePhoto function not found');
-  }
-  buildNavigation();
+  // Skip building navigation since we have a custom one
+  // Skip buildNavigation(); - we use gallery-navigation.js instead
+  
   // Render dynamic sections into the container
   const dynamicSectionsContainer = document.getElementById('dynamic-sections');
   if (dynamicSectionsContainer && typeof buildDynamicSections === 'function') {
@@ -27,6 +21,7 @@ async function initializeWebsite() {
       setTimeout(initGalleryLightbox, 200);
     }
   }
+  
   initializeCountdown();
   initializeCopyButtons();
   initializeLoveEffects();

@@ -33,7 +33,14 @@ function buildNavigation() {
     });
   }
 
+  // Clear out existing items except the gallery link which is handled separately
+  const galleryNavItem = navbarMenu.querySelector('.gallery-nav-item');
   navbarMenu.innerHTML = "";
+  if (galleryNavItem) {
+    navbarMenu.appendChild(galleryNavItem);
+    galleryNavItem.style.display = 'block';
+  }
+  
   navigation.items.forEach((item) => {
     const li = document.createElement("li");
     li.className = "nav-item";

@@ -48,6 +48,7 @@
     <link rel="stylesheet" href="styles/responsive-fixes.css" />
     <link rel="stylesheet" href="styles/form-messages.css" />
     <link rel="stylesheet" href="styles/rsvp.css" />
+    <link rel="stylesheet" href="styles/dynamic-content.css" />
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -113,6 +114,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto" id="navbarMenu">
             <!-- Navigation items will be populated by JavaScript -->
+            <!-- Gallery link will be handled by dynamic-content-loader.js -->
+            <li class="nav-item gallery-nav-item" style="display:none;">
+              <a class="nav-link" href="gallery.html" id="gallery-nav-link">
+                <i class="bi bi-images"></i> Gallery
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -244,12 +251,12 @@
     <!-- Critical Modularized JavaScript (load first) -->
     <script src="scripts/data.js"></script>
     <script src="scripts/utils.js"></script>
+    <script src="scripts/couple-photo.js"></script>
     
     <!-- Feature JavaScript (can be deferred) -->
     <script src="scripts/colors.js" defer></script>
     <script src="scripts/navigation.js" defer></script>
     <script src="scripts/sections.js" defer></script>
-    <script src="scripts/couple-photo.js" defer></script>
     <script src="scripts/footer.js" defer></script>
     <script src="scripts/countdown.js" defer></script>
     <script src="scripts/gallery.js" defer></script>
@@ -264,6 +271,7 @@
     <script src="scripts/fab.js" defer></script>
     <script type="module" src="scripts/guest-blessing.js"></script>
     <script src="scripts/portrait-popup.js" defer></script>
+    <script src="scripts/dynamic-content-loader.js" defer></script>
     
     <!-- Portrait Popup Modal -->
     <div class="portrait-modal" id="portraitModal">

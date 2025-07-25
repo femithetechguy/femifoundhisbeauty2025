@@ -2625,7 +2625,7 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   /* Larger and more touch-friendly nav items for small screens */
   .navbar-nav .nav-link {
     padding: 14px 20px !important;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
     margin: 10px 0;
     border-radius: 10px;
   }

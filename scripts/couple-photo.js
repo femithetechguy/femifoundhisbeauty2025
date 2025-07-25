@@ -5,8 +5,6 @@ function togglePortraitView(imageId) {
   img.classList.toggle('crop-mode');
 }
 
-// Expose globally for inline onclick
-window.togglePortraitView = togglePortraitView;
 // Couple photo loader
 function loadCouplePhoto() {
   // Find the couple photo section (usually 'home')
@@ -21,3 +19,7 @@ function loadCouplePhoto() {
     img.alt = couplePhotoData.alt || 'Beauty and Femi';
   }
 }
+
+// Expose functions globally for use in other scripts
+window.togglePortraitView = togglePortraitView;
+window.loadCouplePhoto = loadCouplePhoto;

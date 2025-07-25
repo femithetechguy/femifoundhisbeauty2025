@@ -102,22 +102,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#our-story">
-                            <i class="bi bi-journal-richtext"></i> Our Story
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="gallery.html">
-                            <i class="bi bi-images"></i> Gallery
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#wedding-details">
-                            <i class="bi bi-info-circle"></i> Details
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#rsvp">
+                        <a class="nav-link" href="#rsvp" id="rsvp-nav-link">
                             <i class="bi bi-heart-fill"></i> RSVP
                         </a>
                     </li>
@@ -166,79 +151,6 @@
                     <div class="stat-item">
                         <div class="stat-number" id="memoriesCount">∞</div>
                         <div class="stat-label">Love & Memories</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Photo Upload Section -->
-    <section class="upload-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <div class="upload-card">
-                        <div class="text-center mb-3">
-                            <i class="bi bi-cloud-upload upload-icon"></i>
-                            <h4 class="mb-2">Share Your Photos</h4>
-                            <p class="text-muted">Upload your favorite moments from our special day!</p>
-                        </div>
-                        
-                        <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
-                            <div class="upload-area" id="uploadArea">
-                                <input type="file" id="photoInput" name="photo" class="file-input" accept="image/*" multiple>
-                                <div class="upload-content">
-                                    <i class="bi bi-images display-4 text-muted mb-3"></i>
-                                    <h5>Drop photos here or click to browse</h5>
-                                    <p class="text-muted mb-3">Support: JPG, PNG, GIF (Max 10MB per file)</p>
-                                    <button type="button" class="btn upload-btn" onclick="document.getElementById('photoInput').click()">
-                                        <i class="bi bi-plus-circle"></i> Choose Photos
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div class="upload-preview" id="uploadPreview">
-                                <h6>Selected Photos:</h6>
-                                <div id="previewContainer" class="d-flex flex-wrap gap-2 mt-2"></div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="uploaderName" class="form-label">Your Name</label>
-                                        <input type="text" class="form-control" id="uploaderName" name="name" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="uploaderEmail" class="form-label">Email/Phone (optional)</label>
-                                        <input type="text" class="form-control" id="uploaderEmail" name="email_phone">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="upload-progress" id="uploadProgress">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                                         role="progressbar" style="width: 0%"></div>
-                                </div>
-                                <p class="text-center mt-2">Uploading photos...</p>
-                            </div>
-                            
-                            <div class="success-message" id="successMessage">
-                                <i class="bi bi-check-circle"></i> Thank you! Your photos have been uploaded successfully.
-                            </div>
-                            
-                            <div class="error-message" id="errorMessage">
-                                <i class="bi bi-exclamation-triangle"></i> <span id="errorText">Something went wrong. Please try again.</span>
-                            </div>
-                            
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn upload-btn btn-lg" id="submitBtn">
-                                    <i class="bi bi-cloud-upload"></i> Upload Photos
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -457,94 +369,15 @@
                         </p>
                     </div>
                     
-                    <div class="upload-card">
+                    <!-- This div will be dynamically loaded with RSVP content from index.html -->
+                    <div id="embeddedRsvpForm" class="upload-card">
                         <div class="text-center mb-4">
-                            <i class="bi bi-calendar-heart upload-icon"></i>
-                            <h4 class="mb-2">We'd Love to See You There</h4>
-                            <p class="text-muted">Let us know if you can make it to our special day</p>
-                        </div>
-                        
-                        <form id="galleryRsvpForm" class="form-custom" action="https://formspree.io/f/mgvzwven" method="POST">
-                            <!-- Personal Information -->
-                            <div class="form-section mb-4">
-                                <h5 class="form-section-title">
-                                    <i class="bi bi-person"></i> Personal Information
-                                </h5>
-                                
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="fullName" class="form-label">Full Name *</label>
-                                        <input type="text" class="form-control" id="fullName" name="fullName" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="email" class="form-label">Email *</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-
-                            <!-- Attendance -->
-                            <div class="form-section mb-4">
-                                <h5 class="form-section-title">
-                                    <i class="bi bi-calendar-check"></i> Attendance
-                                </h5>
-                                
-                                <div class="mb-3">
-                                    <label class="form-label">Will you be attending? *</label>
-                                    <div class="attendance-options">
-                                        <div class="form-check form-check-custom">
-                                            <input class="form-check-input" type="radio" name="attendance" id="attending_yes" value="Yes, I'll be there" required onchange="toggleGuestDetails(true)">
-                                            <label class="form-check-label" for="attending_yes">
-                                                Yes, I'll be there!
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-custom">
-                                            <input class="form-check-input" type="radio" name="attendance" id="attending_no" value="Sorry, can't make it" onchange="toggleGuestDetails(false)">
-                                            <label class="form-check-label" for="attending_no">
-                                                Sorry, I can't make it
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div id="guestDetailsSection">
-                                    <div class="mb-3">
-                                        <label for="guestCount" class="form-label">Number of Guests (including yourself) *</label>
-                                        <input type="number" class="form-control" id="guestCount" name="guestCount" min="1" max="4" required>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="dietaryRestrictions" class="form-label">Dietary Restrictions</label>
-                                        <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="2"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Message -->
-                            <div class="form-section mb-4">
-                                <h5 class="form-section-title">
-                                    <i class="bi bi-chat-heart"></i> Message
-                                </h5>
-                                <div class="mb-3">
-                                    <label for="message" class="form-label">Special Message for the Couple (Optional)</label>
-                                    <textarea class="form-control" id="message" name="message" rows="3"></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-primary-custom btn-lg upload-btn">
-                                    <i class="bi bi-heart-fill"></i> Submit RSVP
-                                </button>
-                            </div>
-                        </form>
-                        
-                        <div id="galleryRsvpConfirmation" class="success-message mt-4" style="display:none;">
-                            <i class="bi bi-check-circle"></i> Thank you for your RSVP! We can't wait to celebrate with you.
+                            <p class="mt-2">Loading RSVP form...</p>
                         </div>
                     </div>
                 </div>
@@ -580,14 +413,12 @@
                     whiteWedding: [],
                     specialMoments: []
                 };
-                this.selectedFiles = [];
                 this.init();
             }
 
             async init() {
                 await this.loadPhotos();
                 this.setupEventListeners();
-                this.setupUploadHandlers();
                 this.displayPhotos('all');
             }
 
@@ -836,202 +667,9 @@
                 }
             }
 
-            setupUploadHandlers() {
-                const uploadArea = document.getElementById('uploadArea');
-                const fileInput = document.getElementById('photoInput');
-                const uploadForm = document.getElementById('uploadForm');
 
-                if (!uploadArea || !fileInput || !uploadForm) return;
 
-                // File input change
-                fileInput.addEventListener('change', (e) => {
-                    this.handleFileSelection(e.target.files);
-                });
 
-                // Drag and drop
-                uploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.add('dragover');
-                });
-
-                uploadArea.addEventListener('dragleave', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('dragover');
-                });
-
-                uploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('dragover');
-                    this.handleFileSelection(e.dataTransfer.files);
-                });
-
-                // Form submission
-                uploadForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleUpload();
-                });
-            }
-
-            handleFileSelection(files) {
-                this.selectedFiles = Array.from(files);
-                this.displayFilePreview();
-            }
-
-            displayFilePreview() {
-                const previewContainer = document.getElementById('previewContainer');
-                const uploadPreview = document.getElementById('uploadPreview');
-
-                if (!previewContainer || !uploadPreview) return;
-
-                if (this.selectedFiles.length === 0) {
-                    uploadPreview.style.display = 'none';
-                    return;
-                }
-
-                uploadPreview.style.display = 'block';
-                previewContainer.innerHTML = '';
-
-                this.selectedFiles.forEach((file, index) => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const previewDiv = document.createElement('div');
-                            previewDiv.className = 'position-relative';
-                            previewDiv.innerHTML = `
-                                <img src="${e.target.result}" class="preview-image" alt="Preview">
-                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
-                                        onclick="galleryManager.removeFile(${index})" style="transform: translate(50%, -50%);">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            `;
-                            previewContainer.appendChild(previewDiv);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-
-            removeFile(index) {
-                this.selectedFiles.splice(index, 1);
-                this.displayFilePreview();
-                
-                // Update file input
-                const dt = new DataTransfer();
-                this.selectedFiles.forEach(file => dt.items.add(file));
-                document.getElementById('photoInput').files = dt.files;
-            }
-
-            async handleUpload() {
-                if (this.selectedFiles.length === 0) {
-                    this.showError('Please select at least one photo to upload.');
-                    return;
-                }
-
-                const form = document.getElementById('uploadForm');
-                const submitBtn = document.getElementById('submitBtn');
-                const progressSection = document.getElementById('uploadProgress');
-                const progressBar = progressSection.querySelector('.progress-bar');
-
-                // Show progress
-                progressSection.style.display = 'block';
-                submitBtn.disabled = true;
-                this.hideMessages();
-
-                try {
-                    // Create FormData
-                    const formData = new FormData();
-                    
-                    // Add form fields
-                    formData.append('name', document.getElementById('uploaderName').value);
-                    formData.append('email_phone', document.getElementById('uploaderEmail').value);
-                    formData.append('_subject', 'Photo Upload for Beauty & Femi Wedding');
-                    formData.append('_next', `${window.location.origin}/gallery.html?success=true`);
-                    formData.append('_format', 'json');
-
-                    // Add files
-                    this.selectedFiles.forEach((file, index) => {
-                        formData.append(`photo_${index}`, file);
-                    });
-
-                    // Simulate progress
-                    let progress = 0;
-                    const progressInterval = setInterval(() => {
-                        progress += Math.random() * 30;
-                        if (progress > 90) progress = 90;
-                        progressBar.style.width = progress + '%';
-                    }, 500);
-
-                    // Submit to Formspree
-                    const response = await fetch('https://formspree.io/f/mnnzanqe', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    clearInterval(progressInterval);
-                    progressBar.style.width = '100%';
-
-                    if (response.ok) {
-                        setTimeout(() => {
-                            this.showSuccess();
-                            this.resetForm();
-                            // Refresh photos and update statistics after successful upload
-                            setTimeout(() => {
-                                this.loadPhotos();
-                            }, 2000);
-                        }, 500);
-                    } else {
-                        throw new Error('Upload failed');
-                    }
-
-                } catch (error) {
-                    console.error('Upload error:', error);
-                    this.showError('Upload failed. Please try again.');
-                } finally {
-                    setTimeout(() => {
-                        progressSection.style.display = 'none';
-                        submitBtn.disabled = false;
-                        progressBar.style.width = '0%';
-                    }, 1000);
-                }
-            }
-
-            showSuccess() {
-                const successMessage = document.getElementById('successMessage');
-                if (successMessage) {
-                    successMessage.style.display = 'block';
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                    }, 5000);
-                }
-            }
-
-            showError(message) {
-                const errorMessage = document.getElementById('errorMessage');
-                const errorText = document.getElementById('errorText');
-                if (errorMessage && errorText) {
-                    errorText.textContent = message;
-                    errorMessage.style.display = 'block';
-                    setTimeout(() => {
-                        errorMessage.style.display = 'none';
-                    }, 5000);
-                }
-            }
-
-            hideMessages() {
-                const successMessage = document.getElementById('successMessage');
-                const errorMessage = document.getElementById('errorMessage');
-                if (successMessage) successMessage.style.display = 'none';
-                if (errorMessage) errorMessage.style.display = 'none';
-            }
-
-            resetForm() {
-                const uploadForm = document.getElementById('uploadForm');
-                if (uploadForm) {
-                    uploadForm.reset();
-                    this.selectedFiles = [];
-                    this.displayFilePreview();
-                }
-            }
 
             setupTouchNavigation() {
                 const lightboxModal = document.getElementById('lightboxModal');
@@ -1086,6 +724,18 @@
             if (typeof initFAB === 'function') {
                 initFAB();
             }
+            
+            // Expose a function that can be called when the page is loaded dynamically
+            window.initGalleryPage = function() {
+                if (!window.galleryManager) {
+                    galleryManager = new GalleryManager();
+                }
+                initializeRSVPForm();
+                initializeFooter();
+                if (typeof initFAB === 'function') {
+                    initFAB();
+                }
+            };
         });
         
         // Initialize RSVP form
@@ -1232,7 +882,7 @@
     
     <!-- Feature JavaScript -->
     <script src="scripts/colors.js" defer></script>
-    <script src="scripts/navigation.js" defer></script>
+    <script src="scripts/gallery-navigation.js" defer></script>
     <script src="scripts/footer.js" defer></script>
     <script src="scripts/gallery.js" defer></script>
     <script src="scripts/forms.js" defer></script>
@@ -1241,7 +891,7 @@
     <script src="scripts/card-animations.js" defer></script>
     
     <!-- Main init scripts (load last) -->
-    <script src="scripts/init.js" defer></script>
+    <script src="scripts/gallery-init.js" defer></script>
     <script src="scripts/script.js" defer></script>
     <script src="scripts/fab.js" defer></script>
     
@@ -1271,7 +921,7 @@
         <i class="bi bi-plus" aria-hidden="true"></i>
       </button>
       <div class="fab-menu" id="fabMenu" aria-hidden="true">
-        <a href="index.html#rsvp" class="fab-item" title="RSVP">
+        <a href="#rsvp" class="fab-item" title="RSVP" id="rsvp-fab-link">
           <i class="bi bi-heart"></i>
         </a>
         <a href="index.html#contact" class="fab-item" title="Contact">
@@ -1287,5 +937,187 @@
     <button class="back-to-top" id="backToTop">
       <i class="bi bi-arrow-up"></i>
     </button>
+
+    <!-- RSVP Dynamic Loading Script -->
+    <script>
+        // Function to fetch and load the RSVP form from rsvp.html
+        async function loadRsvpForm() {
+            try {
+                const response = await fetch('rsvp.html');
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Find the RSVP form content from rsvp.html
+                const rsvpForm = doc.getElementById('rsvpForm');
+                const rsvpConfirmation = doc.getElementById('confirmationMessage');
+                
+                if (rsvpForm) {
+                    // Create a container to hold the form and confirmation
+                    const formContainer = document.createElement('div');
+                    formContainer.className = 'card-custom';
+                    
+                    // Copy the form
+                    const formCopy = rsvpForm.cloneNode(true);
+                    
+                    // Copy the confirmation message
+                    const confirmationCopy = rsvpConfirmation.cloneNode(true);
+                    confirmationCopy.style.display = 'none';
+                    
+                    // Add them to the container
+                    const cardBody = document.createElement('div');
+                    cardBody.className = 'card-body';
+                    cardBody.appendChild(formCopy);
+                    formContainer.appendChild(cardBody);
+                    formContainer.appendChild(confirmationCopy);
+                    
+                    // Replace the loading placeholder with the actual RSVP form
+                    document.getElementById('embeddedRsvpForm').innerHTML = '';
+                    document.getElementById('embeddedRsvpForm').appendChild(formContainer);
+                    
+                    // Initialize form functionality after loading
+                    initializeLoadedRsvpForm();
+                } else {
+                    showRsvpError("Could not find RSVP form content.");
+                }
+                } else {
+                    showRsvpError("Could not find RSVP section.");
+                }
+            } catch (error) {
+                console.error('Error loading RSVP form:', error);
+                showRsvpError("Error loading RSVP form. Please try again or visit the home page.");
+            }
+        }
+        
+        // Initialize the dynamically loaded RSVP form
+        function initializeLoadedRsvpForm() {
+            const rsvpForm = document.querySelector('#embeddedRsvpForm form');
+            
+            if (rsvpForm) {
+                // Set form ID to make it unique on this page
+                rsvpForm.id = 'embeddedRsvpForm-form';
+                
+                // Load required functions from rsvp-form.js
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.innerHTML = `
+                    import { toggleGuestDetails, updateGuestNames, handleRSVPSubmission } from './scripts/rsvp-form.js';
+                    window.toggleGuestDetails = toggleGuestDetails;
+                    window.updateGuestNames = updateGuestNames;
+                    window.handleRSVPSubmission = handleRSVPSubmission;
+                `;
+                document.head.appendChild(script);
+                
+                // Update any attendance radio buttons to use the correct function
+                const attendingYes = rsvpForm.querySelector('input[value="Yes, I\'ll be there"]');
+                const attendingNo = rsvpForm.querySelector('input[value="Sorry, can\'t make it"]');
+                
+                if (attendingYes && attendingNo) {
+                    attendingYes.id = 'embedded_attending_yes';
+                    attendingNo.id = 'embedded_attending_no';
+                    attendingYes.setAttribute('onchange', 'toggleGuestDetails(true)');
+                    attendingNo.setAttribute('onchange', 'toggleGuestDetails(false)');
+                    
+                    // Update the labels to point to the new IDs
+                    const yesLabel = rsvpForm.querySelector('label[for="attendance_0"]');
+                    const noLabel = rsvpForm.querySelector('label[for="attendance_1"]');
+                    
+                    if (yesLabel) yesLabel.setAttribute('for', 'embedded_attending_yes');
+                    if (noLabel) noLabel.setAttribute('for', 'embedded_attending_no');
+                }
+                
+                // Set the confirmation ID to make it unique
+                const confirmation = document.querySelector('#embeddedRsvpForm #rsvpConfirmation');
+                if (confirmation) {
+                    confirmation.id = 'embeddedRsvpConfirmation';
+                }
+                
+                // Add submit event listener to handle form submission
+                rsvpForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate form submission (since it's just a demo)
+                    setTimeout(() => {
+                        const formContainer = rsvpForm.closest('.card-body');
+                        if (formContainer) {
+                            formContainer.style.display = 'none';
+                        }
+                        
+                        const confirmation = document.querySelector('#confirmationMessage');
+                        if (confirmation) {
+                            confirmation.style.display = 'block';
+                        } else {
+                            // Create a confirmation message if not found
+                            const confirmDiv = document.createElement('div');
+                            confirmDiv.id = 'confirmationMessage';
+                            confirmDiv.className = 'card-custom mt-4';
+                            confirmDiv.innerHTML = `
+                                <div class="card-body text-center">
+                                    <i class="bi bi-check-circle display-4 text-success mb-3"></i>
+                                    <h3>Thank You!</h3>
+                                    <p class="lead">Your RSVP has been submitted successfully.</p>
+                                    <p>We can't wait to celebrate with you on our special day!</p>
+                                    <a href="index.html" class="btn btn-outline-custom">
+                                        <i class="bi bi-house"></i> Back to Home
+                                    </a>
+                                </div>
+                            `;
+                            
+                            const container = document.getElementById('embeddedRsvpForm');
+                            if (container) {
+                                container.appendChild(confirmDiv);
+                            }
+                        }
+                        
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }, 1500);
+                });
+                
+                // Set initial state of guest details if needed
+                const guestDetailsSection = rsvpForm.querySelector('#attendanceDetailsSection') || 
+                                            rsvpForm.querySelector('#guestDetailsSection');
+                                            
+                if (attendingYes && guestDetailsSection) {
+                    toggleGuestDetails(attendingYes.checked);
+                }
+            }
+        }
+        
+        // Show error message if RSVP form loading fails
+        function showRsvpError(message) {
+            document.getElementById('embeddedRsvpForm').innerHTML = `
+                <div class="text-center mb-4">
+                    <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
+                    <h4 class="mb-2">Oops! Something went wrong</h4>
+                    <p class="text-muted">${message}</p>
+                    <a href="rsvp.html" class="btn btn-primary-custom mt-3">Go to RSVP Page</a>
+                </div>
+            `;
+        }
+        
+        // Add event listeners to RSVP links to ensure form is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initially load the RSVP form
+            loadRsvpForm();
+            
+            // RSVP navigation in navbar is handled in gallery-navigation.js
+            
+            // Only handle the floating action button if it exists
+            const fabLink = document.getElementById('rsvp-fab-link');
+            if (fabLink) {
+                fabLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
+                    loadRsvpForm(); // Reload form in case it failed the first time
+                });
+            }
+        });
+    </script>
 </body>
 </html>
