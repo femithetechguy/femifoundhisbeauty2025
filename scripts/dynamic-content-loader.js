@@ -33,23 +33,24 @@ function initDynamicContentLoader() {
 }
 
 function updateGalleryLinks() {
-    // Update all gallery links in the document
-    const galleryLinks = document.querySelectorAll('a[href="gallery.html"], .gallery-link');
+    // Update only the gallery links that should use dynamic loading
+    // Specifically exclude links with class 'direct-link'
+    const galleryLinks = document.querySelectorAll('.gallery-link:not(.direct-link)');
     
     galleryLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            loadGalleryContent();
-        });
+        if (!link.classList.contains('direct-link')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                loadGalleryContent();
+            });
+        }
     });
     
-    // Special handling for the gallery nav link
+    // The gallery nav link should scroll to the gallery section, not load gallery.html
     const galleryNavLink = document.getElementById('gallery-nav-link');
     if (galleryNavLink) {
-        galleryNavLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            loadGalleryContent();
-        });
+        // No special handling needed - let it behave as a normal anchor link
+        // This will use the default behavior to navigate to #gallery
     }
     
     // Handle dynamically added links by setting up a mutation observer
@@ -58,9 +59,10 @@ function updateGalleryLinks() {
             if (mutation.addedNodes.length) {
                 mutation.addedNodes.forEach(function(node) {
                     if (node.nodeType === 1) { // Element node
-                        const newLinks = node.querySelectorAll('a[href="gallery.html"], .gallery-link');
+                        // Only select gallery links that don't have the direct-link class
+                        const newLinks = node.querySelectorAll('a[href="gallery.html"]:not(.direct-link), .gallery-link:not(.direct-link)');
                         newLinks.forEach(link => {
-                            if (!link.hasGalleryListener) {
+                            if (!link.hasGalleryListener && !link.classList.contains('direct-link')) {
                                 link.addEventListener('click', function(e) {
                                     e.preventDefault();
                                     loadGalleryContent();

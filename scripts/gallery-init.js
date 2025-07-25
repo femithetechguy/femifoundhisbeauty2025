@@ -22,9 +22,17 @@ async function initializeGalleryWebsite() {
     }
   }
   
-  initializeCountdown();
-  initializeCopyButtons();
-  initializeLoveEffects();
-  initializeFooter();
-  hideLoadingScreen();
+  // Only call functions that are available
+  if (typeof initializeFooter === 'function') {
+    initializeFooter();
+  }
+  
+  // Hide loading screen
+  const loadingScreen = document.getElementById('loading-screen');
+  if (loadingScreen) {
+    loadingScreen.style.opacity = '0';
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+    }, 500);
+  }
 }

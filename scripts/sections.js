@@ -177,7 +177,7 @@ function createGalleryContent(content) {
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="gallery.html" class="btn btn-primary-custom gallery-link"><i class="bi bi-images"></i> View Full Gallery</a>
+            <a href="gallery.html" class="btn btn-primary-custom direct-link"><i class="bi bi-images"></i> View Full Gallery</a>
         </div>
     `;
 }

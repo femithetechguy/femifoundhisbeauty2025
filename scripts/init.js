@@ -16,7 +16,12 @@ async function initializeWebsite() {
   } else {
     console.warn('loadCouplePhoto function not found');
   }
-  buildNavigation();
+  
+  // Only build navigation for index.html, not gallery.html
+  // Gallery.html has its own navigation in gallery-navigation.js
+  if (window.location.pathname.endsWith('gallery.html') === false) {
+    buildNavigation();
+  }
   // Render dynamic sections into the container
   const dynamicSectionsContainer = document.getElementById('dynamic-sections');
   if (dynamicSectionsContainer && typeof buildDynamicSections === 'function') {

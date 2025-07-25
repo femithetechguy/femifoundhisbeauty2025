@@ -33,19 +33,15 @@ function buildNavigation() {
     });
   }
 
-  // Clear out existing items except the gallery link which is handled separately
-  const galleryNavItem = navbarMenu.querySelector('.gallery-nav-item');
+  // Clear existing navigation items completely
   navbarMenu.innerHTML = "";
-  if (galleryNavItem) {
-    navbarMenu.appendChild(galleryNavItem);
-    galleryNavItem.style.display = 'block';
-  }
   
   navigation.items.forEach((item) => {
     const li = document.createElement("li");
     li.className = "nav-item";
     const a = document.createElement("a");
     a.className = "nav-link";
+    
     // Default to hash if id exists, fallback to #home
     let href = item.href;
     if (!href && item.id) {
@@ -53,6 +49,11 @@ function buildNavigation() {
     }
     if (!href) {
       href = "#home";
+    }
+    
+    // Don't change the href for gallery - it should link to #gallery on index page
+    if (item.id === "gallery") {
+      a.id = "gallery-nav-link";
     }
     a.href = href;
     a.innerHTML = `${item.icon ? item.icon + ' ' : ''}${item.label}`;

@@ -63,26 +63,19 @@
                                         <i class="bi bi-person"></i> Personal Information
                                     </h4>
                                     
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName" class="form-label">First Name *</label>
-                                            <input type="text" class="form-control" id="firstName" name="firstName" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="lastName" class="form-label">Last Name *</label>
-                                            <input type="text" class="form-control" id="lastName" name="lastName" required>
-                                        </div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
                                     </div>
                                     
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="email" class="form-label">Email Address *</label>
-                                            <input type="email" class="form-control" id="email" name="email" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="phone" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="phone" name="phone">
-                                        </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
                                     </div>
                                 </div>
 
@@ -96,14 +89,14 @@
                                         <label class="form-label">Will you be attending? *</label>
                                         <div class="attendance-options">
                                             <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="radio" name="attendance" id="attendingYes" value="yes" required onchange="toggleGuestDetails(true)">
+                                                <input class="form-check-input" type="radio" name="attendance" id="attendingYes" value="yes" required onchange="toggleAttendanceDetails(true)">
                                                 <label class="form-check-label" for="attendingYes">
                                                     <i class="bi bi-heart-fill text-primary-custom"></i>
                                                     Yes, I'll be there! Can't wait to celebrate with you!
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="radio" name="attendance" id="attendingNo" value="no" required onchange="toggleGuestDetails(false)">
+                                                <input class="form-check-input" type="radio" name="attendance" id="attendingNo" value="no" required onchange="toggleAttendanceDetails(false)">
                                                 <label class="form-check-label" for="attendingNo">
                                                     <i class="bi bi-heart text-muted"></i>
                                                     Sorry, I can't make it, but I'm thinking of you!
@@ -111,81 +104,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Guest Details (shown only if attending) -->
-                                <div id="guestDetails" class="form-section mb-4" style="display: none;">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-people"></i> Guest Details
-                                    </h4>
                                     
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="guestCount" class="form-label">Number of Guests (including yourself) *</label>
-                                            <select class="form-control" id="guestCount" name="guestCount" onchange="updateGuestNames()">
-                                                <option value="">Select number of guests</option>
-                                                <option value="1">1 Guest</option>
-                                                <option value="2">2 Guests</option>
-                                                <option value="3">3 Guests</option>
-                                                <option value="4">4 Guests</option>
-                                            </select>
+                                    <!-- Additional details shown only when attending -->
+                                    <div id="attendanceDetails" style="display: none;">
+                                        <div class="row mt-4">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="guestCount" class="form-label">Number of Guests (including yourself) *</label>
+                                                <select class="form-control" id="guestCount" name="guestCount">
+                                                    <option value="">Select number of guests</option>
+                                                    <option value="1">1 Guest</option>
+                                                    <option value="2">2 Guests</option>
+                                                    <option value="3">3 Guests</option>
+                                                    <option value="4">4 Guests</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div id="guestNames" class="guest-names-container">
-                                        <!-- Guest name fields will be added dynamically -->
-                                    </div>
-                                </div>
-
-                                <!-- Meal Preferences (shown only if attending) -->
-                                <div id="mealSection" class="form-section mb-4" style="display: none;">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-cup-hot"></i> Meal Preferences
-                                    </h4>
-                                    
-                                    <div id="mealPreferences">
-                                        <!-- Meal preference fields will be added dynamically -->
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="dietaryRestrictions" class="form-label">Dietary Restrictions or Allergies</label>
-                                        <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="3" placeholder="Please let us know about any dietary restrictions, allergies, or special meal requirements..."></textarea>
-                                    </div>
-                                </div>
-
-                                <!-- Events Attendance (shown only if attending) -->
-                                <div id="eventsSection" class="form-section mb-4" style="display: none;">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-calendar-event"></i> Additional Events
-                                    </h4>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Which events will you be attending?</label>
-                                        <div class="events-checkboxes">
-                                            <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="checkbox" id="welcomeDinner" name="events" value="welcome-dinner">
-                                                <label class="form-check-label" for="welcomeDinner">
-                                                    Welcome Dinner (December 29, 2025)
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="checkbox" id="rehearsal" name="events" value="rehearsal">
-                                                <label class="form-check-label" for="rehearsal">
-                                                    Rehearsal (December 30, 2025)
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="checkbox" id="ceremony" name="events" value="ceremony" checked>
-                                                <label class="form-check-label" for="ceremony">
-                                                    Wedding Ceremony (September 26, 2025)
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-custom">
-                                                <input class="form-check-input" type="checkbox" id="reception" name="events" value="reception" checked>
-                                                <label class="form-check-label" for="reception">
-                                                    Reception (September 26, 2025)
-                                                </label>
-                                            </div>
+                                        
+                                        <div class="mt-3 mb-3">
+                                            <label for="dietaryRestrictions" class="form-label">Dietary Restrictions or Allergies</label>
+                                            <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="3" placeholder="Please let us know about any dietary restrictions, allergies, or special meal requirements..."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -202,32 +139,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Transportation -->
-                                <div id="transportationSection" class="form-section mb-4" style="display: none;">
-                                    <h4 class="form-section-title">
-                                        <i class="bi bi-car-front"></i> Transportation
-                                    </h4>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Will you need transportation assistance?</label>
-                                        <div class="form-check form-check-custom">
-                                            <input class="form-check-input" type="checkbox" id="needShuttle" name="transportation" value="shuttle">
-                                            <label class="form-check-label" for="needShuttle">
-                                                Yes, I'd like to use the complimentary shuttle service
-                                            </label>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="accommodations" class="form-label">Which hotel are you staying at?</label>
-                                        <select class="form-control" id="accommodations" name="accommodations">
-                                            <option value="">Select your hotel</option>
-                                            <option value="lagos-continental">Lagos Continental Hotel</option>
-                                            <option value="other">Other accommodation</option>
-                                            <option value="local">I'm a local guest</option>
-                                        </select>
-                                    </div>
-                                </div>
+
 
                                 <!-- Submit Button -->
                                 <div class="text-center">
@@ -269,9 +181,8 @@
     <!-- Modular RSVP Form Script and Styles -->
     <link rel="stylesheet" href="styles/rsvp-form.css">
     <script type="module">
-      import { toggleGuestDetails, updateGuestNames, handleRSVPSubmission, applyColorTheme, loadFooterContent } from './scripts/rsvp-form.js';
-      window.toggleGuestDetails = toggleGuestDetails;
-      window.updateGuestNames = updateGuestNames;
+      import { toggleAttendanceDetails, handleRSVPSubmission, applyColorTheme, loadFooterContent } from './scripts/rsvp-form.js';
+      window.toggleAttendanceDetails = toggleAttendanceDetails;
       window.handleRSVPSubmission = handleRSVPSubmission;
       document.addEventListener('DOMContentLoaded', function() {
         applyColorTheme();
