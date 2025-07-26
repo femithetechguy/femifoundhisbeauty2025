@@ -1,0 +1,35 @@
+/* Optimized spinner styles for better performance on mobile devices */
+.spinner-optimized {
+  /* Use hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+  
+  /* Reduce animation complexity for mobile */
+  animation-duration: 0.8s;
+}
+
+/* Simplified loader for mobile devices */
+@media (max-width: 768px) {
+  /* Use simpler animations on mobile */
+  .loading-screen {
+    transition-duration: 0.3s;
+  }
+  
+  /* Reduce the complexity of the ring animation on mobile */
+  .ring {
+    border-width: 6px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* Smaller text on mobile */
+  .loading-text {
+    font-size: 0.9rem;
+  }
+  
+  /* Optimize spinner-border and spinner-grow on mobile */
+  .spinner-border, .spinner-grow {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

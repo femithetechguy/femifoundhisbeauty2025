@@ -81,13 +81,19 @@ function updateGalleryLinks() {
 }
 
 function loadGalleryContent() {
-    // Show loading spinner
-    showLoadingSpinner();
+    // Performance optimization: Set a timeout to show spinner only if fetch takes longer than 200ms
+    // This prevents spinner flashing for fast loads
+    const spinnerTimeout = setTimeout(() => {
+        showLoadingSpinner();
+    }, 200);
     
     // Fetch gallery.html content
     fetch('gallery.html')
         .then(response => response.text())
         .then(html => {
+            // Clear the spinner timeout if content loaded quickly
+            clearTimeout(spinnerTimeout);
+            
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             
@@ -161,6 +167,8 @@ function loadGalleryContent() {
         })
         .catch(error => {
             console.error('Error loading gallery content:', error);
+            // Clear the spinner timeout if we got an error
+            clearTimeout(spinnerTimeout);
             hideLoadingSpinner();
             // Fallback to traditional navigation if loading fails
             window.location.href = 'gallery.html';
@@ -229,9 +237,11 @@ function showLoadingSpinner() {
         loadingOverlay = document.createElement('div');
         loadingOverlay.id = 'dynamicLoadingOverlay';
         loadingOverlay.className = 'loading-overlay';
+        
+        // Use spinner-border instead of spinner-grow (more efficient)
         loadingOverlay.innerHTML = `
             <div class="loading-spinner">
-                <div class="spinner-grow text-primary" role="status">
+                <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <p class="mt-3">Loading Gallery...</p>
@@ -239,35 +249,41 @@ function showLoadingSpinner() {
         `;
         document.body.appendChild(loadingOverlay);
         
-        // Add style for the overlay
-        const overlayStyle = document.createElement('style');
-        overlayStyle.textContent = `
-            .loading-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(255, 255, 255, 0.85);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-                backdrop-filter: blur(5px);
-            }
-            .loading-spinner {
-                text-align: center;
-            }
-        `;
-        document.head.appendChild(overlayStyle);
+        // Create a single global style for spinners if it doesn't exist
+        if (!document.getElementById('optimized-spinner-styles')) {
+            const optimizedStyles = document.createElement('style');
+            optimizedStyles.id = 'optimized-spinner-styles';
+            optimizedStyles.textContent = `
+                .loading-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(255, 255, 255, 0.85);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                    /* Removed backdrop-filter for better performance */
+                }
+                .loading-spinner {
+                    text-align: center;
+                }
+            `;
+            document.head.appendChild(optimizedStyles);
+        }
     }
     
+    // Use hardware acceleration for smoother animations
+    loadingOverlay.style.transform = 'translateZ(0)';
     loadingOverlay.style.display = 'flex';
 }
 
 function hideLoadingSpinner() {
     const loadingOverlay = document.getElementById('dynamicLoadingOverlay');
     if (loadingOverlay) {
+        // Immediately hide without transitions for better performance
         loadingOverlay.style.display = 'none';
     }
 }
