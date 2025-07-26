@@ -52,6 +52,33 @@
     <link rel="stylesheet" href="styles/color-swatch-highlight.css" />
     <link rel="stylesheet" href="styles/primary-color-highlight.css" />
     <link rel="stylesheet" href="styles/color-center-fix.css" />
+    <link rel="stylesheet" href="styles/standalone-rsvp.css" />
+    
+    <style>
+      /* Additional styles for embedded RSVP form */
+      #conditional-sections {
+        transition: all 0.3s ease;
+      }
+      #yesRadio:checked ~ #conditional-sections,
+      #yesRadio:checked + * + #conditional-sections,
+      #yesRadio:checked + * + * + #conditional-sections {
+        display: block !important;
+      }
+      .form-section {
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      .card-custom {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        background: #fff;
+      }
+      .card-body {
+        padding: 25px;
+      }
+    </style>
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -220,17 +247,111 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="section-header text-center mb-4">
-                        <!-- <h2 class="section-title text-center mb-4">RSVP</h2> -->
+                        <h2 class="section-title text-center mb-4">RSVP</h2>
+                        <p class="section-subtitle">
+                            We're so excited to celebrate with you! Please respond by <strong>August 31, 2025</strong>
+                        </p>
                     </div>
                     
-                    <!-- RSVP Container -->
-                    <div id="dynamic-rsvp-container">
-                        <!-- Content will be loaded dynamically by sections.js -->
-                        <div class="text-center p-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <p class="mt-2">Loading RSVP form...</p>
+                    <!-- RSVP Form Card -->
+                    <div class="card-custom">
+                        <div class="card-body">
+                            <form id="simpleRsvpForm" action="https://formspree.io/f/mgvzwven" method="POST" class="form-custom">
+                                <!-- Personal Information Section -->
+                                <div class="form-section mb-4">
+                                    <h4 class="form-section-title mb-3"><i class="bi bi-person"></i> Personal Information</h4>
+                                    
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Attendance Section -->
+                                <div class="form-section mb-4">
+                                    <h4 class="form-section-title mb-3"><i class="bi bi-calendar-check"></i> Attendance</h4>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Will you be attending? *</label>
+                                        
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="attendance" id="yesRadio" value="yes">
+                                            <label class="form-check-label" for="yesRadio">
+                                                <i class="bi bi-heart-fill text-danger"></i> Yes, I'll be there! Can't wait to celebrate with you!
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="attendance" id="noRadio" value="no">
+                                            <label class="form-check-label" for="noRadio">
+                                                <i class="bi bi-heart text-muted"></i> Sorry, I can't make it, but I'm thinking of you!
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Conditional Sections (only shown when "Yes" is selected) -->
+                                <div id="conditional-sections" style="display: none;">
+                                    <!-- Guest Count -->
+                                    <div class="form-section mb-4">
+                                        <div class="mb-3">
+                                            <label for="guestCount" class="form-label">Number of Guests (including yourself) *</label>
+                                            <select class="form-control" id="guestCount" name="guestCount">
+                                                <option value="" selected>Select number of guests</option>
+                                                <option value="1">1 Guest</option>
+                                                <option value="2">2 Guests</option>
+                                                <option value="3">3 Guests</option>
+                                                <option value="4">4 Guests</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="dietaryRestrictions" class="form-label">Dietary Restrictions or Allergies</label>
+                                            <textarea class="form-control" id="dietaryRestrictions" name="dietaryRestrictions" rows="3" placeholder="Please let us know about any dietary restrictions, allergies, or special meal requirements..."></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Special Message Section -->
+                                    <div id="special-message" class="form-section mb-4">
+                                        <h4 class="form-section-title mb-3"><i class="bi bi-chat-heart"></i> Special Message</h4>
+                                        
+                                        <div class="mb-3">
+                                            <label for="specialMessage" class="form-label">Leave us a special message or blessing</label>
+                                            <textarea class="form-control" id="specialMessage" name="specialMessage" rows="4" placeholder="We'd love to hear your thoughts, wishes, or any special memories you'd like to share..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Submit Button -->
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary-custom btn-lg px-5">
+                                        <i class="bi bi-heart-fill"></i> Submit RSVP
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirmation Message (initially hidden) -->
+                    <div id="confirmationMessage" style="display: none;" class="card-custom mt-4">
+                        <div class="card-body text-center">
+                            <i class="bi bi-check-circle display-4 text-success mb-3"></i>
+                            <h3>Thank You!</h3>
+                            <p class="lead">Your RSVP has been submitted successfully.</p>
+                            <p>We can't wait to celebrate with you on our special day!</p>
+                            <a href="#home" class="btn btn-outline-custom mt-3">
+                                <i class="bi bi-house"></i> Back to Home
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -301,41 +422,89 @@
     <script src="scripts/portrait-popup.js" defer></script>
     <script src="scripts/dynamic-content-loader.js" defer></script>
     
-    <!-- RSVP Implementation - Copied directly from gallery.html -->
+    <!-- RSVP form functionality -->
     <script>
-        function initializeDynamicRSVP() {
-            const dynamicRsvpContainer = document.getElementById('dynamic-rsvp-container');
-            if (!dynamicRsvpContainer) {
-                console.error('Dynamic RSVP container not found');
-                return;
-            }
+        // RSVP form handler
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple form handling
+            const form = document.getElementById('simpleRsvpForm');
             
-            // Check if we have the necessary functions and data
-            if (typeof createRSVPContent !== 'function') {
-                console.error('createRSVPContent function not found. Make sure sections.js is loaded properly.');
-                return;
-            }
-            
-            if (!window.rsvpData || Object.keys(window.rsvpData).length === 0) {
-                console.error('RSVP data not loaded. Make sure data.js is loaded properly and rsvp.json exists.');
-                return;
-            }
-            
-            // Create the RSVP content using the same function as index.html
-            const rsvpHTML = createRSVPContent(window.rsvpData);
-            dynamicRsvpContainer.innerHTML = rsvpHTML;
-            
-            // Initialize RSVP functionality
-            document.dispatchEvent(new CustomEvent('contentLoaded'));
-            console.log('Dynamic RSVP content loaded successfully');
-            
-            // Register functions for conditional sections
-            window.showAttendanceDetails = function() {
-                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
-                conditionalSections.forEach(section => {
-                    section.style.display = 'block';
+            if (form) {
+                console.log('RSVP form found, initializing...');
+                
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    fetch(form.action, {
+                        method: form.method,
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    })
+                    .then(function(response) {
+                        if (response.ok) {
+                            form.closest('.card-custom').style.display = 'none';
+                            document.getElementById('confirmationMessage').style.display = 'block';
+                        } else {
+                            alert('There was an error submitting your RSVP. Please try again.');
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                        alert('There was an error submitting your RSVP. Please check your connection and try again.');
+                    })
+                    .finally(function() {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    });
                 });
-            };
+                
+                // Radio button functionality with console logs
+                const yesRadio = document.getElementById('yesRadio');
+                const noRadio = document.getElementById('noRadio');
+                const conditionalSections = document.getElementById('conditional-sections');
+                
+                if (yesRadio && noRadio && conditionalSections) {
+                    yesRadio.addEventListener('change', function() {
+                        console.log('Yes radio selected');
+                        conditionalSections.style.display = 'block';
+                        
+                        // Make guest count required when attendance is yes
+                        const guestCount = document.getElementById('guestCount');
+                        if (guestCount) {
+                            guestCount.required = true;
+                        }
+                    });
+                    
+                    noRadio.addEventListener('change', function() {
+                        console.log('No radio selected');
+                        conditionalSections.style.display = 'none';
+                        
+                        // Remove required attribute when attendance is no
+                        const guestCount = document.getElementById('guestCount');
+                        if (guestCount) {
+                            guestCount.required = false;
+                        }
+                    });
+                }
+                
+                console.log('Simple RSVP script initialized');
+            }
+        });
+    </script>
+    
+    <script>
+        // Legacy compatibility for any code that might depend on these functions
+        window.showAttendanceDetails = function() {
+            console.log("Legacy showAttendanceDetails called - redirecting to RSVP page");
+            window.location.href = "rsvp.html";
+        };
             
             window.hideAttendanceDetails = function() {
                 const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
@@ -389,9 +558,8 @@
                     submitBtn.disabled = false;
                 });
             };
-        }
-        
-        // Add an event listener for the contentLoaded event to initialize the form
+            
+        // Clean up the old event listener for the contentLoaded event
         document.addEventListener('contentLoaded', function() {
             const rsvpForm = document.getElementById('rsvpForm');
             if (rsvpForm) {
@@ -453,9 +621,9 @@
             }
         });
         
-        // Initialize dynamic RSVP when DOM is ready
+        // Initialize compatibility functions
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initializeDynamicRSVP, 500);
+            // The initializeDynamicRSVP function is no longer needed since we have embedded the form
             
             // Compatibility functions
             window.forceShowSpecialMessage = function() {

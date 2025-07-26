@@ -44,9 +44,22 @@ export function renderRSVPForm(rsvpData) {
 export function toggleAttendanceDetails(attending) {
     console.log('toggleAttendanceDetails called with:', attending);
     
-    // Find all elements with data-depends-on="attendance" and data-show-when="yes"
+    // DIRECT TARGETING APPROACH
+    // Explicitly target specific sections and elements we know need to be shown/hidden
+    const directSpecialMessageSection = document.getElementById('special-message');
+    const guestCountField = document.querySelector('.form-section div.mb-3:has(#guestCount), div.mb-3:has(select[name="guestCount"])');
+    const dietaryField = document.querySelector('.form-section div.mb-3:has(#dietaryRestrictions), div.mb-3:has(textarea[name="dietaryRestrictions"])');
+    
+    // Log direct targets
+    console.log('Direct targets found:');
+    console.log('- Special message section:', directSpecialMessageSection ? 'Found' : 'Not found');
+    console.log('- Guest count field:', guestCountField ? 'Found' : 'Not found');
+    console.log('- Dietary field:', dietaryField ? 'Found' : 'Not found');
+    
+    // BACKUP SELECTOR APPROACH
+    // Also get all elements with conditional data attributes as backup
     const conditionalElements = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
-    console.log('Found conditional elements:', conditionalElements.length);
+    console.log('Found conditional elements via data attributes:', conditionalElements.length);
     
     // Debug - log each element
     conditionalElements.forEach((el, i) => {
@@ -68,8 +81,25 @@ export function toggleAttendanceDetails(attending) {
     
     if (attending) {
         console.log('Showing conditional elements...');
-        // Show all conditional elements
-        conditionalElements.forEach(element => {
+        
+        // DIRECT APPROACH: Show specific elements we know we need
+        const elementsToShow = [
+            directSpecialMessageSection,
+            guestCountField,
+            dietaryField
+        ].filter(el => el); // Remove any null/undefined elements
+        
+        // Also add any data-attribute-based elements
+        conditionalElements.forEach(el => {
+            if (!elementsToShow.includes(el)) {
+                elementsToShow.push(el);
+            }
+        });
+        
+        console.log(`Showing ${elementsToShow.length} elements in total`);
+        
+        // Show all found elements
+        elementsToShow.forEach(element => {
             // Make sure we use the right display type for form sections
             if (element.classList.contains('form-section')) {
                 element.style.display = 'block';
@@ -90,13 +120,13 @@ export function toggleAttendanceDetails(attending) {
         });
         
         // Direct handling for special message section to ensure it's displayed
-        if (specialMessageSection) {
-            specialMessageSection.style.display = 'block';
+        if (directSpecialMessageSection) {
+            directSpecialMessageSection.style.display = 'block';
             // Ensure proper styling is maintained
-            specialMessageSection.style.padding = '20px';
-            specialMessageSection.style.borderRadius = '12px';
-            specialMessageSection.style.backgroundColor = 'var(--color-background-alt)';
-            specialMessageSection.style.boxShadow = 'var(--shadow-light)';
+            directSpecialMessageSection.style.padding = '20px';
+            directSpecialMessageSection.style.borderRadius = '12px';
+            directSpecialMessageSection.style.backgroundColor = 'var(--color-background-alt)';
+            directSpecialMessageSection.style.boxShadow = 'var(--shadow-light)';
             console.log('Explicitly showed special-message section');
         } else {
             // Try to find section by title if ID doesn't work
@@ -283,6 +313,7 @@ function createRadioField(wrapper, field, styling) {
     field.options.forEach((option, index) => {
         const optionId = `${field.id}${index === 0 ? 'Yes' : 'No'}`;
         const optionValue = field.values[index];
+        console.log(`Creating radio option: ${option} with value: ${optionValue}`);
         const iconClass = field.icons ? field.icons[index] : '';
         
         const checkDiv = document.createElement('div');
@@ -297,7 +328,9 @@ function createRadioField(wrapper, field, styling) {
         if (field.required) input.required = true;
         
         if (field.onChange) {
-            input.setAttribute('onchange', `${field.onChange}(${optionValue === 'yes'})`);
+            // The value in the JSON is 'yes' (lowercase)
+            input.setAttribute('onchange', `${field.onChange}(${optionValue.toLowerCase() === 'yes'})`);
+            console.log(`Set onChange for radio: ${optionId} to ${field.onChange}(${optionValue.toLowerCase() === 'yes'})`);
         }
         
         const optionLabel = document.createElement('label');
@@ -397,6 +430,9 @@ export function applyColorTheme() {
 function initializeEventHandlers() {
     console.log('Initializing event handlers');
     
+    // First, make sure conditional sections are hidden by default
+    toggleAttendanceDetails(false);
+    
     // Set up attendance radio buttons to toggle visibility of conditional elements
     const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
     console.log('Found attendance radios:', attendanceRadios.length);
@@ -409,10 +445,20 @@ function initializeEventHandlers() {
             const newRadio = radio.cloneNode(true);
             radio.parentNode.replaceChild(newRadio, radio);
             
-            // Add new event listener
+            // Add new event listener with more robust value checking
             newRadio.addEventListener('change', function() {
                 console.log('Radio changed:', this.id, this.value);
-                if (this.value === 'yes') {
+                // Debug value comparison in detail
+                console.log(`Radio value details: "${this.value}", length: ${this.value.length}, lowercase: ${this.value.toLowerCase()}`);
+                
+                // Use multiple approaches to check if this is a "yes" value
+                const isYes = this.value.toLowerCase() === 'yes' || 
+                              this.id.toLowerCase().includes('yes') || 
+                              this.value.toLowerCase().includes('yes');
+                
+                console.log(`Is this a "yes" value? ${isYes}`);
+                
+                if (isYes) {
                     toggleAttendanceDetails(true);
                     
                     // Force check special message section visibility
@@ -448,7 +494,8 @@ function initializeEventHandlers() {
             // Also add click handler for extra measure
             newRadio.onclick = function() {
                 console.log('Radio clicked:', this.id, this.value);
-                if (this.value === 'yes') {
+                // The correct value from rsvp.json is 'yes' (lowercase)
+                if (this.value.toLowerCase() === 'yes') {
                     toggleAttendanceDetails(true);
                 } else {
                     toggleAttendanceDetails(false);

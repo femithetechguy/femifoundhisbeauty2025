@@ -1,0 +1,62 @@
+/* CSS-only solution for RSVP form 
+   This file provides a standalone CSS solution for showing/hiding conditional sections
+   based on the selected radio button, without relying on JavaScript
+*/
+
+/* Hide conditional sections by default */
+.conditional-section {
+    display: none !important;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+/* Show conditional sections when "Yes" radio is checked */
+input[value="yes"]:checked ~ .conditional-section,
+input[value="yes"]:checked ~ * .conditional-section,
+input[value="yes"]:checked + * .conditional-section,
+input[value="yes"]:checked + * + * .conditional-section,
+input[value="yes"]:checked + * + * + * .conditional-section,
+input[name="attendance"][value="yes"]:checked ~ .conditional-section,
+input[name="attendance"][value="yes"]:checked ~ * .conditional-section,
+input[name="attendance"][value="yes"]:checked + * .conditional-section,
+input[name="attendance"][value="yes"]:checked + * + * .conditional-section {
+    display: block !important;
+    opacity: 1;
+    max-height: 1000px; /* Arbitrary large value */
+    overflow: visible;
+}
+
+/* Additional selectors for various HTML structures */
+#yesRadio:checked ~ #conditional-sections,
+#yesRadio:checked ~ * #conditional-sections,
+#yesRadio:checked ~ * * #conditional-sections,
+#yesRadio:checked ~ * * * #conditional-sections {
+    display: block !important;
+    opacity: 1;
+    max-height: 1000px;
+    overflow: visible;
+}
+
+/* For forms that use class-based selection */
+.attendance-yes:checked ~ .conditional-section,
+.attendance-yes:checked ~ * .conditional-section,
+.attendance-yes:checked + .conditional-section,
+.attendance-yes:checked + * + .conditional-section {
+    display: block !important;
+    opacity: 1;
+    max-height: 1000px;
+    overflow: visible;
+}
+
+/* Alternative approach with :has() selector for modern browsers */
+form:has(input[value="yes"]:checked) .conditional-section,
+form:has(input[name="attendance"][value="yes"]:checked) .conditional-section,
+form:has(#yesRadio:checked) .conditional-section,
+form:has(.attendance-yes:checked) .conditional-section {
+    display: block !important;
+    opacity: 1;
+    max-height: 1000px;
+    overflow: visible;
+}
