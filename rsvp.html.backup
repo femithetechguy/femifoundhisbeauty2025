@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP - EwaFemi2025 Wedding</title>
+    <meta name="description" content="RSVP for Beauty and Femi's wedding celebration">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/style.css">
+    <!-- CSS fix for RSVP form conditional sections -->
+    <link rel="stylesheet" href="styles/rsvp-fix.css">
+    <!-- DIRECT JavaScript fix for RSVP form conditional sections - this should work regardless of other code -->
+    <script src="scripts/direct-fix.js" defer></script>
+    <!-- Previous JavaScript fix for RSVP form conditional sections -->
+    <script src="scripts/rsvp-fix.js" defer></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <span class="brand-text">B & F</span>
+                <small class="brand-year">2025</small>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house"></i> Back to Home
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- RSVP Section -->
+    <section class="section" style="padding-top: 120px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-header text-center">
+                        <h1 class="section-title">
+                            <i class="bi bi-heart-fill"></i> RSVP
+                        </h1>
+                        <p class="section-subtitle">
+                            We're so excited to celebrate with you! Please respond by <strong>August 31, 2025</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="card-custom">
+                        <div class="card-body">
+                            <form id="rsvpForm" class="form-custom" method="POST" onsubmit="handleRSVPSubmission(event)">
+                                <!-- Form content will be generated from rsvp.json -->
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirmation Message (hidden initially) -->
+                    <div id="confirmationMessage" class="card-custom mt-4" style="display: none;">
+                        <div class="card-body text-center">
+                            <!-- Confirmation content will be generated from rsvp.json -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- Footer content will be loaded dynamically from JSON -->
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modular RSVP Form Script and Styles -->
+    <link rel="stylesheet" href="styles/rsvp-form.css">
+      <!-- Inline direct fix script - highest priority -->
+    <script>
+      // This is a direct fix that will run before any other scripts
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('INLINE DIRECT FIX: Running');
+        
+        // Execute multiple times to ensure it works
+        fixAttendanceSections();
+        setTimeout(fixAttendanceSections, 300);
+        setTimeout(fixAttendanceSections, 1000);
+        
+        function fixAttendanceSections() {
+          // Find radio buttons and sections using multiple approaches
+          const yesRadios = Array.from(document.querySelectorAll('input[type="radio"]')).filter(r => 
+            r.name === 'attendance' && (r.value === 'yes' || r.id === 'attendanceYes' || r.value.toLowerCase().includes('yes'))
+          );
+          
+          const conditionalSections = [
+            document.getElementById('special-message'),
+            document.querySelector('div.form-section:has(select#guestCount)'),
+            document.querySelector('div.form-section:has(textarea#dietaryRestrictions)'),
+            ...Array.from(document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]')),
+            ...Array.from(document.querySelectorAll('.form-section')).filter(s => s.id === 'special-message')
+          ].filter(Boolean);
+          
+          console.log('INLINE DIRECT FIX: Found ' + yesRadios.length + ' yes radios and ' + conditionalSections.length + ' conditional sections');
+          
+          // Attach direct event handlers to radios
+          yesRadios.forEach(radio => {
+            radio.addEventListener('click', function() {
+              console.log('INLINE DIRECT FIX: Yes radio clicked');
+              conditionalSections.forEach(section => {
+                section.style.display = 'block';
+                section.style.visibility = 'visible';
+                section.style.opacity = '1';
+              });
+            });
+          });
+          
+          // Check if a yes radio is checked
+          const yesChecked = yesRadios.some(r => r.checked);
+          if (yesChecked) {
+            console.log('INLINE DIRECT FIX: Yes is checked, showing sections');
+            conditionalSections.forEach(section => {
+              section.style.display = 'block';
+              section.style.visibility = 'visible';
+              section.style.opacity = '1';
+            });
+          }
+        }
+      });
+    </script>
+    
+    <script type="module">
+      import { toggleAttendanceDetails, handleRSVPSubmission, applyColorTheme, loadFooterContent, loadRSVPData, renderRSVPForm, buildFormFromJSON } from './scripts/rsvp-form.js';
+      // Make functions globally available with enhancements
+      window.toggleAttendanceDetails = function(attending) {
+        console.log('ENHANCED toggleAttendanceDetails called with:', attending);
+        
+        // Original function
+        toggleAttendanceDetails(attending);
+        
+        // Additional direct targeting for problematic sections
+        const specialMessageSection = document.getElementById('special-message');
+        const guestCountWrapper = document.querySelector('.form-section div.mb-3:has(#guestCount), .mb-3:has(select[name="guestCount"])');
+        const dietaryWrapper = document.querySelector('.form-section div.mb-3:has(#dietaryRestrictions), .mb-3:has(textarea[name="dietaryRestrictions"])');
+        
+        const elementsFix = [
+          specialMessageSection,
+          guestCountWrapper,
+          dietaryWrapper
+        ].filter(el => el);
+        
+        console.log(`Found ${elementsFix.length} elements to directly handle`);
+        
+        elementsFix.forEach(el => {
+          el.style.display = attending ? 'block' : 'none';
+          console.log(`${attending ? 'Showed' : 'Hid'} element:`, el.id || el.className);
+        });
+      };
+      window.handleRSVPSubmission = handleRSVPSubmission;
+      
+      document.addEventListener('DOMContentLoaded', async function() {
+        // Load JSON configuration
+        const rsvpData = await loadRSVPData();
+        if (rsvpData) {
+          renderRSVPForm(rsvpData);
+          buildFormFromJSON(rsvpData);
+          
+          // Direct fix for special message section
+          setTimeout(() => {
+            console.log("Direct special message fix in rsvp.html");
+            
+            // Function to force show special message
+            function forceShowSpecialMessage() {
+              // Try multiple ways to find and show the special message section
+              // 1. By ID
+              const specialMessage = document.getElementById('special-message');
+              if (specialMessage) {
+                specialMessage.style.display = 'block';
+                console.log('Showed special-message by ID');
+                return true;
+              }
+              
+              // 2. By section-id
+              const sectionSpecialMessage = document.getElementById('section-special-message');
+              if (sectionSpecialMessage) {
+                sectionSpecialMessage.style.display = 'block';
+                console.log('Showed section-special-message by ID');
+                return true;
+              }
+              
+              // 3. By data attributes
+              const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+              let found = false;
+              conditionalSections.forEach(section => {
+                section.style.display = 'block';
+                found = true;
+                console.log('Showed conditional section:', section.id || section.className);
+              });
+              if (found) return true;
+              
+              // 4. By content
+              const allTitles = document.querySelectorAll('.form-section-title');
+              for (let i = 0; i < allTitles.length; i++) {
+                if (allTitles[i].textContent.includes('Special Message')) {
+                  const parent = allTitles[i].closest('.form-section');
+                  if (parent) {
+                    parent.style.display = 'block';
+                    console.log('Showed special message by title content');
+                    return true;
+                  }
+                }
+              }
+              
+              return false;
+            }
+            
+            // Set up direct event handlers on attendance radios
+            const yesRadios = document.querySelectorAll('input[name="attendance"][value="yes"]');
+            yesRadios.forEach(radio => {
+              radio.addEventListener('click', forceShowSpecialMessage);
+              radio.addEventListener('change', forceShowSpecialMessage);
+            });
+            
+            // Check if yes is already selected
+            const checkedYes = document.querySelector('input[name="attendance"][value="yes"]:checked');
+            if (checkedYes) {
+              console.log('Yes already checked, forcing special message');
+              forceShowSpecialMessage();
+            }
+          }, 1000);
+          
+          // Fix scripts have been integrated into main codebase
+          console.log('RSVP form loaded successfully');
+          
+          // Add click handlers manually to ensure they work
+          const attendanceYesRadio = document.getElementById('attendanceYes');
+          const attendanceNoRadio = document.getElementById('attendanceNo');
+          
+          if (attendanceYesRadio) {
+            attendanceYesRadio.onclick = function() { 
+              console.log('Yes radio clicked');
+              toggleAttendanceDetails(true);
+              
+              // Direct handling of problematic sections
+              const specialMessageSection = document.getElementById('special-message');
+              if (specialMessageSection) {
+                specialMessageSection.style.display = 'block';
+                console.log('Directly showed special-message section from click handler');
+              }
+              
+              // Target specific elements by ID that might not be caught by other selectors
+              ['guestCount', 'dietaryRestrictions'].forEach(id => {
+                const element = document.getElementById(id)?.closest('.form-section') || 
+                               document.querySelector(`.mb-3:has([id="${id}"])`);
+                if (element) {
+                  element.style.display = 'block';
+                  console.log(`Directly showed ${id} from click handler`);
+                }
+              });
+            };
+          }
+          
+          if (attendanceNoRadio) {
+            attendanceNoRadio.onclick = function() { 
+              console.log('No radio clicked');
+              toggleAttendanceDetails(false);
+            };
+          }
+          
+          // Initial hide of conditional sections
+          // Wait a moment for the form to be fully built
+          setTimeout(() => {
+            const attendanceNo = document.getElementById('attendanceNo');
+            if (attendanceNo && attendanceNo.checked) {
+              toggleAttendanceDetails(false);
+            } else {
+              const attendanceYes = document.getElementById('attendanceYes');
+              if (attendanceYes && attendanceYes.checked) {
+                toggleAttendanceDetails(true);
+              }
+            }
+            
+            // Force show conditional sections if Yes is selected (for debugging)
+            const specialMessageSection = document.getElementById('special-message');
+            if (specialMessageSection) {
+              console.log('Special message section found:', specialMessageSection.id);
+              if (attendanceYesRadio && attendanceYesRadio.checked) {
+                specialMessageSection.style.display = 'block';
+              }
+            } else {
+              console.error('Special message section not found!');
+            }
+          }, 500);
+          
+          // Additional debug code - force show after a longer delay
+          setTimeout(() => {
+            console.log('FINAL DEBUG CHECK');
+            const allSections = document.querySelectorAll('div[id="special-message"]');
+            console.log('Found by direct selector:', allSections.length);
+            
+            allSections.forEach(section => {
+              console.log('Forcing visible:', section.id);
+              section.style.display = 'block';
+            });
+          }, 2000);
+        }
+        
+        // Apply theme and load footer
+        applyColorTheme();
+        loadFooterContent();
+      });
+    </script>
+</body>
+</html>
