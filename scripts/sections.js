@@ -333,6 +333,19 @@ function createRSVPContent(content) {
                   </a>
                 </div>
               </div>
+              
+              <!-- Additional confirmation element for compatibility with gallery.html -->
+              <div id="rsvpConfirmation" class="success-message mt-4" style="display: none;">
+                <div class="text-center">
+                  <i class="bi ${rsvpData.confirmationMessage.icon} display-4 text-success mb-3"></i>
+                  <h3>${rsvpData.confirmationMessage.title}</h3>
+                  <p class="lead">${rsvpData.confirmationMessage.message}</p>
+                  <p>${rsvpData.confirmationMessage.subMessage}</p>
+                  <a href="${rsvpData.confirmationMessage.backButton.link}" class="btn btn-outline-custom">
+                    <i class="bi ${rsvpData.confirmationMessage.backButton.icon}"></i> ${rsvpData.confirmationMessage.backButton.text}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -428,7 +441,11 @@ function createRSVPContent(content) {
           .then(function(response) {
             if (response.ok) {
               form.style.display = 'none';
-              document.getElementById('confirmationMessage').style.display = 'block';
+              // Try both possible confirmation IDs
+              const confirmation = document.getElementById('confirmationMessage') || document.getElementById('rsvpConfirmation');
+              if (confirmation) {
+                confirmation.style.display = 'block';
+              }
             } else {
               alert('There was an error submitting your RSVP. Please try again.');
             }
@@ -620,7 +637,11 @@ function createRSVPContent(content) {
               .then(function(response) {
                 if (response.ok) {
                   rsvpForm.style.display = 'none';
-                  document.getElementById('rsvpConfirmation').style.display = 'block';
+                  // Try both possible confirmation IDs
+                  const confirmation = document.getElementById('rsvpConfirmation') || document.getElementById('confirmationMessage');
+                  if (confirmation) {
+                    confirmation.style.display = 'block';
+                  }
                 } else {
                   alert('There was an error submitting your RSVP. Please try again.');
                 }
