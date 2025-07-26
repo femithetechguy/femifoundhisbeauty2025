@@ -354,28 +354,6 @@
             <i class="bi bi-chevron-right"></i>
         </button>
     </div>
-
-    <!-- RSVP Section -->
-    <section id="rsvp" class="section py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <!-- RSVP header will be loaded dynamically from JSON -->
-                    
-                    <!-- RSVP Container - Content will be loaded from the same source as index.html -->
-                    <div id="dynamic-rsvp-container">
-                        <!-- Content will be loaded dynamically by sections.js -->
-                        <div class="text-center p-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <p class="mt-2">Loading RSVP form...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     </main>
 
     <!-- Footer -->
@@ -707,9 +685,9 @@
             
             galleryManager = new GalleryManager();
             
-            // Load RSVP data (handled by the script at the bottom of the page)
+            // Load data for other parts of the page
             loadData().then(() => {
-                initializeDynamicRSVP(); 
+                console.log('Data loaded for gallery page');
             });
             
             initializeFooter();
@@ -726,7 +704,7 @@
                 }
                 
                 loadData().then(() => {
-                    initializeDynamicRSVP();
+                    console.log('Data loaded for dynamically loaded gallery page');
                 });
                 
                 initializeFooter();
@@ -736,10 +714,7 @@
             };
         });
         
-        // RSVP initialization is now handled by initializeDynamicRSVP
-        
-        // RSVP form handling is now consolidated in the initializeDynamicRSVP function
-        // and contentLoaded event listener for consistent behavior with index.html
+        // RSVP section has been removed from gallery.html to have just one implementation in index.html
         
         // Initialize footer content
         async function initializeFooter() {
@@ -887,7 +862,7 @@
         <i class="bi bi-plus" aria-hidden="true"></i>
       </button>
       <div class="fab-menu" id="fabMenu" aria-hidden="true">
-        <a href="#rsvp" class="fab-item" title="RSVP" id="rsvp-fab-link">
+        <a href="index.html#rsvp" class="fab-item" title="RSVP">
           <i class="bi bi-heart"></i>
         </a>
         <a href="index.html#contact" class="fab-item" title="Contact">
@@ -915,19 +890,16 @@
             // Load the JSON data first
             if (typeof loadData === 'function') {
                 loadData().then(() => {
-                    console.log("Data loaded, initializing dynamic RSVP...");
-                    // Initialize the dynamic RSVP content
-                    initializeDynamicRSVP();
-                    
-                    // RSVP navigation in navbar is handled in gallery-navigation.js
+                    console.log("Data loaded successfully");
                     
                     // Only handle the floating action button if it exists
                     const fabLink = document.getElementById('rsvp-fab-link');
                     if (fabLink) {
-                        fabLink.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
-                        });
+                        // Remove the FAB link since RSVP section is now removed from gallery
+                        const fabContainer = fabLink.closest('.fab-container');
+                        if (fabContainer) {
+                            fabContainer.style.display = 'none';
+                        }
                     }
                 }).catch(error => {
                     console.error("Error loading data:", error);
@@ -937,146 +909,8 @@
             }
         });
         
-        // Function to initialize the dynamic RSVP content
-        function initializeDynamicRSVP() {
-            const dynamicRsvpContainer = document.getElementById('dynamic-rsvp-container');
-            if (!dynamicRsvpContainer) {
-                console.error('Dynamic RSVP container not found');
-                return;
-            }
-            
-            // Check if we have the necessary functions and data
-            if (typeof createRSVPContent !== 'function') {
-                console.error('createRSVPContent function not found. Make sure sections.js is loaded properly.');
-                return;
-            }
-            
-            if (!window.rsvpData || Object.keys(window.rsvpData).length === 0) {
-                console.error('RSVP data not loaded. Make sure data.js is loaded properly and rsvp.json exists.');
-                return;
-            }
-            
-            // Create the RSVP content using the same function as index.html
-            const rsvpHTML = createRSVPContent(window.rsvpData);
-            dynamicRsvpContainer.innerHTML = rsvpHTML;
-            
-            // Initialize RSVP functionality
-            document.dispatchEvent(new CustomEvent('contentLoaded'));
-            console.log('Dynamic RSVP content loaded successfully');
-            
-            // Register functions for conditional sections
-            window.showAttendanceDetails = function() {
-                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
-                conditionalSections.forEach(section => {
-                    section.style.display = 'block';
-                });
-            };
-            
-            window.hideAttendanceDetails = function() {
-                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
-                conditionalSections.forEach(section => {
-                    section.style.display = 'none';
-                });
-            };
-            
-            window.toggleAttendanceDetails = function(isAttending) {
-                if (isAttending) {
-                    window.showAttendanceDetails();
-                } else {
-                    window.hideAttendanceDetails();
-                }
-            };
-        }
-        
-        // Add an event listener for the contentLoaded event to initialize the form
-        document.addEventListener('contentLoaded', function() {
-            const rsvpForm = document.getElementById('rsvpForm');
-            if (rsvpForm) {
-                console.log('RSVP form found in gallery.html, initializing...');
-                
-                // Set the initial state (hide attendance details by default)
-                if (typeof hideAttendanceDetails === 'function') {
-                    hideAttendanceDetails();
-                }
-                
-                // Initialize radio buttons for attendance
-                const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
-                if (attendanceRadios.length > 0) {
-                    attendanceRadios.forEach(radio => {
-                        radio.addEventListener('change', function() {
-                            if (this.value === 'yes') {
-                                if (typeof showAttendanceDetails === 'function') {
-                                    showAttendanceDetails();
-                                }
-                            } else {
-                                if (typeof hideAttendanceDetails === 'function') {
-                                    hideAttendanceDetails();
-                                }
-                            }
-                        });
-                    });
-                    
-                    // Check if first radio button (Yes) is selected
-                    const yesRadio = document.getElementById('attendance_0');
-                    if (yesRadio && yesRadio.checked) {
-                        if (typeof showAttendanceDetails === 'function') {
-                            showAttendanceDetails();
-                        }
-                    }
-                }
-                
-                // Initialize all conditional fields
-                const conditionalFields = document.querySelectorAll('[data-depends-on]');
-                conditionalFields.forEach(field => {
-                    const dependsOn = field.getAttribute('data-depends-on');
-                    const showWhen = field.getAttribute('data-show-when');
-                    const dependentInput = document.querySelector(`input[name="${dependsOn}"]:checked`);
-                    
-                    if (dependentInput && dependentInput.value === showWhen) {
-                        field.style.display = 'block';
-                    } else {
-                        field.style.display = 'none';
-                    }
-                });
-                
-                // Handle form submission
-                rsvpForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    var submitBtn = rsvpForm.querySelector('button[type="submit"]');
-                    var originalText = submitBtn.innerHTML;
-                    
-                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
-                    submitBtn.disabled = true;
-                    
-                    // Use formspree for actual submission
-                    fetch(rsvpForm.getAttribute('action'), {
-                        method: rsvpForm.getAttribute('method'),
-                        body: new FormData(rsvpForm),
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            rsvpForm.style.display = 'none';
-                            const confirmation = document.getElementById('rsvpConfirmation');
-                            if (confirmation) {
-                                confirmation.style.display = 'block';
-                            }
-                        } else {
-                            alert('There was an error submitting your RSVP. Please try again.');
-                            submitBtn.innerHTML = originalText;
-                            submitBtn.disabled = false;
-                        }
-                    }).catch(error => {
-                        console.error('Error:', error);
-                        alert('There was an error submitting your RSVP. Please try again later.');
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    });
-                });
-            }
-        });
+        // RSVP functionality has been completely removed from gallery.html
+        // All RSVP interactions now happen on index.html or rsvp.html only
     </script>
 </body>
 </html>

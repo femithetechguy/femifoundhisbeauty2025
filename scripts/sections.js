@@ -14,9 +14,9 @@ function buildDynamicSections() {
     // Add more mappings as needed
   };
 
-  // Build HTML for each section in order
+    // Build HTML for each section in order
   const sectionsHTML = window.weddingData.sections
-    .filter(section => section.id !== 'home')
+    .filter(section => section.id !== 'home' && section.id !== 'rsvp')
     .map(section => {
       // Try both id and type for renderer mapping
       const renderer = sectionRenderers[section.id] || sectionRenderers[section.type];
@@ -306,7 +306,7 @@ function createRSVPContent(content) {
             <div class="card-body">
               <div class="text-center mb-3">
                 <i class="bi ${rsvpData.header.icon} text-primary-custom fs-1 mb-2"></i>
-                <h4 class="mb-2">We'd Love to See You There</h4>
+                <h4 class="mb-2">Thanks for RSVPing!</h4>
                 <p class="text-muted">Please respond by ${rsvpData.meta.deadline}</p>
               </div>
               
@@ -323,6 +323,19 @@ function createRSVPContent(content) {
               </form>
               
               <div id="confirmationMessage" class="success-message mt-4" style="display: none;">
+                <div class="text-center">
+                  <i class="bi ${rsvpData.confirmationMessage.icon} display-4 text-success mb-3"></i>
+                  <h3>${rsvpData.confirmationMessage.title}</h3>
+                  <p class="lead">${rsvpData.confirmationMessage.message}</p>
+                  <p>${rsvpData.confirmationMessage.subMessage}</p>
+                  <a href="${rsvpData.confirmationMessage.backButton.link}" class="btn btn-outline-custom">
+                    <i class="bi ${rsvpData.confirmationMessage.backButton.icon}"></i> ${rsvpData.confirmationMessage.backButton.text}
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Additional confirmation element for compatibility with gallery.html -->
+              <div id="rsvpConfirmation" class="success-message mt-4" style="display: none;">
                 <div class="text-center">
                   <i class="bi ${rsvpData.confirmationMessage.icon} display-4 text-success mb-3"></i>
                   <h3>${rsvpData.confirmationMessage.title}</h3>
@@ -428,7 +441,11 @@ function createRSVPContent(content) {
           .then(function(response) {
             if (response.ok) {
               form.style.display = 'none';
-              document.getElementById('confirmationMessage').style.display = 'block';
+              // Try both possible confirmation IDs
+              const confirmation = document.getElementById('confirmationMessage') || document.getElementById('rsvpConfirmation');
+              if (confirmation) {
+                confirmation.style.display = 'block';
+              }
             } else {
               alert('There was an error submitting your RSVP. Please try again.');
             }
@@ -620,7 +637,11 @@ function createRSVPContent(content) {
               .then(function(response) {
                 if (response.ok) {
                   rsvpForm.style.display = 'none';
-                  document.getElementById('rsvpConfirmation').style.display = 'block';
+                  // Try both possible confirmation IDs
+                  const confirmation = document.getElementById('rsvpConfirmation') || document.getElementById('confirmationMessage');
+                  if (confirmation) {
+                    confirmation.style.display = 'block';
+                  }
                 } else {
                   alert('There was an error submitting your RSVP. Please try again.');
                 }
@@ -709,138 +730,8 @@ function createExtrasContent(content) {
   if (hasGuestMessage || hasQR) {
     html += '<div class="message-qr-flex mt-4">';
     
-    // Guest Message column
-    html += '<div class="message-col">';
-    if (hasGuestMessage) {
-      html += '<div class="card-custom h-100">';
-      html += '<div class="card-body text-center">';
-      html += `<h4 class="card-title">${
-        content.guestMessage.title || "Leave a Message for the Couple"
-      }</h4>`;
-      html += `<p class="mb-3">${content.guestMessage.description || "Share your thoughts and well wishes for our journey together."}</p>`;
-      // Generate unique IDs for the form and messages to prevent conflicts
-      const guestFormId = `guestMessageForm_${Math.floor(Math.random() * 10000)}`;
-      const guestSuccessId = `guestMessageSuccess_${Math.floor(Math.random() * 10000)}`;
-      const guestErrorId = `guestMessageError_${Math.floor(Math.random() * 10000)}`;
-      
-      // Generate a hidden iframe ID for form submission
-      const iframeId = `hidden_iframe_${Math.floor(Math.random() * 10000)}`;
-      
-      html += `<div class="guest-message mb-3" id="guestMessageContainer_${Math.floor(Math.random() * 10000)}">
-        <form id="${guestFormId}" action="https://formspree.io/f/${content.guestMessage.formspreeId}" method="POST" onsubmit="setTimeout(function() { window.showGuestMessageSuccess('${guestFormId}', '${guestSuccessId}'); }, 1500); return true;" target="${iframeId}" class="guest-message-form">
-          ${createFormFields(content.guestMessage.form.fields)}
-          <input type="hidden" name="_next" value="javascript:void(0)" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_format" value="plain" />
-          <button type="submit" class="btn btn-primary-custom mt-3">${content.guestMessage.form.submitText || 'Send Message'}</button>
-        </form>
-        <iframe name="${iframeId}" id="${iframeId}" style="display:none;"></iframe>
-        <div id="${guestSuccessId}" class="thank-you-message" style="display:none;">
-          <div class="thank-you-content">
-            <i class="bi bi-heart-fill text-primary-custom mb-3" style="font-size: 2.5rem;"></i>
-            <h4>${content.guestMessage.successMessage || 'Thank you for your blessing!'}</h4>
-            <p>Your message means the world to us.</p>
-            <div class="celebration-icon mt-3">
-              <i class="bi bi-emoji-smile-fill" style="color: #D8E460; font-size: 1.5rem;"></i>
-            </div>
-          </div>
-        </div>
-        <div id="${guestErrorId}" class="error-message" style="display:none;">
-          <div class="error-content">
-            <i class="bi bi-exclamation-circle text-danger mb-3" style="font-size: 2rem;"></i>
-            <h4>${content.guestMessage.errorMessage || 'There was an error submitting your message.'}</h4>
-            <p>Please try again or contact us directly.</p>
-            <button class="btn btn-outline-primary-custom mt-3" onclick="document.getElementById('${guestFormId}').style.display='block'; document.getElementById('${guestErrorId}').style.display='none';">Try Again</button>
-          </div>
-        </div>
-      </div>`;
-      
-      // The iframe is now added in the form HTML
-      
-      // Add the script with correct IDs after HTML is added to the DOM
-      html += `<script>
-        // Define a function to initialize the form on page load
-        function initGuestMessageForm_${Math.floor(Math.random() * 10000)}() {
-          console.log('%c⚡ Initializing guest message form', 'background: #D8E460; color: black; padding: 4px; font-weight: bold;');
-          
-          // Find all the elements by their IDs
-          const form = document.getElementById('${guestFormId}');
-          const successMessage = document.getElementById('${guestSuccessId}');
-          const errorMessage = document.getElementById('${guestErrorId}');
-          const iframe = document.getElementById('${iframeId}');
-          
-          // Debug what we found
-          console.log('Form:', form);
-          console.log('Success message:', successMessage);
-          console.log('Error message:', errorMessage);
-          
-          if (form && successMessage) {
-            console.log('%c✅ Form and success message found', 'color: green; font-weight: bold;');
-            
-            // Double check the form target is set to the iframe
-            form.setAttribute('target', '${iframeId}');
-            
-            // Handle form submission - use a named function to avoid scope issues
-            function handleSubmit(e) {
-              console.log('🔄 Form submission started');
-              
-              // Get the submit button
-              const submitBtn = form.querySelector('button[type="submit"]');
-              const originalText = submitBtn.innerHTML;
-              submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
-              submitBtn.disabled = true;
-              
-              // Set a timer to show the success message
-              window.setTimeout(function() {
-                console.log('Showing success message now');
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
-                
-                // Force styles to ensure visibility
-                successMessage.setAttribute('style', 'display: block !important; opacity: 1 !important;');
-                
-                // Add the animation class
-                successMessage.classList.add('animate-in');
-                
-                // Reset button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Reset the form for future use
-                form.reset();
-              }, 2000);
-            }
-            
-            // Add the event handler
-            form.addEventListener('submit', handleSubmit);
-            
-            // Add error handling button functionality
-            const tryAgainBtn = errorMessage?.querySelector('button');
-            if (tryAgainBtn) {
-              tryAgainBtn.addEventListener('click', function() {
-                form.style.display = 'block';
-                errorMessage.style.display = 'none';
-                form.reset();
-              });
-            }
-          } else {
-            console.error('❌ Could not find form or success message elements!');
-          }
-        }
-        
-        // Run the initialization function when the page is loaded
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-          setTimeout(initGuestMessageForm_${Math.floor(Math.random() * 10000)}, 100);
-        } else {
-          document.addEventListener('DOMContentLoaded', initGuestMessageForm_${Math.floor(Math.random() * 10000)});
-        }
-      </script>`;
-      html += "</div></div>";
-    }
-    html += '</div>';
-    
-    // QR code column
-    html += '<div class="qr-col">';
+    // QR code column - centered
+    html += '<div class="qr-col mx-auto" style="max-width: 500px;">';
     if (hasQR) {
       const qr = content.qrCode;
       html += '<div class="card-custom h-100 d-flex flex-column align-items-center justify-content-center">';

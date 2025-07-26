@@ -213,6 +213,30 @@
       <div id="dynamic-sections">
         <!-- Sections will be populated by JavaScript -->
       </div>
+      
+      <!-- RSVP Section -->
+      <section id="rsvp" class="section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-header text-center mb-4">
+                        <!-- <h2 class="section-title text-center mb-4">RSVP</h2> -->
+                    </div>
+                    
+                    <!-- RSVP Container -->
+                    <div id="dynamic-rsvp-container">
+                        <!-- Content will be loaded dynamically by sections.js -->
+                        <div class="text-center p-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading RSVP form...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
     </main>
 
     <!-- Footer -->
@@ -277,79 +301,175 @@
     <script src="scripts/portrait-popup.js" defer></script>
     <script src="scripts/dynamic-content-loader.js" defer></script>
     
-    <!-- Direct RSVP Special Message Fix -->
+    <!-- RSVP Implementation - Copied directly from gallery.html -->
     <script>
-      // This is a direct inline fix for the special message section visibility
-      document.addEventListener('DOMContentLoaded', function() {
-        // Wait for everything else to load
-        setTimeout(function() {
-          console.log('Direct special message fix running');
-          
-          // Set up direct click handlers on attendance radio buttons
-          const yesRadios = document.querySelectorAll('input[name="attendance"][value="yes"]');
-          yesRadios.forEach(function(radio) {
-            console.log('Found yes radio, adding direct click handler');
-            
-            // Add direct click handler
-            radio.addEventListener('click', function() {
-              console.log('Yes radio clicked directly');
-              forceShowSpecialMessage();
-            });
-          });
-          
-          // Check if yes is already selected and show special message
-          const checkedYesRadio = document.querySelector('input[name="attendance"][value="yes"]:checked');
-          if (checkedYesRadio) {
-            console.log('Yes radio already checked, forcing special message display');
-            forceShowSpecialMessage();
-          }
-          
-          // Function to force show the special message section
-          function forceShowSpecialMessage() {
-            // Try multiple ways to find the special message section
-            console.log('Forcing special message section display');
-            
-            // Method 1: By ID
-            const byId = document.getElementById('special-message');
-            if (byId) {
-              byId.style.display = 'block';
-              console.log('Found and showed special message by ID');
-              return;
+        function initializeDynamicRSVP() {
+            const dynamicRsvpContainer = document.getElementById('dynamic-rsvp-container');
+            if (!dynamicRsvpContainer) {
+                console.error('Dynamic RSVP container not found');
+                return;
             }
             
-            // Method 2: By section ID
-            const bySecId = document.getElementById('section-special-message');
-            if (bySecId) {
-              bySecId.style.display = 'block';
-              console.log('Found and showed special message by section-ID');
-              return;
+            // Check if we have the necessary functions and data
+            if (typeof createRSVPContent !== 'function') {
+                console.error('createRSVPContent function not found. Make sure sections.js is loaded properly.');
+                return;
             }
             
-            // Method 3: By data attributes
-            const byDataAttr = document.querySelector('[data-depends-on="attendance"][data-show-when="yes"]');
-            if (byDataAttr) {
-              byDataAttr.style.display = 'block';
-              console.log('Found and showed special message by data attributes');
-              return;
+            if (!window.rsvpData || Object.keys(window.rsvpData).length === 0) {
+                console.error('RSVP data not loaded. Make sure data.js is loaded properly and rsvp.json exists.');
+                return;
             }
             
-            // Method 4: By section title content
-            const sections = document.querySelectorAll('.form-section-title');
-            for (let i = 0; i < sections.length; i++) {
-              if (sections[i].textContent.includes('Special Message')) {
-                const parentSection = sections[i].closest('.form-section');
-                if (parentSection) {
-                  parentSection.style.display = 'block';
-                  console.log('Found and showed special message by title text');
-                  return;
+            // Create the RSVP content using the same function as index.html
+            const rsvpHTML = createRSVPContent(window.rsvpData);
+            dynamicRsvpContainer.innerHTML = rsvpHTML;
+            
+            // Initialize RSVP functionality
+            document.dispatchEvent(new CustomEvent('contentLoaded'));
+            console.log('Dynamic RSVP content loaded successfully');
+            
+            // Register functions for conditional sections
+            window.showAttendanceDetails = function() {
+                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                conditionalSections.forEach(section => {
+                    section.style.display = 'block';
+                });
+            };
+            
+            window.hideAttendanceDetails = function() {
+                const conditionalSections = document.querySelectorAll('[data-depends-on="attendance"][data-show-when="yes"]');
+                conditionalSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+            };
+            
+            window.toggleAttendanceDetails = function(isAttending) {
+                if (isAttending) {
+                    window.showAttendanceDetails();
+                } else {
+                    window.hideAttendanceDetails();
                 }
-              }
-            }
+            };
             
-            console.log('Could not find special message section by any method');
-          }
-        }, 1000); // Wait 1 second for everything to load properly
-      });
+            // Define handleRSVPSubmission globally to be used with form onsubmit
+            window.handleRSVPSubmission = function(event) {
+                event.preventDefault();
+                
+                const form = event.target;
+                const formData = new FormData(form);
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+                submitBtn.disabled = true;
+                
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        form.style.display = 'none';
+                        // Try both possible confirmation IDs
+                        const confirmation = document.getElementById('confirmationMessage') || document.getElementById('rsvpConfirmation');
+                        if (confirmation) {
+                            confirmation.style.display = 'block';
+                        }
+                    } else {
+                        alert('There was an error submitting your RSVP. Please try again.');
+                    }
+                })
+                .catch(function() {
+                    alert('There was an error submitting your RSVP. Please check your connection and try again.');
+                })
+                .finally(function() {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                });
+            };
+        }
+        
+        // Add an event listener for the contentLoaded event to initialize the form
+        document.addEventListener('contentLoaded', function() {
+            const rsvpForm = document.getElementById('rsvpForm');
+            if (rsvpForm) {
+                console.log('RSVP form found, initializing...');
+                
+                // Set the initial state (hide attendance details by default)
+                if (typeof hideAttendanceDetails === 'function') {
+                    hideAttendanceDetails();
+                }
+                
+                // Initialize radio buttons for attendance
+                const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+                if (attendanceRadios.length > 0) {
+                    attendanceRadios.forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            if (this.value === 'Yes, I\'ll be there') {
+                                if (typeof showAttendanceDetails === 'function') {
+                                    showAttendanceDetails();
+                                }
+                            } else {
+                                if (typeof hideAttendanceDetails === 'function') {
+                                    hideAttendanceDetails();
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Check if first radio button (Yes) is selected
+                    const yesRadio = document.getElementById('attendance_0');
+                    if (yesRadio && yesRadio.checked) {
+                        if (typeof showAttendanceDetails === 'function') {
+                            showAttendanceDetails();
+                        }
+                    }
+                }
+                
+                // Initialize all conditional fields
+                const conditionalFields = document.querySelectorAll('[data-depends-on]');
+                conditionalFields.forEach(field => {
+                    const dependsOn = field.getAttribute('data-depends-on');
+                    const showWhen = field.getAttribute('data-show-when');
+                    const dependentInput = document.querySelector(`input[name="${dependsOn}"]:checked`);
+                    
+                    if (dependentInput && dependentInput.value === showWhen) {
+                        field.style.display = 'block';
+                    } else {
+                        field.style.display = 'none';
+                    }
+                });
+                
+                // Handle form submission - use the global handleRSVPSubmission function
+                // Instead of adding a duplicate event listener, we'll just make sure the form
+                // has the correct onsubmit attribute
+                
+                // Make sure the form uses the global handler
+                if (!rsvpForm.hasAttribute('onsubmit')) {
+                    rsvpForm.setAttribute('onsubmit', 'handleRSVPSubmission(event)');
+                }
+            }
+        });
+        
+        // Initialize dynamic RSVP when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initializeDynamicRSVP, 500);
+            
+            // Compatibility functions
+            window.forceShowSpecialMessage = function() {
+                if (typeof window.showAttendanceDetails === 'function') {
+                    window.showAttendanceDetails();
+                }
+            };
+            
+            window.forceHideSpecialMessage = function() {
+                if (typeof window.hideAttendanceDetails === 'function') {
+                    window.hideAttendanceDetails();
+                }
+            };
+        });
     </script>
     
     <!-- Portrait Popup Modal -->
