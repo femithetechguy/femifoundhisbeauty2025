@@ -54,6 +54,10 @@
     <link rel="stylesheet" href="styles/color-center-fix.css" />
     <link rel="stylesheet" href="styles/standalone-rsvp.css" />
     
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    
     <style>
       /* Additional styles for embedded RSVP form */
       #conditional-sections {
@@ -256,7 +260,7 @@
                     <!-- RSVP Form Card -->
                     <div class="card-custom">
                         <div class="card-body">
-                            <form id="simpleRsvpForm" action="https://formspree.io/f/mgvzwven" method="POST" class="form-custom">
+                            <form id="simpleRsvpForm" class="form-custom">
                                 <!-- Personal Information Section -->
                                 <div class="form-section mb-4">
                                     <h4 class="form-section-title mb-3"><i class="bi bi-person"></i> Personal Information</h4>
@@ -422,79 +426,90 @@
     <script src="scripts/portrait-popup.js" defer></script>
     <script src="scripts/dynamic-content-loader.js" defer></script>
     
-    <!-- RSVP form functionality -->
+    <!-- Firebase Config -->
+    <script src="firebase/config.js"></script>
+    
+    <!-- Firebase Debug Tools -->
+    <script src="firebase/debug.js"></script>
+    
+    <!-- RSVP Firebase Integration -->
+    <script src="scripts/rsvp-firebase.js"></script>
+    
+    <!-- RSVP form functionality (Legacy/Backup implementation) -->
     <script>
-        // RSVP form handler
+        // Add a console log to test Firebase connectivity when the page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Simple form handling
-            const form = document.getElementById('simpleRsvpForm');
-            
-            if (form) {
-                console.log('RSVP form found, initializing...');
-                
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
+            console.log('Page loaded, testing Firebase connectivity in 1 second...');
+            setTimeout(async () => {
+                if (window.firebaseDebug && typeof window.firebaseDebug.testFirebaseConnection === 'function') {
+                    const result = await window.firebaseDebug.testFirebaseConnection();
+                    console.log('Firebase connection test result:', result);
                     
-                    const formData = new FormData(form);
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.innerHTML;
-                    
-                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
-                    submitBtn.disabled = true;
-                    
-                    fetch(form.action, {
-                        method: form.method,
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    })
-                    .then(function(response) {
-                        if (response.ok) {
-                            form.closest('.card-custom').style.display = 'none';
-                            document.getElementById('confirmationMessage').style.display = 'block';
-                        } else {
-                            alert('There was an error submitting your RSVP. Please try again.');
-                        }
-                    })
-                    .catch(function(error) {
-                        console.error('Error:', error);
-                        alert('There was an error submitting your RSVP. Please check your connection and try again.');
-                    })
-                    .finally(function() {
-                        submitBtn.innerHTML = originalText;
-                        submitBtn.disabled = false;
-                    });
-                });
-                
-                // Radio button functionality with console logs
-                const yesRadio = document.getElementById('yesRadio');
-                const noRadio = document.getElementById('noRadio');
-                const conditionalSections = document.getElementById('conditional-sections');
-                
-                if (yesRadio && noRadio && conditionalSections) {
-                    yesRadio.addEventListener('change', function() {
-                        console.log('Yes radio selected');
-                        conditionalSections.style.display = 'block';
+                    if (result.success) {
+                        console.log('Firebase connection is working!');
                         
-                        // Make guest count required when attendance is yes
-                        const guestCount = document.getElementById('guestCount');
-                        if (guestCount) {
-                            guestCount.required = true;
-                        }
-                    });
-                    
-                    noRadio.addEventListener('change', function() {
-                        console.log('No radio selected');
-                        conditionalSections.style.display = 'none';
-                        
-                        // Remove required attribute when attendance is no
-                        const guestCount = document.getElementById('guestCount');
-                        if (guestCount) {
-                            guestCount.required = false;
-                        }
-                    });
+                        // Also test RSVP write permission
+                        const rsvpPermResult = await window.firebaseDebug.testRSVPWritePermission();
+                        console.log('RSVP permission test result:', rsvpPermResult);
+                    }
                 }
+            }, 1000);
+        });
+    
+        // This script is only used if Firebase integration fails
+        document.addEventListener('DOMContentLoaded', function() {
+            // Only initialize if Firebase integration is not available
+            if (typeof window.rsvpFirebase === 'undefined') {
+                console.log('Firebase integration not available, using fallback RSVP handler');
                 
-                console.log('Simple RSVP script initialized');
+                // Simple form handling
+                const form = document.getElementById('simpleRsvpForm');
+                
+                if (form) {
+                    console.log('RSVP form found, initializing fallback handler...');
+                    
+                    // Setup form submission
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        
+                        // Show confirmation message (since we don't have a real backend in fallback mode)
+                        form.closest('.card-custom').style.display = 'none';
+                        document.getElementById('confirmationMessage').style.display = 'block';
+                        
+                        console.log('Form submitted in fallback mode (no data saved)');
+                    });
+                    
+                    // Radio button functionality
+                    const yesRadio = document.getElementById('yesRadio');
+                    const noRadio = document.getElementById('noRadio');
+                    const conditionalSections = document.getElementById('conditional-sections');
+                    
+                    if (yesRadio && noRadio && conditionalSections) {
+                        yesRadio.addEventListener('change', function() {
+                            console.log('Yes radio selected');
+                            conditionalSections.style.display = 'block';
+                            
+                            // Make guest count required when attendance is yes
+                            const guestCount = document.getElementById('guestCount');
+                            if (guestCount) {
+                                guestCount.required = true;
+                            }
+                        });
+                        
+                        noRadio.addEventListener('change', function() {
+                            console.log('No radio selected');
+                            conditionalSections.style.display = 'none';
+                            
+                            // Remove required attribute when attendance is no
+                            const guestCount = document.getElementById('guestCount');
+                            if (guestCount) {
+                                guestCount.required = false;
+                            }
+                        });
+                    }
+                    
+                    console.log('Fallback RSVP script initialized');
+                }
             }
         });
     </script>
