@@ -1,12 +1,38 @@
-// Hide loading screen
+// Detect if device is mobile
+function isMobileDevice() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
+// Show loading screen
+function showLoadingScreen() {
+  const loadingScreen = document.getElementById("loading-screen");
+  if (loadingScreen) {
+    // Enable hardware acceleration
+    loadingScreen.style.transform = 'translateZ(0)';
+    loadingScreen.style.display = "flex";
+    loadingScreen.classList.remove("hidden");
+  }
+}
+
+// Hide loading screen with optimized performance
 function hideLoadingScreen() {
+  // Shorter timeout for mobile devices
+  const isMobile = isMobileDevice();
+  const initialDelay = isMobile ? 500 : 1000; // Shorter delay on mobile
+  const transitionDelay = isMobile ? 200 : 500; // Shorter transition on mobile
+  
   setTimeout(() => {
     const loadingScreen = document.getElementById("loading-screen");
-    loadingScreen.classList.add("hidden");
-    setTimeout(() => {
-      loadingScreen.style.display = "none";
-    }, 500);
-  }, 1500);
+    if (loadingScreen) {
+      // Add hardware acceleration for smoother transitions
+      loadingScreen.style.transform = 'translateZ(0)';
+      loadingScreen.classList.add("hidden");
+      
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+      }, transitionDelay);
+    }
+  }, initialDelay);
 }
 // Initialize love effects for QR code section
 function initializeLoveEffects() {
