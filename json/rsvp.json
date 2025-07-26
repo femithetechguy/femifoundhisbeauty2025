@@ -64,7 +64,7 @@
           {
             "id": "guestCount",
             "type": "select",
-            "label": "Number of Guests (including yourself)",
+            "label": "Number of Guests including you (only Spouse allowed as +1) *",
             "required": true,
             "conditional": {
               "dependsOn": "attendance",
@@ -73,11 +73,9 @@
             "options": [
               "Select number of guests",
               "1 Guest",
-              "2 Guests",
-              "3 Guests",
-              "4 Guests"
+              "2 Guests"
             ],
-            "values": ["", "1", "2", "3", "4"]
+            "values": ["", "1", "2"]
           },
           {
             "id": "dietaryRestrictions",
