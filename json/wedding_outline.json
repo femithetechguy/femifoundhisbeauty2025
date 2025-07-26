@@ -491,7 +491,7 @@
           "description": "Share your wishes and blessings for our marriage"
         },
         "guestMessage": {
-          "enabled": true,
+          "enabled": false,
           "title": "Leave a message for the couple",
           "description": "Share your thoughts and well wishes for our journey together.",
           "form": {
@@ -559,7 +559,7 @@
     "rsvp": true,
     "gallery": true,
     "guestbook": true,
-    "guestMessage": true,
+    "guestMessage": false,
     "qrCode": true,
     "liveStream": true,
     "mobileOptimized": true,
