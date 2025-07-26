@@ -97,8 +97,47 @@ const testRSVPWritePermission = async () => {
   }
 };
 
+// Add a simple test function to just test writing to rsvps collection
+const testSimpleWrite = async () => {
+  try {
+    console.log('Running simplified write test...');
+    
+    // Initialize Firebase
+    const app = initFirebase();
+    if (!app) {
+      throw new Error('Firebase initialization failed');
+    }
+    
+    // Get Firestore
+    const db = app.firestore();
+    
+    // Create a simple test object
+    const testData = {
+      test: true,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Log the exact collection name we're trying to write to
+    console.log('Attempting to write to collection: "rsvps"');
+    
+    // Try to add directly to the rsvps collection
+    const docRef = await db.collection('rsvps').add(testData);
+    console.log('Test write successful with ID:', docRef.id);
+    
+    return { success: true, message: 'Simple write test succeeded', docId: docRef.id };
+    
+  } catch (error) {
+    console.error('Simple write test failed:', error);
+    console.log('Error code:', error.code);
+    console.log('Error name:', error.name);
+    console.log('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    return { success: false, error: error.message, details: error };
+  }
+};
+
 // Add global access to debug functions
 window.firebaseDebug = {
   testFirebaseConnection,
-  testRSVPWritePermission
+  testRSVPWritePermission,
+  testSimpleWrite
 };

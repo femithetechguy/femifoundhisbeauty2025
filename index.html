@@ -425,31 +425,17 @@
     <!-- Firebase Config -->
     <script src="firebase/config.js"></script>
     
-    <!-- Firebase Debug Tools -->
-    <script src="firebase/debug.js"></script>
-    
     <!-- RSVP Firebase Integration -->
     <script src="scripts/rsvp-firebase.js"></script>
     
     <!-- RSVP form functionality (Legacy/Backup implementation) -->
     <script>
-        // Add a console log to test Firebase connectivity when the page loads
+        // Simple initialization check - no debugging
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded, testing Firebase connectivity in 1 second...');
-            setTimeout(async () => {
-                if (window.firebaseDebug && typeof window.firebaseDebug.testFirebaseConnection === 'function') {
-                    const result = await window.firebaseDebug.testFirebaseConnection();
-                    console.log('Firebase connection test result:', result);
-                    
-                    if (result.success) {
-                        console.log('Firebase connection is working!');
-                        
-                        // Also test RSVP write permission
-                        const rsvpPermResult = await window.firebaseDebug.testRSVPWritePermission();
-                        console.log('RSVP permission test result:', rsvpPermResult);
-                    }
-                }
-            }, 1000);
+            // Initialize Firebase silently
+            if (typeof firebase !== 'undefined' && typeof initFirebase === 'function') {
+                initFirebase();
+            }
         });
     
         // This script is only used if Firebase integration fails
