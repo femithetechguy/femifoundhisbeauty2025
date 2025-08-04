@@ -332,6 +332,30 @@
         "confirmationMessage": "Thank you for your RSVP! We can't wait to celebrate with you."
       }
     },
+    {
+      "id": "important-notice",
+      "title": "Important Notice",
+      "icon": "⏰",
+      "order": 8.5,
+      "content": {
+        "notices": [
+          {
+            "title": "Adults Only Celebration",
+            "message": "We kindly request that this be an adults-only celebration. Thank you for understanding!",
+            "icon": "👥"
+          },
+          {
+            "title": "Punctuality Matters",
+            "message": "We will start promptly at 3:00 PM and keep to our schedule. Please arrive on time!",
+            "icon": "⏰"
+          }
+        ],
+        "ctaText": "Mark Your Calendar",
+        "backgroundColor": "#FF6B6B",
+        "textColor": "#FFFFFF",
+        "animated": true
+      }
+    },
 
     {
       "id": "scripture-theme",

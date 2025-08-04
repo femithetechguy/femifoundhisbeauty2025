@@ -6,6 +6,7 @@ function buildDynamicSections() {
     'wedding-details': createWeddingDetailsContent,
     'gallery': createGalleryContent,
     'rsvp': createRSVPContent,
+    'important-notice': createImportantNoticeContent,
     'scripture-theme': createScriptureThemeContent,
     'contact': createContactContent,
     'extras': createExtrasContent,
@@ -16,7 +17,7 @@ function buildDynamicSections() {
 
     // Build HTML for each section in order
   const sectionsHTML = window.weddingData.sections
-    .filter(section => section.id !== 'home' && section.id !== 'rsvp')
+    .filter(section => section.id !== 'home' && section.id !== 'rsvp' && section.order < 8.5)
     .map(section => {
       // Try both id and type for renderer mapping
       const renderer = sectionRenderers[section.id] || sectionRenderers[section.type];
@@ -34,6 +35,42 @@ function buildDynamicSections() {
     document.dispatchEvent(new CustomEvent('contentLoaded'));
   }, 100);
   
+  return sectionsHTML;
+}
+
+// Build sections that should appear after RSVP (order >= 8.5)
+function buildPostRSVPSections() {
+  if (!window.weddingData || !Array.isArray(weddingData.sections)) return '';
+  
+  // Map section type to renderer function
+  const sectionRenderers = {
+    'wedding-details': createWeddingDetailsContent,
+    'gallery': createGalleryContent,
+    'rsvp': createRSVPContent,
+    'important-notice': createImportantNoticeContent,
+    'scripture-theme': createScriptureThemeContent,
+    'contact': createContactContent,
+    'extras': createExtrasContent,
+    'our-story': createOurStoryContent,
+    'wedding_party': createWeddingPartyContent
+    // Add more mappings as needed
+  };
+
+  // Build HTML for post-RSVP sections
+  const sectionsHTML = window.weddingData.sections
+    .filter(section => section.order >= 8.5)
+    .map(section => {
+      // Try both id and type for renderer mapping
+      const renderer = sectionRenderers[section.id] || sectionRenderers[section.type];
+      if (typeof renderer === 'function') {
+        return `<section id="${section.id}">${renderer(section.content)}</section>`;
+      } else {
+        // Fallback: render as a simple card with title and description
+        return `<section id="${section.id}"><div class="card-custom mb-4"><div class="card-body"><h4 class="card-title">${section.title || section.id}</h4><p>${section.content && section.content.description ? section.content.description : ''}</p></div></div></section>`;
+      }
+    })
+    .join('');
+    
   return sectionsHTML;
 }
 
@@ -131,6 +168,47 @@ function createGalleryContent(content) {
             <a href="gallery.html" class="btn btn-primary-custom direct-link"><i class="bi bi-images"></i> View Full Gallery</a>
         </div>
     `;
+}
+
+function createImportantNoticeContent(content) {
+  if (!content || !content.notices || !Array.isArray(content.notices)) {
+    console.error('Missing notices data in important notice content');
+    return '<p>Unable to load important notice information.</p>';
+  }
+
+  // Generate notice cards HTML
+  const noticeCardsHTML = content.notices.map(notice => `
+    <div class="notice-card">
+      <div class="notice-icon">${notice.icon || '⚠️'}</div>
+      <h3 class="notice-card-title">${notice.title}</h3>
+      <p class="notice-message">${notice.message}</p>
+    </div>
+  `).join('');
+
+  // Get CTA configuration
+  const cta = content.cta || {};
+  const ctaText = cta.text || 'I Understand';
+  const ctaSubtext = cta.subtext || '';
+
+  return `
+    <div class="important-notice-section">
+      <div class="important-notice-container">
+        <div class="notice-header">
+          <h2 class="notice-title">${content.title || 'Important Notice'}</h2>
+          <p class="notice-subtitle">${content.subtitle || 'Please read carefully'}</p>
+        </div>
+        <div class="notices-grid">
+          ${noticeCardsHTML}
+        </div>
+        <div class="cta-button-container">
+          <button class="animated-cta-button" onclick="acknowledgeNotice()">
+            ${ctaText}
+          </button>
+          ${ctaSubtext ? `<p class="cta-subtext">${ctaSubtext}</p>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function createRSVPContent(content) {

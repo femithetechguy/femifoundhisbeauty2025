@@ -32,6 +32,12 @@ async function initializeWebsite() {
       setTimeout(initGalleryLightbox, 200);
     }
   }
+  
+  // Render post-RSVP sections (like important notice) 
+  const postRsvpContainer = document.getElementById('post-rsvp-sections');
+  if (postRsvpContainer && typeof buildPostRSVPSections === 'function') {
+    postRsvpContainer.innerHTML = buildPostRSVPSections();
+  }
   initializeCountdown();
   initializeCopyButtons();
   initializeLoveEffects();
