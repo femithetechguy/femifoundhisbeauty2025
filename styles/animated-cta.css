@@ -10,6 +10,10 @@
   box-shadow: 0 10px 30px rgba(216, 228, 96, 0.3);
   position: relative;
   overflow: hidden;
+  /* Mobile animation optimizations */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: background-position;
 }
 
 .important-notice-section::before {
@@ -24,6 +28,10 @@
   border-radius: 22px;
   z-index: -1;
   animation: borderGlow 3s ease infinite;
+  /* Mobile optimization */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: background-position;
 }
 
 .important-notice-container {
@@ -45,6 +53,10 @@
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
   animation: pulseText 2s ease infinite;
+  /* Mobile optimization */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .notice-subtitle {
@@ -69,6 +81,10 @@
   padding: 25px;
   transition: all 0.3s ease;
   animation: floatCard 3s ease-in-out infinite;
+  /* Mobile optimization */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .notice-card:nth-child(2) {
@@ -85,6 +101,10 @@
   font-size: 3rem;
   margin-bottom: 15px;
   animation: bounceIcon 2s ease infinite;
+  /* Mobile optimization */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .notice-card-title {
@@ -122,6 +142,10 @@
   display: inline-block;
   position: relative;
   overflow: hidden;
+  /* Mobile optimization */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
 }
 
 .animated-cta-button::before {
@@ -255,6 +279,62 @@
   .animated-cta-button {
     padding: 15px 30px;
     font-size: 1.1rem;
+  }
+}
+
+/* Reduce animations on mobile for better performance */
+@media (max-width: 768px) and (hover: none) {
+  /* Disable hover effects on touch devices */
+  .notice-card:hover {
+    transform: none;
+    box-shadow: 0 5px 15px rgba(88, 107, 54, 0.2);
+    border-color: rgba(88, 107, 54, 0.2);
+  }
+  
+  .animated-cta-button:hover {
+    transform: none;
+    box-shadow: 0 8px 25px rgba(88, 107, 54, 0.4);
+    background: linear-gradient(45deg, #586B36, #6B7F44);
+  }
+  
+  /* Reduce animation intensity for better mobile performance */
+  .important-notice-section {
+    animation-duration: 6s;
+  }
+  
+  .important-notice-section::before {
+    animation-duration: 5s;
+  }
+  
+  .notice-title {
+    animation-duration: 3s;
+  }
+  
+  .notice-card {
+    animation-duration: 4s;
+  }
+  
+  .notice-icon {
+    animation-duration: 3s;
+  }
+  
+  .animated-cta-button {
+    animation-duration: 3s;
+  }
+}
+
+/* Fallback for older mobile browsers that don't support will-change */
+@supports not (will-change: transform) {
+  .important-notice-section,
+  .important-notice-section::before,
+  .notice-title,
+  .notice-card,
+  .notice-icon,
+  .animated-cta-button {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
   }
 }
 
