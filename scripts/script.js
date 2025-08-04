@@ -311,6 +311,42 @@ function acknowledgeNotice() {
   }, 1000);
 }
 
+// Mobile animation optimization function
+function optimizeAnimationsForMobile() {
+  // Check if device is mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  
+  if (isMobile || isTouch) {
+    // Add a class to reduce animations on mobile
+    document.documentElement.classList.add('mobile-device');
+    
+    // Add CSS for reduced animations
+    const style = document.createElement('style');
+    style.textContent = `
+      .mobile-device .important-notice-section {
+        animation-duration: 8s !important;
+      }
+      .mobile-device .important-notice-section::before {
+        animation-duration: 6s !important;
+      }
+      .mobile-device .notice-title {
+        animation-duration: 4s !important;
+      }
+      .mobile-device .notice-card {
+        animation-duration: 5s !important;
+      }
+      .mobile-device .notice-icon {
+        animation-duration: 4s !important;
+      }
+      .mobile-device .animated-cta-button {
+        animation-duration: 4s !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
 // Expose popup and utility functions globally for inline HTML onclick (must be after all function declarations)
 window.openStoryPopup = openStoryPopup;
 window.closeStoryPopup = closeStoryPopup;
@@ -321,5 +357,8 @@ window.hideAttendanceDetails = hideAttendanceDetails;
 window.acknowledgeNotice = acknowledgeNotice;
 if (typeof togglePortraitView === 'function') window.togglePortraitView = togglePortraitView;
 if (typeof driveToLocation === 'function') window.driveToLocation = driveToLocation;
+
+// Optimize animations for mobile devices
+optimizeAnimationsForMobile();
 
 }); // <-- Close the DOMContentLoaded event listener
