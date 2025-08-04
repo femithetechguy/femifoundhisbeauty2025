@@ -2798,96 +2798,10 @@ button[onclick="openStoryPopup('howWeMet')"].btn-primary-custom:hover {
   border-radius: 8px;
 }
 
-/* Soft highlight for bridal party */
-.bridal-party-border .wedding-party-image-wrapper:hover::after {
-  opacity: 1;
-  background: radial-gradient(circle at center, 
-              rgba(255, 192, 203, 0.1) 0%, 
-              rgba(255, 192, 203, 0) 70%);
-  box-shadow: 0 0 15px rgba(255, 192, 203, 0.3);
-}
-
-/* Soft highlight for groomsmen */
-.groomsmen-border .wedding-party-image-wrapper:hover::after {
-  opacity: 1;
-  background: radial-gradient(circle at center, 
-              rgba(125, 143, 92, 0.1) 0%, 
-              rgba(125, 143, 92, 0) 70%);
-  box-shadow: 0 0 15px rgba(125, 143, 92, 0.3);
-}
-
-/* Apply hover effect to bridal party and groomsmen images */
-.bridal-party-border .wedding-party-image-wrapper img,
-.groomsmen-border .wedding-party-image-wrapper img {
-  transform: scale(1) translateY(0);
-  will-change: transform; /* Optimize performance */
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
-}
-
-/* On hover, apply scale up, rise, and enhanced shadow */
-.bridal-party-border .wedding-party-image-wrapper:hover img,
-.groomsmen-border .wedding-party-image-wrapper:hover img {
-  transform: scale(1.25) translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-  z-index: 5; /* Ensure hovered image appears above others */
-}
-
-/* When not hovering, smoothly return to original state */
-.bridal-party-border .wedding-party-image-wrapper:not(:hover) img,
-.groomsmen-border .wedding-party-image-wrapper:not(:hover) img {
-  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-
 /* Define a class for JavaScript to toggle if needed */
 .flipped {
   transform: rotateY(180deg) !important;
 }
-
-.bridal-party-border {
-  border: 3px solid #FFC0CB; /* Light pink border for bridal party */
-  background-color: rgba(255, 192, 203, 0.05);
-  box-shadow: 0 4px 15px rgba(255, 192, 203, 0.2);
-}
-
-.bridal-party-border::before {
-  content: "♀";
-  position: absolute;
-  top: -15px;
-  left: 20px;
-  background-color: #FFC0CB;
-  color: white;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.groomsmen-border {
-  border: 3px solid #7D8F5C; /* Olive green border for groomsmen */
-  background-color: rgba(125, 143, 92, 0.05);
-  box-shadow: 0 4px 15px rgba(125, 143, 92, 0.2);
-}
-
-.groomsmen-border::before {
-  content: "♂";
-  position: absolute;
-  top: -15px;
-  left: 20px;
-  background-color: #7D8F5C;
-  color: white;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
 }
 
 /* Portrait Container Styles */
