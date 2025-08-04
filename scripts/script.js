@@ -268,6 +268,49 @@ function toggleGuestDetails(attending) {
   }
 }
 
+// Function to handle important notice acknowledgment
+function acknowledgeNotice() {
+  // Add a nice animation effect
+  const button = event.target;
+  const container = button.closest('.important-notice-section');
+  
+  // Change button text and style to match site theme
+  button.innerHTML = '✓ Acknowledged';
+  button.style.background = 'linear-gradient(45deg, #D8E460, #B8C850)';
+  button.style.color = '#586B36';
+  button.style.transform = 'scale(0.95)';
+  
+  // Add a success pulse animation
+  setTimeout(() => {
+    button.style.transform = 'scale(1.1)';
+  }, 100);
+  
+  setTimeout(() => {
+    button.style.transform = 'scale(1)';
+  }, 200);
+  
+  // Add a subtle success border glow to the entire section using theme colors
+  if (container) {
+    container.style.boxShadow = '0 0 30px rgba(216, 228, 96, 0.6)';
+    
+    // Reset after a few seconds
+    setTimeout(() => {
+      container.style.boxShadow = '0 10px 30px rgba(216, 228, 96, 0.3)';
+    }, 3000);
+  }
+  
+  // Optional: Store acknowledgment in localStorage
+  localStorage.setItem('importantNoticeAcknowledged', 'true');
+  
+  // Optional: Smooth scroll to next section (RSVP or wherever makes sense)
+  setTimeout(() => {
+    const nextSection = document.querySelector('#rsvp, [data-next-section]');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 1000);
+}
+
 // Expose popup and utility functions globally for inline HTML onclick (must be after all function declarations)
 window.openStoryPopup = openStoryPopup;
 window.closeStoryPopup = closeStoryPopup;
@@ -275,6 +318,7 @@ window.handlePopupKeydown = handlePopupKeydown;
 window.toggleGuestDetails = toggleGuestDetails;
 window.showAttendanceDetails = showAttendanceDetails;
 window.hideAttendanceDetails = hideAttendanceDetails;
+window.acknowledgeNotice = acknowledgeNotice;
 if (typeof togglePortraitView === 'function') window.togglePortraitView = togglePortraitView;
 if (typeof driveToLocation === 'function') window.driveToLocation = driveToLocation;
 
