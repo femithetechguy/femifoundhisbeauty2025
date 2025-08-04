@@ -30,9 +30,8 @@ Certainly, Adefemi! Here’s a full list of 1 to 12 for your wedding website for
 
 ⸻
 
-4. 👰🏾🤵🏾 Meet the Couple / Wedding Party
+4. 👰🏾🤵🏾 Meet the Couple
 	•	Bios for Beauty and Femi
-	•	Optional: Bridesmaids, groomsmen, etc.
 	•	Photos & fun facts
 
 ⸻

@@ -39,6 +39,12 @@ function buildDynamicSections() {
 
 // Meet the Couple / Wedding Party section renderer
 function createWeddingPartyContent(content) {
+  // Ensure content has the required properties to prevent errors
+  if (!content || !content.bride || !content.groom) {
+    console.error('Missing bride or groom data in wedding party content');
+    return '<p>Unable to load wedding party information.</p>';
+  }
+
   return `
     <h2 class="section-title text-center mb-4">Meet the Couple</h2>
     <div class="row">
@@ -60,7 +66,7 @@ function createWeddingPartyContent(content) {
                 <p class="text-muted">Bride</p>
                 <p>${content.bride.bio}</p>
                 <ul class="list-unstyled">
-                  ${content.bride.funFacts.map(fact => `<li>${fact}</li>`).join('')}
+                  ${(content.bride.funFacts || []).map(fact => `<li>${fact}</li>`).join('')}
                 </ul>
               </div>
               
@@ -85,63 +91,9 @@ function createWeddingPartyContent(content) {
                 <p class="text-muted">Groom</p>
                 <p>${content.groom.bio}</p>
                 <ul class="list-unstyled">
-                  ${content.groom.funFacts.map(fact => `<li>${fact}</li>`).join('')}
+                  ${(content.groom.funFacts || []).map(fact => `<li>${fact}</li>`).join('')}
                 </ul>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-12">
-        <div class="card-custom">
-          <div class="card-body">
-            <h4 class="card-title text-center mb-4">Bridal Party</h4>
-            
-            <!-- Bridal Party with border -->
-            <div class="wedding-party-container bridal-party-border mb-5">
-              <div class="row">
-                ${content.bridesmaids.map(bm => `
-                  <div class="col-md-4 mb-5"> <!-- Increased margin-bottom for popup space -->
-                    <div class="card-custom h-100 text-center wedding-party-card">
-                      <div class="card-body">
-                        <div class="wedding-party-image-wrapper">
-                          <img src="${bm.photo}" alt="${bm.name}" class="img-fluid rounded" style="width: 150px; height: auto; max-height: 200px;">
-                        </div>
-                        <div class="wedding-party-info mt-3">
-                          <h6>${bm.name}</h6>
-                          <p class="text-muted small">${bm.relationship}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-            
-            <h4 class="card-title text-center mb-4">Groomsmen</h4>
-            
-            <!-- Groomsmen with border -->
-            <div class="wedding-party-container groomsmen-border">
-              <div class="row">
-                ${content.groomsmen.map(gm => `
-                  <div class="col-md-4 mb-5"> <!-- Increased margin-bottom for popup space -->
-                    <div class="card-custom h-100 text-center wedding-party-card">
-                      <div class="card-body">
-                        <div class="wedding-party-image-wrapper">
-                          <img src="${gm.photo}" alt="${gm.name}" class="img-fluid rounded" style="width: 150px; height: auto; max-height: 200px;">
-                        </div>
-                        <div class="wedding-party-info mt-3">
-                          <h6>${gm.name}</h6>
-                          <p class="text-muted small">${gm.relationship}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
             </div>
           </div>
         </div>

@@ -148,71 +148,7 @@
           "bio": "Music lover, servant of Christ...",
           "photo": "/images/femi-portrait.jpg",
           "funFacts": [""]
-        },
-        "bridesmaids": [
-          {
-            "name": "Bridesmaid 1",
-            "relationship": "Sister",
-            "photo": "images/bridalparty/couple-main2.jpg"
-          },
-          {
-            "name": "Bridesmaid 2",
-            "relationship": "Best Friend",
-            "photo": "images/bridalparty/couple-main2.jpg"
-          },
-          {
-            "name": "Bridesmaid 3",
-            "relationship": "Cousin",
-            "photo": "images/bridalparty/couple-main2.jpg"
-          },
-          {
-            "name": "Bridesmaid 4",
-            "relationship": "College Friend",
-            "photo": "images/bridalparty/couple-main2.jpg"
-          },
-          {
-            "name": "Bridesmaid 5",
-            "relationship": "Sister-in-law",
-            "photo": "images/bridalparty/couple-main2.jpg"
-          },
-          {
-            "name": "Bridesmaid 6",
-            "relationship": "Childhood Friend",
-            "photo": "images/bridalparty/couple-main2.jpg"
-          }
-        ],
-        "groomsmen": [
-          {
-            "name": "Groomsman 1",
-            "relationship": "Best Friend",
-            "photo": "images/groomsmen/couple-main2.jpg"
-          },
-          {
-            "name": "Groomsman 2",
-            "relationship": "Brother",
-            "photo": "images/groomsmen/couple-main2.jpg"
-          },
-          {
-            "name": "Groomsman 3",
-            "relationship": "College Friend",
-            "photo": "images/groomsmen/couple-main2.jpg"
-          },
-          {
-            "name": "Groomsman 4",
-            "relationship": "Cousin",
-            "photo": "images/groomsmen/couple-main2.jpg"
-          },
-          {
-            "name": "Groomsman 5",
-            "relationship": "Childhood Friend",
-            "photo": "images/groomsmen/couple-main2.jpg"
-          },
-          {
-            "name": "Groomsman 6",
-            "relationship": "Work Colleague",
-            "photo": "images/groomsmen/couple-main2.jpg"
-          }
-        ]
+        }
       }
     },
     {
