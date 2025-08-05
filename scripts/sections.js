@@ -847,7 +847,10 @@ function createWeddingDetailsContent(content) {
             <p class="text-muted">${content.ceremony.venue.address}</p>
             <p><strong>Date:</strong> ${content.ceremony.date}</p>
             <p><strong>Time:</strong> ${content.ceremony.time}</p>
-            <p class="text-info mt-3"><i class="bi bi-arrow-right"></i> <strong>Reception follows immediately</strong></p>
+            <div class="alert alert-success mt-3 mb-3" style="background-color: #D8E460; border-color: #586B36; color: #586B36; font-weight: bold; border-radius: 8px;">
+              <i class="bi bi-arrow-right-circle-fill me-2"></i>
+              <strong>Reception follows immediately at the same venue!</strong>
+            </div>
             <div class="venue-actions">
               <div class="position-relative">
                 <button class="btn btn-outline-custom copy-address-btn" data-address="${content.ceremony.venue.address}">
