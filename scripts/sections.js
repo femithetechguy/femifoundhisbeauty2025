@@ -838,7 +838,7 @@ function createWeddingDetailsContent(content) {
   return `
     <h2 class="section-title text-center mb-4">Wedding Details</h2>
     <div class="row">
-      <div class="col-lg-6 mb-4">
+      <div class="col-lg-4 mb-4">
         <div class="card-custom h-100">
           <div class="card-body text-center">
             <i class="bi bi-church display-4 text-primary-custom mb-3"></i>
@@ -869,7 +869,7 @@ function createWeddingDetailsContent(content) {
           </div>
         </div>
       </div>
-      <div class="col-lg-6 mb-4">
+      <div class="col-lg-4 mb-4">
         <div class="card-custom h-100">
           <div class="card-body">
             <h4 class="card-title text-center"><i class="bi bi-palette"></i> Dress Code + Color</h4>
@@ -1075,7 +1075,7 @@ function createWeddingDetailsContent(content) {
         </div>
       </div>
       ${content.virtualAttendance && content.virtualAttendance.enabled
-        ? `<div class="col-lg-6 mb-4"><div class="card-custom h-100"><div class="card-body text-center"><i class="bi bi-laptop display-4 text-primary-custom mb-3"></i><h4 class="card-title">Virtual Attendance</h4><p>${content.virtualAttendance.description}</p><div class="mt-3"><a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom me-2"><i class="bi bi-camera-video"></i> Join Virtually</a><button class="btn btn-outline-custom copy-virtual-link" data-link="${content.virtualAttendance.link}"><i class="bi bi-clipboard"></i> Copy Link</button><span class="copy-confirmation ms-2 text-success" style="display:none; font-size:0.95em;"><i class="bi bi-check-circle"></i> Copied!</span></div></div></div></div>`
+        ? `<div class="col-lg-4 mb-4"><div class="card-custom h-100"><div class="card-body text-center"><i class="bi bi-laptop display-4 text-primary-custom mb-3"></i><h4 class="card-title">Virtual Attendance</h4><p>${content.virtualAttendance.description}</p><div class="mt-3"><a href="${content.virtualAttendance.link}" target="_blank" class="btn btn-primary-custom me-2"><i class="bi bi-camera-video"></i> Join Virtually</a><button class="btn btn-outline-custom copy-virtual-link" data-link="${content.virtualAttendance.link}"><i class="bi bi-clipboard"></i> Copy Link</button><span class="copy-confirmation ms-2 text-success" style="display:none; font-size:0.95em;"><i class="bi bi-check-circle"></i> Copied!</span></div></div></div></div>`
         : ''}
     </div>
   `;
