@@ -847,6 +847,7 @@ function createWeddingDetailsContent(content) {
             <p class="text-muted">${content.ceremony.venue.address}</p>
             <p><strong>Date:</strong> ${content.ceremony.date}</p>
             <p><strong>Time:</strong> ${content.ceremony.time}</p>
+            <p class="text-info mt-3"><i class="bi bi-arrow-right"></i> <strong>Reception follows immediately</strong></p>
             <div class="venue-actions">
               <div class="position-relative">
                 <button class="btn btn-outline-custom copy-address-btn" data-address="${content.ceremony.venue.address}">
@@ -865,35 +866,6 @@ function createWeddingDetailsContent(content) {
           </div>
         </div>
       </div>
-      <div class="col-lg-6 mb-4">
-        <div class="card-custom h-100">
-          <div class="card-body text-center">
-            <i class="bi bi-music-note-list display-4 text-primary-custom mb-3"></i>
-            <h4 class="card-title">Reception</h4>
-            <h5>${content.reception.venue.name}</h5>
-            <p class="text-muted">${content.reception.venue.address}</p>
-            <p><strong>Date:</strong> ${content.reception.date}</p>
-            <p><strong>Time:</strong> ${content.reception.time}</p>
-            <div class="venue-actions">
-              <div class="position-relative">
-                <button class="btn btn-outline-custom copy-address-btn" data-address="${content.reception.venue.address}">
-                  <i class="bi bi-clipboard"></i> Copy Address
-                </button>
-                <span class="copy-confirmation text-success position-absolute" style="display:none; font-size:0.85em; top: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; margin-top: 4px;">
-                  <i class="bi bi-check-circle"></i> Copied!
-                </span>
-              </div>
-              <div>
-                <button class="btn btn-primary-custom" onclick="driveToLocation('${content.reception.venue.address}')">
-                  <i class="bi bi-car-front-fill"></i> Drive Here
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-4">
       <div class="col-lg-6 mb-4">
         <div class="card-custom h-100">
           <div class="card-body">
